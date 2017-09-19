@@ -11,15 +11,25 @@ public int tick, currCannon;
 public PVector forceApplied;
 
 public ArrayList<Particle> particles = new ArrayList<Particle>();
+public ArrayList<Cannon> cannons = new ArrayList<Cannon>();
 
 void setup() {
     size(800, 600);
-    cannon = new Cannon(400, 300);
+    for (int i = 0; i < NUM_CANNONS; i++) {
+        cannons.add(new Cannon((int)random(100, SCREEN_X-100), 550));   
+    }
 }
 
 void draw() {
     background(255);
-    cannon.display();
+    for (Cannon c : cannons) {
+        c.display();
+    }
+    
+    if ((int)random(0, 20) == 5) {
+        Particle missile = new Particle((int)random(0, SCREEN_X), 0, random(-5f, 5f), 0f, random(0.1f, 0.5f));
+        particles.add(missile);
+    }
     
     ArrayList<Particle> particlesToRemove = new ArrayList<Particle>();
     
@@ -27,7 +37,7 @@ void draw() {
         p.integrate(null);
         p.display();
         
-        if (p.position.x > width || p.position.x < 0 || p.position.y > height || p.position.y < 0) {
+        if (p.position.y > height) {
             particlesToRemove.add(p);   
         }
     }
@@ -42,5 +52,6 @@ void mousePressed() {
     xStart = mouseX;
     yStart = mouseY;
     
+    Cannon cannon = cannons.get((int)random(0, cannons.size()));
     particles.add(cannon.shoot(new PVector(xStart, yStart)));
 }
