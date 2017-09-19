@@ -1,4 +1,4 @@
-public static final PVector GRAVITY = new PVector(0, 0.15f);
+public static final PVector GRAVITY = new PVector(0, 0.03f);
 
 public class Particle {
 
@@ -15,7 +15,7 @@ public class Particle {
     
     public void display() {
         rectMode(CENTER);
-        fill(0);
+        fill(128);
         rect(position.x, position.y, 10, 10);
     }
     
