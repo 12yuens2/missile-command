@@ -4,19 +4,23 @@ public class Particle {
 
     public static final float DAMPING = 0.995f;
   
+    private int radius;
     private float mass;
     private PVector position, velocity;
+    private color col = color(128);
     
-    public Particle(int xPos, int yPos, float xVel, float yVel, float mass) {
+    public Particle(int radius, int xPos, int yPos, float xVel, float yVel, float mass) {
         position = new PVector(xPos, yPos);
         velocity = new PVector (xVel, yVel);
+        this.radius = radius;
         this.mass = mass;
     }
     
     public void display() {
-        rectMode(CENTER);
-        fill(128);
-        rect(position.x, position.y, 10, 10);
+        int size = radius * 2;
+        ellipseMode(CENTER);
+        fill(col);
+        ellipse(position.x, position.y, size, size);
     }
     
     public void integrate(PVector force) {
@@ -43,9 +47,21 @@ public class Particle {
         velocity.add(totalAcceleration);
     }
     
+    public void checkCollision(Particle collider) {
+        float collideDistance = radius + collider.radius;
+        PVector distanceBetween = PVector.sub(position, collider.position);
+        
+        if (distanceBetween.mag() < collideDistance) {
+            collider.col = color(255); 
+        }
+    }
+    
     public PVector getPosition() {
         return position;
     }
-  
+    
+    public void setColor(float col) {
+        this.col = color(col);
+    }
   
 }

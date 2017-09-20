@@ -1,6 +1,4 @@
 public class Cannon {
-    
-    public static final float forceScalar = 2f;
 
     private PVector position;
     
@@ -19,9 +17,9 @@ public class Cannon {
         
         float force = shotForce.mag();
         shotForce = shotForce.normalize().mult(force/200f);
-        System.out.println(force);
         
-        Particle bullet = new Particle((int)position.x, (int)position.y, 0f, 0f, 0.1f);
+        Particle bullet = new Particle(50, (int)position.x, (int)position.y, 0f, 0f, 0.1f);
+        bullet.setColor(0);
         bullet.integrate(shotForce);
         
         return bullet;

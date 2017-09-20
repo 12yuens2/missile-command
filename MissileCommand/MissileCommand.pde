@@ -27,7 +27,7 @@ void draw() {
     }
     
     if ((int)random(0, 20) == 5) {
-        Particle missile = new Particle((int)random(0, SCREEN_X), 0, random(-5f, 5f), 0f, random(0.1f, 0.5f));
+        Particle missile = new Particle(10, (int)random(0, SCREEN_X), -100, random(-5f, 5f), 0f, random(0.1f, 0.5f));
         particles.add(missile);
     }
     
@@ -35,6 +35,13 @@ void draw() {
     
     for (Particle p : particles) {
         p.integrate(null);
+        
+        for (Particle otherP : particles) {
+            if (!otherP.equals(p)) {
+                p.checkCollision(otherP);   
+            }
+        }
+        
         p.display();
         
         if (p.position.y > height) {
@@ -52,6 +59,21 @@ void mousePressed() {
     xStart = mouseX;
     yStart = mouseY;
     
-    Cannon cannon = cannons.get((int)random(0, cannons.size()));
+    Cannon cannon = getClosestCannon((int)xStart, (int)yStart);
     particles.add(cannon.shoot(new PVector(xStart, yStart)));
+}
+
+Cannon getClosestCannon(int posX, int posY) {
+    Cannon closestCannon = null;
+    float closestDistance = Integer.MAX_VALUE;
+    
+    for (Cannon cannon : cannons) {
+        float distance = sqrt(sq(cannon.position.x - posX) + sq(cannon.position.y - posY));
+        if (closestCannon == null || distance < closestDistance) {
+            closestCannon = cannon;
+            closestDistance = distance;
+        }
+    }
+    
+    return closestCannon;
 }
