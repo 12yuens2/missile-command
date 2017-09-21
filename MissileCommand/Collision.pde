@@ -9,9 +9,9 @@ public class Collision {
     public Collision(Particle p1, Particle p2) {
         this.p1 = p1;
         this.p2 = p2;
-        this.c = 0.8f;
+        this.c = 1f;
         
-        this.contactNormal = PVector.sub(p1.position,  p2.position).normalize();
+        this.contactNormal = PVector.sub(p2.position,  p1.position).normalize();
     }
     
     public void resolveCollision() {

@@ -1,4 +1,4 @@
-public static final PVector GRAVITY = new PVector(0, 0.03f);
+public static final PVector GRAVITY = new PVector(0, 0.1f);
 
 public abstract class Particle {
 
@@ -26,9 +26,16 @@ public abstract class Particle {
     
         position.add(velocity);
         
-        accelerate(GRAVITY, force);
+        accelerate(getGravityForce(), force);
         
         velocity.mult(DAMPING);
+    }
+    
+    private PVector getGravityForce() {
+        PVector gravityForce = GRAVITY.get();   
+        gravityForce.mult(this.mass);
+        
+        return gravityForce;
     }
     
     private void accelerate(PVector... forces) {
