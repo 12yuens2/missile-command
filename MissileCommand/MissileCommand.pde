@@ -13,6 +13,7 @@ public PVector forceApplied;
 public ArrayList<Particle> particles = new ArrayList<Particle>();
 public ArrayList<Cannon> cannons = new ArrayList<Cannon>();
 public ArrayList<Collision> collisions = new ArrayList<Collision>();
+public Missile m;
 
 void setup() {
     size(800, 600);
@@ -59,6 +60,8 @@ void draw() {
     for (Particle p : particlesToRemove) {
         particles.remove(p);   
     }
+    
+    if (m != null) m.display();
 }
 
 
@@ -68,6 +71,8 @@ void mousePressed() {
     
     Cannon cannon = getClosestCannon((int)xStart, (int)yStart);
     particles.add(cannon.shoot(new PVector(xStart, yStart)));
+    
+    m = new Missile((int)xStart, (int)yStart, 0f, 0f);
 }
 
 Cannon getClosestCannon(int posX, int posY) {

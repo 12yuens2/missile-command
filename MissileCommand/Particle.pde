@@ -7,7 +7,7 @@ public abstract class Particle {
     protected int radius;
     protected float mass;
     private PVector position, velocity;
-    private color col = color(128);
+    protected color col = color(128);
     
     public Particle(int xPos, int yPos, float xVel, float yVel) {
         position = new PVector(xPos, yPos);
@@ -66,10 +66,6 @@ public abstract class Particle {
     
     public PVector getPosition() {
         return position;
-    }
-    
-    public void setColor(float col) {
-        this.col = color(col);
     }
   
 }

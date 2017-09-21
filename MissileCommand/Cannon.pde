@@ -19,7 +19,7 @@ public class Cannon {
         shotForce = shotForce.normalize().mult(force/10f);
         
         Particle bullet = new CannonBall((int)position.x, (int)position.y, 0f, 0f);
-        bullet.setColor(0);
+        bullet.col = color(0);
         bullet.integrate(shotForce);
         
         return bullet;

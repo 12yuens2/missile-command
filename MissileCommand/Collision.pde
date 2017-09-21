@@ -9,7 +9,7 @@ public class Collision {
     public Collision(Particle p1, Particle p2) {
         this.p1 = p1;
         this.p2 = p2;
-        this.c = 1f;
+        this.c = 0.999f;
         
         this.contactNormal = PVector.sub(p2.position,  p1.position).normalize();
     }
@@ -17,13 +17,9 @@ public class Collision {
     public void resolveCollision() {
         float closingVel = calculateClosingVelocity();
         
-        float newClosingVel = -closingVel * c;
+        float deltaVel = (-closingVel * c) - closingVel;
         
-        float deltaVel = newClosingVel - closingVel;
-        
-        float totalInverseMass = (1f/p1.mass) + (1f/p2.mass);
-        
-        float impulse = deltaVel / totalInverseMass;
+        float impulse = deltaVel / ((1f/p1.mass) + (1f/p2.mass));
         
         PVector impulsePerInverseMass = contactNormal.get().mult(impulse);
         
