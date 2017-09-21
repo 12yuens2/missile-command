@@ -12,6 +12,7 @@ public PVector forceApplied;
 
 public ArrayList<Particle> particles = new ArrayList<Particle>();
 public ArrayList<Cannon> cannons = new ArrayList<Cannon>();
+public ArrayList<Collision> collisions = new ArrayList<Collision>();
 
 void setup() {
     size(800, 600);
@@ -27,18 +28,24 @@ void draw() {
     }
     
     if ((int)random(0, 20) == 5) {
-        Particle missile = new Particle(10, (int)random(0, SCREEN_X), -100, random(-5f, 5f), 0f, random(0.1f, 0.5f));
+        Particle missile = new Meteor((int)random(0, SCREEN_X), -100, random(-5f, 5f), 0f, random(0.1f, 0.5f));
         particles.add(missile);
     }
     
     ArrayList<Particle> particlesToRemove = new ArrayList<Particle>();
     
+    for (Collision c : collisions) {
+        c.resolveCollision();
+    }
+    collisions.clear();
+    
     for (Particle p : particles) {
         p.integrate(null);
         
         for (Particle otherP : particles) {
-            if (!otherP.equals(p)) {
-                p.checkCollision(otherP);   
+            if (p.getClass().equals(CannonBall.class)) {
+                Collision collision = p.checkCollision(otherP);
+                if (collision != null) collisions.add(collision);
             }
         }
         

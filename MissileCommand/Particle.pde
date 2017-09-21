@@ -46,13 +46,15 @@ public abstract class Particle {
         velocity.add(totalAcceleration);
     }
     
-    public void checkCollision(Particle collider) {
+    public Collision checkCollision(Particle collider) {
         float collideDistance = radius + collider.radius;
         PVector distanceBetween = PVector.sub(position, collider.position);
         
-        if (distanceBetween.mag() < collideDistance) {
-            collider.col = color(255); 
+        if (distanceBetween.mag() < collideDistance && collider.getClass() != this.getClass()) {
+            return new Collision(this, collider);
         }
+        
+        return null;
     }
     
     public PVector getPosition() {
