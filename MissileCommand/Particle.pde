@@ -6,7 +6,7 @@ public abstract class Particle {
   
     protected int radius;
     protected float mass;
-    private PVector position, velocity;
+    protected PVector position, velocity;
     protected color col = color(128);
     
     public Particle(int xPos, int yPos, float xVel, float yVel) {
