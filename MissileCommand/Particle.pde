@@ -4,7 +4,7 @@ public abstract class Particle {
 
     public static final float DAMPING = 0.995f;
   
-    protected int radius;
+    protected float radius;
     protected float mass;
     protected PVector position, velocity;
     protected color col = color(128);
@@ -15,7 +15,7 @@ public abstract class Particle {
     }
     
     public void display() {
-        int size = radius * 2;
+        float size = radius * 2;
         
         ellipseMode(CENTER);
         fill(col);
@@ -29,6 +29,12 @@ public abstract class Particle {
         accelerate(getGravityForce(), force);
         
         velocity.mult(DAMPING);
+    }
+    
+    public void explode() {
+        ellipseMode(CENTER);
+        fill(255, 0, 0);
+        ellipse(position.x, position.y, radius*4, radius*4);
     }
     
     private PVector getGravityForce() {
