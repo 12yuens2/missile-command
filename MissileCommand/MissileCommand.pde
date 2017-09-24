@@ -4,6 +4,7 @@ public static final int GROUND_HEIGHT = 550;
 
 public static final int NUM_PARTICLES = 30;
 public static final int NUM_CANNONS = 4;
+public static final int NUM_CITIES = 5;
 
 public Cannon cannon;
 public float xStart, yStart, xEnd, yEnd;
@@ -15,6 +16,7 @@ public ArrayList<Particle> particles = new ArrayList<Particle>();
 public ArrayList<Cannon> cannons = new ArrayList<Cannon>();
 public ArrayList<Collision> collisions = new ArrayList<Collision>();
 public ArrayList<Explosion> explosions = new ArrayList<Explosion>();
+public ArrayList<City> cities = new ArrayList<City>();
 public Missile m;
 
 
@@ -25,6 +27,10 @@ void setup() {
     for (int i = 0; i < NUM_CANNONS; i++) {
         cannons.add(new Cannon((int)random(100, SCREEN_X-100), 550));   
     }
+    
+    for (int i = 0; i < NUM_CITIES; i++) {
+        cities.add(new City((int)random(30, SCREEN_X-30), 550));   
+    }
 }
 
 void draw() {
@@ -32,6 +38,9 @@ void draw() {
     drawGround();
     for (Cannon c : cannons) {
         c.display();
+    }
+    for (City c : cities) {
+        c.display();   
     }
     
     if ((int)random(0, 20) == 5) {
@@ -65,7 +74,7 @@ void draw() {
     }
     
     for (Explosion explosion : explosions) {
-        explosion.display();   
+        explosion.display();
     }
     
     for (Particle p : particlesToRemove) {
@@ -81,9 +90,9 @@ void mousePressed() {
     yStart = mouseY;
     
     Cannon cannon = getClosestCannon((int)xStart, (int)yStart);
-    particles.add(cannon.shoot(new PVector(xStart, yStart)));
+    //particles.add(cannon.shoot(new PVector(xStart, yStart)));
     
-    m = new Missile((int)cannon.position.x, (int)cannon.position.y, (int)xStart, (int)yStart);
+    particles.add(new Missile((int)cannon.position.x, (int)cannon.position.y, (int)xStart, (int)yStart));
 }
 
 void drawGround() {

@@ -17,7 +17,7 @@ public class Explosion {
             fill(255, 127, 80);
             ellipse(position.x, position.y, radius, radius);
             
-            radius += 2f;
+            radius += 2.5f;
             lifespan--;   
         }
         
