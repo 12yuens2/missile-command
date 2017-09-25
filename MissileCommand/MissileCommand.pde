@@ -4,6 +4,7 @@ public static final int GROUND_HEIGHT = 550;
 
 public static final int NUM_PARTICLES = 30;
 public static final int NUM_CANNONS = 4;
+public static final int NUM_CITIES = 5;
 
 public Cannon cannon;
 public float xStart, yStart, xEnd, yEnd;
@@ -15,6 +16,7 @@ public ArrayList<Particle> particles = new ArrayList<Particle>();
 public ArrayList<Cannon> cannons = new ArrayList<Cannon>();
 public ArrayList<Collision> collisions = new ArrayList<Collision>();
 public ArrayList<Explosion> explosions = new ArrayList<Explosion>();
+public ArrayList<City> cities = new ArrayList<City>();
 public Missile m;
 
 /* For clean up thread */
@@ -29,6 +31,10 @@ void setup() {
     for (int i = 0; i < NUM_CANNONS; i++) {
         cannons.add(new Cannon((int)random(100, SCREEN_X-100), 550));
     }
+    
+    for (int i = 0; i < NUM_CITIES; i++) {
+        cities.add(new City((int)random(30, SCREEN_X-30), 550));   
+    }
 }
 
 void draw() {
@@ -37,7 +43,11 @@ void draw() {
     for (Cannon c : cannons) {
         c.display();
     }
-
+    
+    for (City c : cities) {
+        c.display();   
+    }
+    
     if ((int)random(0, 20) == 5) {
         Particle meteor = new Meteor((int)random(0, SCREEN_X), -100, random(-5f, 5f), 0f, random(0.1f, 0.5f));
         particles.add(meteor);
@@ -69,7 +79,14 @@ void draw() {
 
     for (Explosion explosion : explosions) {
         explosion.display();
+<<<<<<< HEAD
         if (explosion.lifespan < 0) explosionsToRemove.add(explosion);
+=======
+    }
+    
+    for (Particle p : particlesToRemove) {
+        particles.remove(p);   
+>>>>>>> acab3b74850583ce6758809a4dafe901d2d690e8
     }
 
     thread("cleanUp");
@@ -83,9 +100,15 @@ void mousePressed() {
     yStart = mouseY;
 
     Cannon cannon = getClosestCannon((int)xStart, (int)yStart);
+<<<<<<< HEAD
     particles.add(cannon.shoot(new PVector(xStart, yStart)));
 
     m = new Missile((int)cannon.position.x, (int)cannon.position.y, (int)xStart, (int)yStart);
+=======
+    //particles.add(cannon.shoot(new PVector(xStart, yStart)));
+    
+    particles.add(new Missile((int)cannon.position.x, (int)cannon.position.y, (int)xStart, (int)yStart));
+>>>>>>> acab3b74850583ce6758809a4dafe901d2d690e8
 }
 
 void drawGround() {
