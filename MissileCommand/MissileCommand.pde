@@ -63,7 +63,7 @@ void draw() {
         p.integrate(null);
 
         for (Particle otherP : particles) {
-            if (p.getClass().equals(CannonBall.class)) {
+            if (p.getClass().equals(CannonBall.class) && !otherP.getClass().equals(Missile.class)) {
                 Collision collision = p.checkCollision(otherP);
                 if (collision != null) collisions.add(collision);
             }
@@ -79,14 +79,11 @@ void draw() {
 
     for (Explosion explosion : explosions) {
         explosion.display();
-<<<<<<< HEAD
         if (explosion.lifespan < 0) explosionsToRemove.add(explosion);
-=======
     }
     
     for (Particle p : particlesToRemove) {
         particles.remove(p);   
->>>>>>> acab3b74850583ce6758809a4dafe901d2d690e8
     }
 
     thread("cleanUp");
@@ -100,15 +97,9 @@ void mousePressed() {
     yStart = mouseY;
 
     Cannon cannon = getClosestCannon((int)xStart, (int)yStart);
-<<<<<<< HEAD
-    particles.add(cannon.shoot(new PVector(xStart, yStart)));
-
-    m = new Missile((int)cannon.position.x, (int)cannon.position.y, (int)xStart, (int)yStart);
-=======
     //particles.add(cannon.shoot(new PVector(xStart, yStart)));
     
     particles.add(new Missile((int)cannon.position.x, (int)cannon.position.y, (int)xStart, (int)yStart));
->>>>>>> acab3b74850583ce6758809a4dafe901d2d690e8
 }
 
 void drawGround() {
