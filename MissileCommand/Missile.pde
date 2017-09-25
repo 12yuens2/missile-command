@@ -2,11 +2,13 @@ public class Missile extends Particle {
 
     private int lifespan = 60;
     private PVector destinationPos;
+    private boolean exploded = false;
     
     public Missile(int xPos, int yPos, int destX, int destY) {
        super(xPos, yPos, 0f, 0f);
        this.velocity = new PVector((destX - xPos)/10f, (destY - yPos)/10f);
        
+       this.mass = 2;
        this.radius = 30;
        this.col = color(255, 0, 0);
        
@@ -15,12 +17,12 @@ public class Missile extends Particle {
     
     @Override
     public void integrate(PVector force) {
-        
+        //do nothing
     }
     
     public void display() {
         
-        if (PVector.sub(destinationPos, position).mag() < 1f) {
+        if (PVector.sub(destinationPos, position).mag() < 1f || exploded) {
             if (lifespan > 0) {
                 super.display();
                 lifespan--;

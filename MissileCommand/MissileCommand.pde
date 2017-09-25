@@ -1,3 +1,5 @@
+import java.util.Iterator;
+
 public static final int SCREEN_X = 800;
 public static final int SCREEN_Y = 600;
 public static final int GROUND_HEIGHT = 550;
@@ -12,45 +14,47 @@ public int tick, currCannon;
 
 public PVector forceApplied;
 
-public ArrayList<Particle> particles = new ArrayList<Particle>();
-public ArrayList<Cannon> cannons = new ArrayList<Cannon>();
-public ArrayList<Collision> collisions = new ArrayList<Collision>();
-public ArrayList<Explosion> explosions = new ArrayList<Explosion>();
-public ArrayList<City> cities = new ArrayList<City>();
-public Missile m;
+public GameScene gameScene;
+public ArrayList<Particle> particles;
+public ArrayList<Collision> collisions;
 
 /* For clean up thread */
-public ArrayList<Particle> particlesToRemove = new ArrayList<Particle>();
-public ArrayList<Explosion> explosionsToRemove = new ArrayList<Explosion>();
-
-
+public ArrayList<Particle> particlesToRemove;
 
 
 void setup() {
     size(800, 600);
+    gameScene = new GameScene();
+    
+    particles = new ArrayList<Particle>();
+    collisions = new ArrayList<Collision>();
+    particlesToRemove = new ArrayList<Particle>();
+    
+    spawnBuildings();
+
+}
+
+private void spawnBuildings() {
     for (int i = 0; i < NUM_CANNONS; i++) {
-        cannons.add(new Cannon((int)random(100, SCREEN_X-100), 550));
+        gameScene.cannons.add(new Cannon((int)random(100, SCREEN_X-100), 550));
     }
     
     for (int i = 0; i < NUM_CITIES; i++) {
-        cities.add(new City((int)random(30, SCREEN_X-30), 550));   
+        gameScene.cities.add(new City((int)random(30, SCREEN_X-30), 550));   
     }
 }
 
 void draw() {
     background(255);
     drawGround();
-    for (Cannon c : cannons) {
-        c.display();
-    }
     
-    for (City c : cities) {
-        c.display();   
-    }
+    gameScene.display();
     
     if ((int)random(0, 20) == 5) {
         Particle meteor = new Meteor((int)random(0, SCREEN_X), -100, random(-5f, 5f), 0f, random(0.1f, 0.5f));
+        
         particles.add(meteor);
+        gameScene.meteors.add((Meteor) meteor);
     }
 
 
@@ -63,32 +67,27 @@ void draw() {
         p.integrate(null);
 
         for (Particle otherP : particles) {
-            if (p.getClass().equals(CannonBall.class) && !otherP.getClass().equals(Missile.class)) {
+            if (p.getClass().equals(Missile.class)) {
                 Collision collision = p.checkCollision(otherP);
-                if (collision != null) collisions.add(collision);
+                if (collision != null) {
+                    collisions.add(collision);
+                    ((Missile)p).exploded = true;   
+                }
             }
         }
 
         p.display();
 
         if (p.position.y > GROUND_HEIGHT) {
-            explosions.add(new Explosion(p.position.x, p.position.y, p.radius));
+            gameScene.explosions.add(new Explosion(p.position.x, p.position.y, p.radius));
             particlesToRemove.add(p);
         }
-    }
-
-    for (Explosion explosion : explosions) {
-        explosion.display();
-        if (explosion.lifespan < 0) explosionsToRemove.add(explosion);
+        
+        if (p.getClass().equals(Missile.class) && ((Missile) p).lifespan <= 0) particlesToRemove.add(p);
     }
     
-    for (Particle p : particlesToRemove) {
-        particles.remove(p);   
-    }
-
     thread("cleanUp");
 
-    if (m != null) m.display();
 }
 
 
@@ -115,20 +114,24 @@ void drawGround() {
 void cleanUp() {
     for (Particle p : particlesToRemove) {
         particles.remove(p);
+        
+        if (p.getClass().equals(Missile.class)) gameScene.missiles.remove(p);
+        else if (p.getClass().equals(Meteor.class)) gameScene.meteors.remove(p);
     }
+    
     particlesToRemove.clear();
     
-    for (Explosion e : explosionsToRemove) {
-        explosions.remove(e);   
+    for (Iterator<Explosion> it = gameScene.explosions.iterator(); it.hasNext();) {
+        Explosion e = it.next();
+        if (e.lifespan <= 0) it.remove();
     }
-    explosionsToRemove.clear();
 }
 
 Cannon getClosestCannon(int posX, int posY) {
     Cannon closestCannon = null;
     float closestDistance = Integer.MAX_VALUE;
 
-    for (Cannon cannon : cannons) {
+    for (Cannon cannon : gameScene.cannons) {
         float distance = sqrt(sq(cannon.position.x - posX) + sq(cannon.position.y - posY));
         if (closestCannon == null || distance < closestDistance) {
             closestCannon = cannon;

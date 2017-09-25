@@ -8,22 +8,8 @@ public class City {
         position = new PVector(posX, posY);
         destroyed = false;
     }
-    
-    
-    
-    public void destroy() {
-        destroyed = true;   
-    }
-    
-    public void respawn() {
-        destroyed = false;   
-    }
-    
-    
-    
-    
+   
     public void display() {
-    
         if (!destroyed) {
             rectMode(CENTER);
             fill(color(0, 255, 0));

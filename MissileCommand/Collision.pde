@@ -9,7 +9,7 @@ public class Collision {
     public Collision(Particle p1, Particle p2) {
         this.p1 = p1;
         this.p2 = p2;
-        this.c = 0.999f;
+        this.c = 0.6f;
         
         this.contactNormal = PVector.sub(p2.position,  p1.position).normalize();
     }
@@ -20,9 +20,6 @@ public class Collision {
         float deltaVel = (-closingVel * c) - closingVel;
         
         float impulse = deltaVel / ((1f/p1.mass) + (1f/p2.mass));        
-        if (abs(closingVel) < 0.1f) {
-            impulse = impulse * 1000f;
-        }
         
         PVector impulsePerInverseMass = contactNormal.get().mult(impulse);
         
