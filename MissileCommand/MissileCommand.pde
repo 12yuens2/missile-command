@@ -75,6 +75,15 @@ void draw() {
                 }
             }
         }
+        
+        if (p.getClass().equals(Meteor.class)) {
+            for (City city : gameScene.cities) {
+                float destroyDistance = city.radius + p.radius;
+                PVector distanceBetween = PVector.sub(city.position, p.position);
+                
+                if (distanceBetween.mag() < destroyDistance) city.destroyed = true;
+            }
+        }
 
         p.display();
 
