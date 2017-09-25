@@ -19,19 +19,22 @@ public class Collision {
         
         float deltaVel = (-closingVel * c) - closingVel;
         
-        float impulse = deltaVel / ((1f/p1.mass) + (1f/p2.mass));
+        float impulse = deltaVel / ((1f/p1.mass) + (1f/p2.mass));        
+        if (abs(closingVel) < 0.1f) {
+            impulse = impulse * 1000f;
+        }
         
         PVector impulsePerInverseMass = contactNormal.get().mult(impulse);
         
         PVector p1Impulse = impulsePerInverseMass.get().mult((1f/p1.mass));
         PVector p2Impulse = impulsePerInverseMass.get().mult(-(1f/p2.mass));
         
-        if (PVector.dot(p1.velocity, p2.velocity) <= 0.1f) {
-            //p1.velocity.add(p1Impulse);
-            //p2.velocity.add(p2Impulse);
-            p1.integrate(p1Impulse.mult(1/2f));
-            p2.integrate(p2Impulse.mult(1/2f));
-        }
+        //if (PVector.dot(p1.velocity, p2.velocity) <= 0.1f) {
+            p1.velocity.add(p1Impulse);
+            p2.velocity.add(p2Impulse);
+            //p1.integrate(p1Impulse.mult(1/2f));
+            //p2.integrate(p2Impulse.mult(1/2f));
+        //}
     }
     
     public float calculateClosingVelocity() {

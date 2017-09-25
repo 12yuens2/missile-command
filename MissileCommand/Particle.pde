@@ -44,6 +44,12 @@ public abstract class Particle {
         return gravityForce;
     }
     
+    private PVector getDragForce() {
+        PVector velNormal = velocity.normalize();
+        
+        return null;
+    }
+    
     private void accelerate(PVector... forces) {
         float inverseMass = 1f/mass;
         PVector totalAcceleration = new PVector(0f, 0f);

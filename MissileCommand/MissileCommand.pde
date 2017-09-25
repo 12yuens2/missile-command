@@ -17,13 +17,17 @@ public ArrayList<Collision> collisions = new ArrayList<Collision>();
 public ArrayList<Explosion> explosions = new ArrayList<Explosion>();
 public Missile m;
 
+/* For clean up thread */
+public ArrayList<Particle> particlesToRemove = new ArrayList<Particle>();
+public ArrayList<Explosion> explosionsToRemove = new ArrayList<Explosion>();
+
 
 
 
 void setup() {
     size(800, 600);
     for (int i = 0; i < NUM_CANNONS; i++) {
-        cannons.add(new Cannon((int)random(100, SCREEN_X-100), 550));   
+        cannons.add(new Cannon((int)random(100, SCREEN_X-100), 550));
     }
 }
 
@@ -33,45 +37,43 @@ void draw() {
     for (Cannon c : cannons) {
         c.display();
     }
-    
+
     if ((int)random(0, 20) == 5) {
         Particle meteor = new Meteor((int)random(0, SCREEN_X), -100, random(-5f, 5f), 0f, random(0.1f, 0.5f));
         particles.add(meteor);
     }
-    
-    ArrayList<Particle> particlesToRemove = new ArrayList<Particle>();
-    
+
+
     for (Collision c : collisions) {
         c.resolveCollision();
     }
     collisions.clear();
-    
+
     for (Particle p : particles) {
         p.integrate(null);
-        
+
         for (Particle otherP : particles) {
             if (p.getClass().equals(CannonBall.class)) {
                 Collision collision = p.checkCollision(otherP);
                 if (collision != null) collisions.add(collision);
             }
         }
-        
+
         p.display();
-        
+
         if (p.position.y > GROUND_HEIGHT) {
             explosions.add(new Explosion(p.position.x, p.position.y, p.radius));
-            particlesToRemove.add(p);   
+            particlesToRemove.add(p);
         }
     }
-    
+
     for (Explosion explosion : explosions) {
-        explosion.display();   
+        explosion.display();
+        if (explosion.lifespan < 0) explosionsToRemove.add(explosion);
     }
-    
-    for (Particle p : particlesToRemove) {
-        particles.remove(p);   
-    }
-    
+
+    thread("cleanUp");
+
     if (m != null) m.display();
 }
 
@@ -79,10 +81,10 @@ void draw() {
 void mousePressed() {
     xStart = mouseX;
     yStart = mouseY;
-    
+
     Cannon cannon = getClosestCannon((int)xStart, (int)yStart);
     particles.add(cannon.shoot(new PVector(xStart, yStart)));
-    
+
     m = new Missile((int)cannon.position.x, (int)cannon.position.y, (int)xStart, (int)yStart);
 }
 
@@ -96,10 +98,22 @@ void drawGround() {
     endShape(CLOSE);
 }
 
+void cleanUp() {
+    for (Particle p : particlesToRemove) {
+        particles.remove(p);
+    }
+    particlesToRemove.clear();
+    
+    for (Explosion e : explosionsToRemove) {
+        explosions.remove(e);   
+    }
+    explosionsToRemove.clear();
+}
+
 Cannon getClosestCannon(int posX, int posY) {
     Cannon closestCannon = null;
     float closestDistance = Integer.MAX_VALUE;
-    
+
     for (Cannon cannon : cannons) {
         float distance = sqrt(sq(cannon.position.x - posX) + sq(cannon.position.y - posY));
         if (closestCannon == null || distance < closestDistance) {
@@ -107,6 +121,6 @@ Cannon getClosestCannon(int posX, int posY) {
             closestDistance = distance;
         }
     }
-    
+
     return closestCannon;
 }

@@ -19,7 +19,6 @@ public class Explosion {
             
             radius += 2f;
             lifespan--;   
-        }
-        
+        }   
     }
 }

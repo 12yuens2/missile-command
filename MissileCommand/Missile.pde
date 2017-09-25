@@ -23,9 +23,9 @@ public class Missile extends Particle {
             fill(col);
             rect(position.x, position.y, 20, 50);
             
-            System.out.println("bx: " + position.x + " , y: " + position.y);
+            //System.out.println("bx: " + position.x + " , y: " + position.y);
             position.add(velocity);
-            System.out.println("x: " + position.x + " , y: " + position.y);
+            //System.out.println("x: " + position.x + " , y: " + position.y);
             //System.out.println("velx: " + velocity.x + " , vely: " + velocity.y);
         }
     }
