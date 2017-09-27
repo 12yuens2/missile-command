@@ -6,7 +6,7 @@ import processing.core.PVector;
 
 public class Gravity extends ForceGenerator{
 
-	private static final PVector gravity = new PVector(0f, 0.1f);
+	private static final PVector gravity = new PVector(0f, 0.05f);
 	
 	@Override
 	public void updateForce(Particle particle) {

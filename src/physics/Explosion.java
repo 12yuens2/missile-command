@@ -10,17 +10,13 @@ public class Explosion extends Particle{
 	
 
     public int lifespan = EXPLOSION_LIFESPAN;
-	
-    public float radius;
     
     public Explosion(float posX, float posY, float startRadius) {
-        super(posX, posY, 0, 0);
-        this.radius = startRadius;
+        super(posX, posY, 0, 0, startRadius, 0);
     }
     
     public Explosion(PVector position, float radius) {
-		super(position.x, position.y, 0, 0);
-		this.radius = radius;
+		this(position.x, position.y, radius);
 	}
     
     public Explosive getForce() {

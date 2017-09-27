@@ -1,6 +1,5 @@
 package game;
 import objects.buildings.Cannon;
-import objects.particles.Meteor;
 import objects.particles.Missile;
 import processing.core.PApplet;
 
@@ -26,7 +25,7 @@ public class MissileCommand extends PApplet {
 	
 	public void setup() {
 	    gameEngine = new GameEngine(this);
-		frameRate(30);
+//		frameRate(10);
 	    spawnBuildings();
 	}
 
@@ -60,11 +59,11 @@ public class MissileCommand extends PApplet {
 	    Cannon cannon = gameEngine.getClosestCannon((int)xStart, (int)yStart);
 	    //particles.add(cannon.shoot(new PVector(xStart, yStart)));
 	    
-	    Meteor meteor = new Meteor((int)random(0, 800), -100, random(-5f, 5f), 0f, random(0.1f, 0.5f));
-	    gameEngine.meteors.add(meteor);
-	    gameEngine.physicsEngine.forceRegistry.register(meteor, gameEngine.gravity);
+//	    Meteor meteor = new Meteor((int)random(0, 800), -100, random(-5f, 5f), 0f, random(0.1f, 0.5f));
+//	    gameEngine.meteors.add(meteor);
+//	    gameEngine.physicsEngine.registerNewParticle(meteor);
 	    
-	    gameEngine.missiles.add(new Missile(this, (int)cannon.position.x, (int)cannon.position.y, (int)xStart, (int)yStart));
+	    gameEngine.missiles.add(new Missile(this, cannon.position.x, cannon.position.y, xStart, yStart));
 	}
 	
 }

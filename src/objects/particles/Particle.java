@@ -18,53 +18,30 @@ public abstract class Particle implements IDrawable {
 	
 	public PVector forceAccumulator;
 	
-    protected int col = 128;
+    public int col = 128;
     
-    public Particle(float xPos, float yPos, float xVel, float yVel) {
-        position = new PVector(xPos, yPos);
-        velocity = new PVector (xVel, yVel);
+    public Particle(float xPos, float yPos, float xVel, float yVel, float radius, float mass) {
+        this.position = new PVector(xPos, yPos);
+        this.velocity = new PVector (xVel, yVel);
+        this.radius = radius;
+        this.mass = mass;
         
         forceAccumulator = new PVector(0, 0);
     }
     
-    public void display(PApplet parent) {
-        float size = radius * 2;
-        
-        parent.ellipseMode(parent.CENTER);
-        parent.fill(col);
-        parent.ellipse(position.x, position.y, size, size);
-    }
+    public abstract Explosion destroy();
     
     public void integrate() {
-    
         position.add(velocity);
         
         PVector acceleration = forceAccumulator.copy();
         acceleration.mult(getInvMass());
-        
         
         velocity.add(acceleration);
         
         //reset accumulator
         forceAccumulator.set(0, 0);
     }
-    
-//    private void accelerate(PVector... forces) {
-//        float inverseMass = 1f/mass;
-//        PVector totalAcceleration = new PVector(0f, 0f);
-//        for (PVector force : forces) {
-//          if (force != null) {
-//            PVector acceleration = force.copy();
-//            
-//            acceleration = acceleration.mult(inverseMass);
-//            totalAcceleration.add(acceleration);
-//          }
-//        }
-//        
-//        velocity.add(totalAcceleration);
-//    }
-    
-    public abstract Explosion destroy();
     
     public Collision checkCollision(Particle collider) {
         float collideDistance = radius + collider.radius;
@@ -78,8 +55,7 @@ public abstract class Particle implements IDrawable {
     }
 
 	public void addForce(PVector force) {
-		forceAccumulator.add(force);
-		
+		forceAccumulator.add(force);	
 	}
 	
 	public float getInvMass() {

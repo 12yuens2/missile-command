@@ -7,7 +7,7 @@ import processing.core.PVector;
 
 public class Explosive extends ForceGenerator{
 
-	private static final int EXPLOSIVE_FORCE = 50;
+	private static final int EXPLOSIVE_FORCE = 2;
 	
 	public PVector position;
 	public float radius;

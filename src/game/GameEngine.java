@@ -29,8 +29,6 @@ public class GameEngine{
     public PhysEngine physicsEngine;
     public DrawEngine drawEngine;
     
-    public final Gravity gravity = new Gravity();
-    
     public ArrayList<Meteor> meteors;
     public ArrayList<Missile> missiles;
     public ArrayList<Explosion> explosions;
@@ -87,7 +85,7 @@ public class GameEngine{
     	if ((int)parent.random(0, 2) == 1) {
     	    Meteor meteor = new Meteor((int)parent.random(0, SCREEN_X), -100, parent.random(-5f, 5f), 0f, parent.random(0.1f, 0.5f));
     	    meteors.add(meteor);
-    	    physicsEngine.forceRegistry.register(meteor, gravity);
+    	    physicsEngine.registerNewParticle(meteor);
     	}
     }
 
