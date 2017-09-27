@@ -1,3 +1,5 @@
+package physics;
+import objects.particles.Particle;
 import processing.core.PVector;
 
 public class Collision {

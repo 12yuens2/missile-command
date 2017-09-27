@@ -1,23 +1,29 @@
+package objects.particles;
+
 import processing.core.PVector;
+import physics.Collision;
+import physics.Explosion;
 import processing.core.PApplet;
-
-
-
-
 
 public abstract class Particle {
 
 	public static final PVector GRAVITY = new PVector(0, 0.1f);
     public static final float DAMPING = 0.995f;
   
-    protected float radius;
-    protected float mass;
-    protected PVector position, velocity;
+    public float radius;
+    public float mass;
+    public PVector position;
+	public PVector velocity;
+	
+	private PVector forceAccumulator;
+	
     protected int col = 128;
     
     public Particle(int xPos, int yPos, float xVel, float yVel) {
         position = new PVector(xPos, yPos);
         velocity = new PVector (xVel, yVel);
+        
+        forceAccumulator = new PVector(0, 0);
     }
     
     public void display(PApplet parent) {
@@ -79,6 +85,11 @@ public abstract class Particle {
         
         return null;
     }
+
+	public void addForce(PVector force) {
+		forceAccumulator.add(force);
+		
+	}
 
   
 }

@@ -1,5 +1,11 @@
+package game;
 import java.util.ArrayList;
 
+import objects.Cannon;
+import objects.City;
+import objects.particles.Meteor;
+import objects.particles.Missile;
+import physics.Explosion;
 import processing.core.PApplet;
 
 public class DrawEngine {

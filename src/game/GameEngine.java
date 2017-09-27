@@ -1,6 +1,14 @@
+package game;
 import java.util.Iterator;
 import java.util.function.Function;
 
+import objects.Cannon;
+import objects.City;
+import objects.particles.Meteor;
+import objects.particles.Missile;
+import objects.particles.Particle;
+import physics.Explosion;
+import physics.PhysEngine;
 import processing.core.PApplet;
 
 import java.util.ArrayList;

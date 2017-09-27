@@ -1,9 +1,12 @@
+package game;
+import objects.Cannon;
+import objects.particles.Missile;
 import processing.core.PApplet;
 
 public class MissileCommand extends PApplet {
 	
 	public static void main(String[] args) {
-		PApplet.main("MissileCommand");
+		PApplet.main("game.MissileCommand");
 	}
 	
 

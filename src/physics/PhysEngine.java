@@ -1,15 +1,20 @@
+package physics;
 import java.util.ArrayList;
 
+import objects.particles.Meteor;
+import objects.particles.Missile;
+import physics.forces.ForceRegistry;
+
 public class PhysEngine {
- 
 
     public ArrayList<Collision> collisions;
+    
+    public ForceRegistry forceRegistry;
 
     public PhysEngine() {
-        collisions = new ArrayList<Collision>();
-        
+    	forceRegistry = new ForceRegistry();
+        collisions = new ArrayList<Collision>();        
     }
-
 
     public void step(ArrayList<Meteor> meteors, ArrayList<Missile> missiles, ArrayList<Explosion> explosions) {
         resolveCollisions();

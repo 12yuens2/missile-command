@@ -1,3 +1,6 @@
+package objects.particles;
+import physics.Explosion;
+
 public class CannonBall extends Particle {
 
     public static final int CANNONBALL_RADIUS = 50;

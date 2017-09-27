@@ -1,3 +1,6 @@
+package objects;
+import objects.particles.CannonBall;
+import objects.particles.Particle;
 import processing.core.PApplet;
 import processing.core.PVector;
 

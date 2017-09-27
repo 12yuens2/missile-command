@@ -1,3 +1,6 @@
+package objects.particles;
+
+import physics.Explosion;
 import processing.core.PApplet;
 import processing.core.PVector;
 
@@ -27,8 +30,7 @@ public class Missile extends Particle {
         
         if (PVector.sub(destinationPos, position).mag() < 1f || exploded) {
             if (lifespan > 0) {
-                super.display(parent);
-                lifespan--;
+                exploded = true;
             }
         } else {
             parent.ellipseMode(parent.CENTER);

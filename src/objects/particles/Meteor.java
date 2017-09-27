@@ -1,3 +1,6 @@
+package objects.particles;
+import physics.Explosion;
+
 public class Meteor extends Particle {
     
     public static final int METEOR_RADIUS = 10;
