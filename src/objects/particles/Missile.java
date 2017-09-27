@@ -6,7 +6,7 @@ import processing.core.PVector;
 
 public class Missile extends Particle {
 
-    private int lifespan = 60;
+//    private int lifespan = 60;
     public PVector destinationPos;
     public boolean exploded = false;
     
@@ -15,39 +15,37 @@ public class Missile extends Particle {
        this.velocity = new PVector((destX - xPos)/10f, (destY - yPos)/10f);
        
        this.mass = 2;
-       this.radius = 30;
+       this.radius = 10;
        this.col = parent.color(255, 0, 0);
        
        this.destinationPos = new PVector(destX, destY);
     }
     
-    @Override
-    public void integrate(PVector force) {
-        //do nothing
+    public Missile(PVector position, float radius) {
+    	super(0, 0, 0, 0);
+		this.position = position;
+		this.radius = radius;
+	}
+
+	@Override
+    public void integrate() {
+		position.add(velocity);    
     }
     
     public void display(PApplet parent) {
-        
         if (PVector.sub(destinationPos, position).mag() < 1f || exploded) {
-            if (lifespan > 0) {
-                exploded = true;
-            }
+        	exploded = true;
         } else {
             parent.ellipseMode(parent.CENTER);
             parent.fill(col);
-            parent.ellipse(position.x, position.y, 10, 10);
-            
-            //System.out.println("bx: " + position.x + " , y: " + position.y);
-            position.add(velocity);
-            //System.out.println("x: " + position.x + " , y: " + position.y);
-            //System.out.println("velx: " + velocity.x + " , vely: " + velocity.y);
-
+            parent.ellipse(position.x, position.y, radius*2, radius*2);
         }
     }
 
 	@Override
 	public Explosion destroy() {
-		return new Explosion(position.x, position.y, radius);
+		exploded = true;
+		return new Explosion(position, radius);
 	}
     
     

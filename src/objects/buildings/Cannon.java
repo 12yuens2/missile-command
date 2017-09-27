@@ -1,12 +1,10 @@
-package objects;
+package objects.buildings;
 import objects.particles.CannonBall;
 import objects.particles.Particle;
 import processing.core.PApplet;
 import processing.core.PVector;
 
-public class Cannon {
-	
-    public PVector position;
+public class Cannon extends Building {
     
     public Cannon(PApplet parent, int posX, int posY) {
         position = new PVector(posX, posY);
@@ -26,7 +24,7 @@ public class Cannon {
         
         Particle bullet = new CannonBall((int)position.x, (int)position.y, 0f, 0f);
 
-        bullet.integrate(shotForce);
+        bullet.integrate();
         
         return bullet;
     }

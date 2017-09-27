@@ -2,13 +2,14 @@ package game;
 import java.util.Iterator;
 import java.util.function.Function;
 
-import objects.Cannon;
-import objects.City;
+import objects.buildings.Cannon;
+import objects.buildings.City;
 import objects.particles.Meteor;
 import objects.particles.Missile;
 import objects.particles.Particle;
 import physics.Explosion;
 import physics.PhysEngine;
+import physics.forces.impl.Gravity;
 import processing.core.PApplet;
 
 import java.util.ArrayList;
@@ -27,6 +28,8 @@ public class GameEngine{
 	
     public PhysEngine physicsEngine;
     public DrawEngine drawEngine;
+    
+    public final Gravity gravity = new Gravity();
     
     public ArrayList<Meteor> meteors;
     public ArrayList<Missile> missiles;
@@ -64,22 +67,27 @@ public class GameEngine{
 	    for (int i = 0; i < NUM_CITIES; i++) {
 	        cities.add(new City((int)parent.random(30, SCREEN_X-30), 550));   
 	    }	
-    
     }
+    
+    
+    
 
     public void step() {
 	    spawnMeteors();
-        physicsEngine.step(meteors, missiles, explosions);
+	    
 	    destroy(m -> m.position.y > GROUND_HEIGHT, meteors.iterator());
 	    destroy(m -> m.exploded == true, missiles.iterator());
-
+	    destroy(e -> e.lifespan < 0, explosions.iterator());
+	    
+        physicsEngine.step(meteors, missiles, explosions);
         drawEngine.display(meteors, missiles, explosions, cities, cannons);
     }
 
     private void spawnMeteors() {
-    	if ((int)parent.random(0, 20) == 5) {
+    	if ((int)parent.random(0, 2) == 1) {
     	    Meteor meteor = new Meteor((int)parent.random(0, SCREEN_X), -100, parent.random(-5f, 5f), 0f, parent.random(0.1f, 0.5f));
     	    meteors.add(meteor);
+    	    physicsEngine.forceRegistry.register(meteor, gravity);
     	}
     }
 

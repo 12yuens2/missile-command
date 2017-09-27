@@ -1,11 +1,12 @@
 package game;
 import java.util.ArrayList;
 
-import objects.Cannon;
-import objects.City;
+import objects.buildings.Cannon;
+import objects.buildings.City;
 import objects.particles.Meteor;
 import objects.particles.Missile;
 import physics.Explosion;
+import physics.forces.impl.Explosive;
 import processing.core.PApplet;
 
 public class DrawEngine {
@@ -17,16 +18,16 @@ public class DrawEngine {
     }
     
     
-    public void display(ArrayList<Meteor> meteors, ArrayList<Missile> missiles, ArrayList<Explosion> explosions, ArrayList<City> cities, ArrayList<Cannon> cannons) {
+    public void display(ArrayList<? extends IDrawable>... drawObjects) {
         parent.background(255);
         drawGround();
         
-        for (Meteor m : meteors) m.display(parent);
-        for (Missile m : missiles) m.display(parent);
-        for (Explosion e : explosions) e.display(parent);
+        for (ArrayList<? extends IDrawable> drawList : drawObjects) {
+        	for (IDrawable drawable : drawList) {
+        		drawable.display(parent);
+        	}
+        }
         
-        for (City c : cities) c.display(parent);
-        for (Cannon c : cannons) c.display(parent);
     }
     
     private  void drawGround() {

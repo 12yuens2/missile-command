@@ -1,13 +1,9 @@
-package objects;
+package objects.buildings;
 import processing.core.PApplet;
 import processing.core.PVector;
 
-public class City {
+public class City extends Building{
  
-	
-    public PVector position;
-    public boolean destroyed;
-    
     float radius = 10;
     
     public City(int posX, int posY) {

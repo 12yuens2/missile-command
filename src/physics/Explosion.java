@@ -1,22 +1,34 @@
 package physics;
+import objects.particles.Particle;
+import physics.forces.impl.Explosive;
 import processing.core.PApplet;
 import processing.core.PVector;
 
-public class Explosion {
+public class Explosion extends Particle{
     
 	public static final int EXPLOSION_LIFESPAN = 15;
 	
-    private float radius;
-    private int lifespan = EXPLOSION_LIFESPAN;
-    private PVector position;
+
+    public int lifespan = EXPLOSION_LIFESPAN;
+	
+    public float radius;
     
     public Explosion(float posX, float posY, float startRadius) {
-        this.position = new PVector(posX, posY);
+        super(posX, posY, 0, 0);
         this.radius = startRadius;
     }
     
-    public void display(PApplet parent) {
-        if (lifespan > 0) {
+    public Explosion(PVector position, float radius) {
+		super(position.x, position.y, 0, 0);
+		this.radius = radius;
+	}
+    
+    public Explosive getForce() {
+    	return new Explosive(position, radius);
+    }
+
+	public void display(PApplet parent) {
+        if (lifespan >= 0) {
             parent.ellipseMode(parent.CENTER);
             parent.fill(255, 127, 80);
             parent.ellipse(position.x, position.y, radius, radius);
@@ -25,4 +37,10 @@ public class Explosion {
             lifespan--;   
         }   
     }
+
+	@Override
+	public Explosion destroy() {
+		/* Do not create new explosion when an Explosion is destroyed */
+		return null;
+	}
 }

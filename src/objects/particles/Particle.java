@@ -1,11 +1,12 @@
 package objects.particles;
 
 import processing.core.PVector;
+import game.IDrawable;
 import physics.Collision;
 import physics.Explosion;
 import processing.core.PApplet;
 
-public abstract class Particle {
+public abstract class Particle implements IDrawable {
 
 	public static final PVector GRAVITY = new PVector(0, 0.1f);
     public static final float DAMPING = 0.995f;
@@ -15,11 +16,11 @@ public abstract class Particle {
     public PVector position;
 	public PVector velocity;
 	
-	private PVector forceAccumulator;
+	public PVector forceAccumulator;
 	
     protected int col = 128;
     
-    public Particle(int xPos, int yPos, float xVel, float yVel) {
+    public Particle(float xPos, float yPos, float xVel, float yVel) {
         position = new PVector(xPos, yPos);
         velocity = new PVector (xVel, yVel);
         
@@ -34,44 +35,34 @@ public abstract class Particle {
         parent.ellipse(position.x, position.y, size, size);
     }
     
-    public void integrate(PVector force) {
+    public void integrate() {
     
         position.add(velocity);
         
-        accelerate(getGravityForce(), force);
+        PVector acceleration = forceAccumulator.copy();
+        acceleration.mult(getInvMass());
         
-        velocity.mult(DAMPING);
+        
+        velocity.add(acceleration);
+        
+        //reset accumulator
+        forceAccumulator.set(0, 0);
     }
     
-    private PVector getGravityForce() {
-        PVector gravityForce = GRAVITY.get();   
-        gravityForce.mult(this.mass);
-        
-        return gravityForce;
-    }
-    
-    
-    //TODO
-    private PVector getDragForce() {
-        PVector velNormal = velocity.normalize();
-        
-        return null;
-    }
-    
-    private void accelerate(PVector... forces) {
-        float inverseMass = 1f/mass;
-        PVector totalAcceleration = new PVector(0f, 0f);
-        for (PVector force : forces) {
-          if (force != null) {
-            PVector acceleration = force.copy();
-            
-            acceleration = acceleration.mult(inverseMass);
-            totalAcceleration.add(acceleration);
-          }
-        }
-        
-        velocity.add(totalAcceleration);
-    }
+//    private void accelerate(PVector... forces) {
+//        float inverseMass = 1f/mass;
+//        PVector totalAcceleration = new PVector(0f, 0f);
+//        for (PVector force : forces) {
+//          if (force != null) {
+//            PVector acceleration = force.copy();
+//            
+//            acceleration = acceleration.mult(inverseMass);
+//            totalAcceleration.add(acceleration);
+//          }
+//        }
+//        
+//        velocity.add(totalAcceleration);
+//    }
     
     public abstract Explosion destroy();
     
@@ -89,6 +80,10 @@ public abstract class Particle {
 	public void addForce(PVector force) {
 		forceAccumulator.add(force);
 		
+	}
+	
+	public float getInvMass() {
+		return (1f/mass);
 	}
 
   
