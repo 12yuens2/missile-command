@@ -4,9 +4,11 @@ import java.util.function.Function;
 
 import objects.buildings.Cannon;
 import objects.buildings.City;
+import objects.particles.BlackHoleMissile;
 import objects.particles.Meteor;
 import objects.particles.Missile;
 import objects.particles.Particle;
+import physics.BlackHole;
 import physics.Explosion;
 import physics.PhysEngine;
 import physics.forces.impl.Gravity;
@@ -32,9 +34,13 @@ public class GameEngine{
     public ArrayList<Meteor> meteors;
     public ArrayList<Missile> missiles;
     public ArrayList<Explosion> explosions;
-
+    
+	public ArrayList<BlackHoleMissile> blackMissiles;
+	public ArrayList<BlackHole> blackholes;
+	
     public ArrayList<City> cities;
     public ArrayList<Cannon> cannons;
+
 
     
     public GameEngine(PApplet parent) {
@@ -52,6 +58,9 @@ public class GameEngine{
     	missiles = new ArrayList<Missile>();
     	explosions = new ArrayList<Explosion>();
     
+    	blackMissiles = new ArrayList<BlackHoleMissile>();
+    	blackholes = new ArrayList<BlackHole>();
+    	
     	cities = new ArrayList<City>();
 	    cannons = new ArrayList<Cannon>();
     }
@@ -72,9 +81,9 @@ public class GameEngine{
     public void step() {
 	    spawnMeteors();
 
-        drawEngine.display(meteors, missiles, explosions, cities, cannons);
+        drawEngine.display(meteors, missiles, blackMissiles, blackholes, explosions, cities, cannons);
 
-        physicsEngine.step(meteors, missiles, explosions);
+        physicsEngine.step(meteors, missiles, blackMissiles, blackholes, explosions);
 	    
 	    destroyObjects();
 	    
@@ -94,7 +103,10 @@ public class GameEngine{
 	    destroy(m -> m.destroyed == true, missiles.iterator());
 	    destroy(e -> e.lifespan <= 0, explosions.iterator());
 	    
+	    remove(bhm -> bhm.destroyed == true, blackMissiles.iterator());
+	    remove(bh -> bh.lifespan <= 0, blackholes.iterator());
 	    remove(m -> (m.position.x + m.radius < 0 || m.position.x - m.radius > SCREEN_X), meteors.iterator());
+
     }
 
     private <T extends Particle> void destroy(Function<T, Boolean> filter, Iterator<T> it) {
@@ -114,6 +126,8 @@ public class GameEngine{
     		if (filter.apply(object)) it.remove();
     	}
     }
+    
+    
 
 	public Cannon getClosestCannon(int posX, int posY) {
     	Cannon closestCannon = null;

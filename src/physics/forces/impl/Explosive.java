@@ -16,7 +16,7 @@ public class Explosive extends ForceGenerator{
 		this.position = position;
 		this.radius = radius;
 		
-		this.lifespan = Explosion.EXPLOSION_LIFESPAN;
+		this.lifespan = Explosion.EXPLOSION_LIFESPAN/2;
 	}
 	
 	public Explosive(PVector position, float radius, int lifespan) {

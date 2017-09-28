@@ -1,6 +1,7 @@
 package physics;
 import java.util.ArrayList;
 
+import objects.particles.BlackHoleMissile;
 import objects.particles.Meteor;
 import objects.particles.Missile;
 import objects.particles.Particle;
@@ -31,12 +32,20 @@ public class PhysEngine {
 
     }
 
-    public void step(ArrayList<Meteor> meteors, ArrayList<Missile> missiles, ArrayList<Explosion> explosions) {
+    public void step(ArrayList<Meteor> meteors, ArrayList<Missile> missiles, ArrayList<BlackHoleMissile> blackMissiles, ArrayList<BlackHole> blackholes, ArrayList<Explosion> explosions) {
     	forceRegistry.updateForces();
         resolveCollisions();
 
         
         for (Meteor m : meteors) m.integrate();
+        for (BlackHoleMissile bhm : blackMissiles) {
+        	if (bhm.destroyed) {
+        		blackholes.add(new BlackHole(bhm.position));
+        	}
+        	else {
+        		bhm.integrate();
+        	}
+        }
         
         for (Missile m : missiles) {
             m.integrate();
