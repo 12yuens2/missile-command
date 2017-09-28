@@ -5,7 +5,7 @@ import processing.core.PApplet;
 
 public class Meteor extends Particle {
     
-    public static final int METEOR_RADIUS = 20;
+    public static final int METEOR_RADIUS = 5;
     
     public Meteor(int xPos, int yPos, float xVel, float yVel, float mass) {
         super(xPos, yPos, xVel, yVel, METEOR_RADIUS, mass);

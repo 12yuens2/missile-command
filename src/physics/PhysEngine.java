@@ -37,7 +37,14 @@ public class PhysEngine {
         resolveCollisions();
 
         
-        for (Meteor m : meteors) m.integrate();
+        for (Meteor m : meteors) {
+        	m.integrate();
+        	
+        	for (BlackHole bh : blackholes) {
+        		forceRegistry.register(m, bh.attractionForce);
+        	}
+        }
+        
         for (BlackHoleMissile bhm : blackMissiles) {
         	if (bhm.destroyed) {
         		blackholes.add(new BlackHole(bhm.position));

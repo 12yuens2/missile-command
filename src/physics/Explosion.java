@@ -6,7 +6,7 @@ import processing.core.PVector;
 
 public class Explosion extends Particle{
     
-	public static final int EXPLOSION_LIFESPAN = 40;
+	public static final int EXPLOSION_LIFESPAN = 20;
 	
 
     public int lifespan = EXPLOSION_LIFESPAN;
@@ -29,7 +29,7 @@ public class Explosion extends Particle{
             parent.fill(255, 127, 80, 200);
             parent.ellipse(position.x, position.y, radius, radius);
             
-            radius += 2.5f;
+            radius += 2;
             lifespan--;   
         }   
     }

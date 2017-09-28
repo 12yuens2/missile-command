@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import objects.particles.Particle;
+import physics.forces.impl.Attraction;
 
 
 public class ForceRegistry {
@@ -23,7 +24,9 @@ public class ForceRegistry {
 			ForceRegistration fr = it.next();
 			Particle p = fr.particle;
 			
-			if (p.destroyed || fr.forceGenerator.lifespan < 0) it.remove();
+			if (p.destroyed || fr.forceGenerator.lifespan <= 0) {
+				it.remove();
+			}
 			else fr.forceGenerator.updateForce(p);
 		}	
 	}

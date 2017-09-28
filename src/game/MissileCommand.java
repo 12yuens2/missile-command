@@ -29,7 +29,7 @@ public class MissileCommand extends PApplet {
 	
 	public void setup() {
 	    gameEngine = new GameEngine(this);
-//		frameRate(60);
+//		frameRate(10);
 	    spawnBuildings();
 	}
 

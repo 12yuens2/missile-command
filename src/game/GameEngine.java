@@ -91,7 +91,7 @@ public class GameEngine{
     }
 
     private void spawnMeteors() {
-    	if ((int)parent.random(0, 15) == 1) {
+    	if ((int)parent.random(0, 2) == 1) {
     	    Meteor meteor = new Meteor((int)parent.random(0, SCREEN_X), -100, parent.random(-5f, 5f), 0f, parent.random(0.1f, 0.5f));
     	    meteors.add(meteor);
     	    physicsEngine.registerNewParticle(meteor);
@@ -106,6 +106,10 @@ public class GameEngine{
 	    remove(bhm -> bhm.destroyed == true, blackMissiles.iterator());
 	    remove(bh -> bh.lifespan <= 0, blackholes.iterator());
 	    remove(m -> (m.position.x + m.radius < 0 || m.position.x - m.radius > SCREEN_X), meteors.iterator());
+	    
+	    for (BlackHole bh : blackholes) {
+	    	remove(m -> m.checkCollision(bh) != null, meteors.iterator());
+	    }
 
     }
 
