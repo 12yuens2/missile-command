@@ -5,7 +5,7 @@ import processing.core.PApplet;
 
 public class Meteor extends Particle {
     
-    public static final int METEOR_RADIUS = 10;
+    public static final int METEOR_RADIUS = 20;
     
     public Meteor(int xPos, int yPos, float xVel, float yVel, float mass) {
         super(xPos, yPos, xVel, yVel, METEOR_RADIUS, mass);
@@ -22,6 +22,7 @@ public class Meteor extends Particle {
 
 	@Override
 	public Explosion destroy() {
+		destroyed = true;
 		position.y = GameEngine.GROUND_HEIGHT;
 		return new Explosion(position, radius);
 	}

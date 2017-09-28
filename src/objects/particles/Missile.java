@@ -7,19 +7,20 @@ import processing.core.PVector;
 public class Missile extends Particle {
 
 	public static final int MISSILE_MASS = 2;
-	public static final int MISSILE_RADIUS = 40;
+	public static final int MISSILE_RADIUS = 10;
 	public static final float MISSILE_SPEED_MULT = 20f;
 	
+	private static final float DETECT_RANGE = 10f;
+	
     public PVector destinationPos;
-    public boolean exploded;
     
     public Missile(PApplet parent, float xPos, float yPos, float destX, float destY) {
-    	super(xPos, yPos, (destX - xPos)/MISSILE_SPEED_MULT, (destY - yPos)/MISSILE_SPEED_MULT, MISSILE_RADIUS, MISSILE_MASS);
-		   
+    	super(xPos, yPos, 0, 0, MISSILE_RADIUS, MISSILE_MASS);
+		this.velocity = new PVector((destX - xPos), (destY - yPos)).normalize().mult(MISSILE_SPEED_MULT);
+    	
 		this.col = parent.color(255, 0, 0);
 		   
 		this.destinationPos = new PVector(destX, destY);
-		this.exploded = false;
     }
 
 	@Override
@@ -28,8 +29,8 @@ public class Missile extends Particle {
     }
     
     public void display(PApplet parent) {
-        if (PVector.sub(destinationPos, position).mag() < 1f || exploded) {
-        	exploded = true;
+        if (PVector.sub(destinationPos, position).mag() < DETECT_RANGE || destroyed) {
+        	destroyed = true;
         } else {
             parent.ellipseMode(parent.CENTER);
             parent.fill(col);
@@ -39,7 +40,7 @@ public class Missile extends Particle {
 
 	@Override
 	public Explosion destroy() {
-		exploded = true;
+		destroyed = true;
 		return new Explosion(position, radius);
 	}
     

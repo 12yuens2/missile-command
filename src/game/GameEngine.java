@@ -71,22 +71,31 @@ public class GameEngine{
     
 
     public void step() {
+    	System.out.println(parent.frameRate);
 	    spawnMeteors();
-	    
-	    destroy(m -> m.position.y > GROUND_HEIGHT, meteors.iterator());
-	    destroy(m -> m.exploded == true, missiles.iterator());
-	    destroy(e -> e.lifespan < 0, explosions.iterator());
-	    
-        physicsEngine.step(meteors, missiles, explosions);
+
         drawEngine.display(meteors, missiles, explosions, cities, cannons);
+        physicsEngine.step(meteors, missiles, explosions);
+	    
+	    destroyObjects();
+	    
+
     }
 
     private void spawnMeteors() {
-    	if ((int)parent.random(0, 2) == 1) {
+    	if ((int)parent.random(0, 15) == 1) {
     	    Meteor meteor = new Meteor((int)parent.random(0, SCREEN_X), -100, parent.random(-5f, 5f), 0f, parent.random(0.1f, 0.5f));
     	    meteors.add(meteor);
     	    physicsEngine.registerNewParticle(meteor);
     	}
+    }
+    
+    private void destroyObjects() {
+	    destroy(m -> (m.position.y > GROUND_HEIGHT), meteors.iterator());
+	    destroy(m -> m.destroyed == true, missiles.iterator());
+	    destroy(e -> e.lifespan <= 0, explosions.iterator());
+	    
+	    remove(m -> (m.position.x + m.radius < 0 || m.position.x - m.radius > SCREEN_X), meteors.iterator());
     }
 
     private <T extends Particle> void destroy(Function<T, Boolean> filter, Iterator<T> it) {
@@ -99,6 +108,13 @@ public class GameEngine{
     	    }
     	}
     }
+    
+    private <T extends IDrawable> void remove(Function<T, Boolean> filter, Iterator<T> it) {
+    	while (it.hasNext()) {
+    		T object = it.next();
+    		if (filter.apply(object)) it.remove();
+    	}
+    }
 
 	public Cannon getClosestCannon(int posX, int posY) {
     	Cannon closestCannon = null;
@@ -107,8 +123,8 @@ public class GameEngine{
     	for (Cannon cannon : cannons) {
     	    float distance = PApplet.sqrt(PApplet.sq(cannon.position.x - posX) + PApplet.sq(cannon.position.y - posY));
     	    if (closestCannon == null || distance < closestDistance) {
-    		closestCannon = cannon;
-    		closestDistance = distance;
+	    		closestCannon = cannon;
+	    		closestDistance = distance;
     	    }
     	}
     

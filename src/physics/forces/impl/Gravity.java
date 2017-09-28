@@ -8,6 +8,10 @@ public class Gravity extends ForceGenerator{
 
 	private static final PVector gravity = new PVector(0f, 0.05f);
 	
+	public Gravity() {
+		this.lifespan = 1;
+	}
+	
 	@Override
 	public void updateForce(Particle particle) {
 		PVector resultingForce = gravity.copy().mult(particle.mass);

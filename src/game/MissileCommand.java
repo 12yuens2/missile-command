@@ -1,4 +1,5 @@
 package game;
+import objects.Crosshair;
 import objects.buildings.Cannon;
 import objects.particles.Missile;
 import processing.core.PApplet;
@@ -25,7 +26,7 @@ public class MissileCommand extends PApplet {
 	
 	public void setup() {
 	    gameEngine = new GameEngine(this);
-//		frameRate(10);
+		frameRate(120);
 	    spawnBuildings();
 	}
 
@@ -35,6 +36,10 @@ public class MissileCommand extends PApplet {
 	
 	public void draw() {
 		gameEngine.step();
+		
+		
+		Crosshair crosshair = new Crosshair();
+		crosshair.display(this);
     
     
     //    if (p.getClass().equals(Meteor.class)) {

@@ -11,6 +11,8 @@ public abstract class Particle implements IDrawable {
 	public static final PVector GRAVITY = new PVector(0, 0.1f);
     public static final float DAMPING = 0.995f;
   
+    public boolean destroyed;
+    
     public float radius;
     public float mass;
     public PVector position;
@@ -25,6 +27,7 @@ public abstract class Particle implements IDrawable {
         this.velocity = new PVector (xVel, yVel);
         this.radius = radius;
         this.mass = mass;
+        this.destroyed = false;
         
         forceAccumulator = new PVector(0, 0);
     }
@@ -47,7 +50,9 @@ public abstract class Particle implements IDrawable {
         float collideDistance = radius + collider.radius;
         PVector distanceBetween = PVector.sub(position, collider.position);
         
-        if (distanceBetween.mag() < collideDistance && collider.getClass() != this.getClass()) {
+        float distance = PVector.dist(position, collider.position);
+        
+        if (distance < collideDistance && collider.getClass() != this.getClass()) {
             return new Collision(this, collider);
         }
         

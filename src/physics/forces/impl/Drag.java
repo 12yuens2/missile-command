@@ -11,6 +11,8 @@ public class Drag extends ForceGenerator{
 	public Drag(float k1, float k2) {
 		this.k1 = k1;
 		this.k2 = k2;
+		
+		this.lifespan = 1;
 	}
 	
 	@Override

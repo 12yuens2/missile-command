@@ -12,8 +12,8 @@ import physics.forces.ForceRegistry;
 
 public class PhysEngine {
 
-	public static final float dragk1 = 0.1f;
-	public static final float dragk2 = 0.1f;
+	public static final float dragk1 = 0.001f;
+	public static final float dragk2 = 0.0001f;
 	
     public ArrayList<Collision> collisions;
     
@@ -34,6 +34,7 @@ public class PhysEngine {
     public void step(ArrayList<Meteor> meteors, ArrayList<Missile> missiles, ArrayList<Explosion> explosions) {
     	forceRegistry.updateForces();
         resolveCollisions();
+
         
         for (Meteor m : meteors) m.integrate();
         
@@ -42,13 +43,10 @@ public class PhysEngine {
             
             for (Meteor me : meteors) {
                 Collision collision = m.checkCollision(me);
-                if (collision != null) {
-                	Explosion ex = m.destroy();
-    	    		forceRegistry.register(me, ex.getForce());
-                    explosions.add(ex);
-                }
+                if (collision != null) explosions.add(m.destroy());
             }
         }
+        
         
         for (Explosion e : explosions) {
         	for (Meteor me : meteors) {
@@ -57,7 +55,6 @@ public class PhysEngine {
         			forceRegistry.register(me, e.getForce());
         		}
         	}
-        	
         }
     }
     
@@ -69,7 +66,7 @@ public class PhysEngine {
 
 	public void registerNewParticle(Particle p) {
 		forceRegistry.register(p, gravity);
-//		forceRegistry.register(p, drag);
+		forceRegistry.register(p, drag);
 		
 	}
 }

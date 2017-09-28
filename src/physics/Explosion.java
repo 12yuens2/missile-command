@@ -6,7 +6,7 @@ import processing.core.PVector;
 
 public class Explosion extends Particle{
     
-	public static final int EXPLOSION_LIFESPAN = 15;
+	public static final int EXPLOSION_LIFESPAN = 40;
 	
 
     public int lifespan = EXPLOSION_LIFESPAN;
@@ -26,7 +26,7 @@ public class Explosion extends Particle{
 	public void display(PApplet parent) {
         if (lifespan >= 0) {
             parent.ellipseMode(parent.CENTER);
-            parent.fill(255, 127, 80);
+            parent.fill(255, 127, 80, 200);
             parent.ellipse(position.x, position.y, radius, radius);
             
             radius += 2.5f;

@@ -1,6 +1,7 @@
 package physics.forces;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import objects.particles.Particle;
 
@@ -18,9 +19,13 @@ public class ForceRegistry {
 	}
 	
 	public void updateForces() {
-		for (ForceRegistration fr : registrations) {
-			fr.forceGenerator.updateForce(fr.particle);
-		}		
+		for (Iterator<ForceRegistration> it = registrations.iterator(); it.hasNext();) {
+			ForceRegistration fr = it.next();
+			Particle p = fr.particle;
+			
+			if (p.destroyed || fr.forceGenerator.lifespan < 0) it.remove();
+			else fr.forceGenerator.updateForce(p);
+		}	
 	}
 	
 	public void clear() {

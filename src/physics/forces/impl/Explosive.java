@@ -1,8 +1,8 @@
 package physics.forces.impl;
 
 import objects.particles.Particle;
+import physics.Explosion;
 import physics.forces.ForceGenerator;
-import processing.core.PApplet;
 import processing.core.PVector;
 
 public class Explosive extends ForceGenerator{
@@ -15,11 +15,13 @@ public class Explosive extends ForceGenerator{
 	public Explosive(PVector position, float radius) {
 		this.position = position;
 		this.radius = radius;
+		
+		this.lifespan = Explosion.EXPLOSION_LIFESPAN;
 	}
 	
 	@Override
 	public void updateForce(Particle particle) {
-		
+		lifespan--;
 		if (PVector.dist(particle.position, position) < radius + particle.radius) {
 			PVector impulseDirection = PVector.sub(position, particle.position).mult(-1);
 			float impulseMag = EXPLOSIVE_FORCE * (1f/impulseDirection.mag()) * (1f/impulseDirection.mag());
