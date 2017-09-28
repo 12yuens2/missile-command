@@ -41,7 +41,7 @@ public abstract class Particle implements IDrawable {
         acceleration.mult(getInvMass());
         
         velocity.add(acceleration);
-        
+
         //reset accumulator
         forceAccumulator.set(0, 0);
     }

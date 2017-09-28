@@ -7,7 +7,7 @@ import processing.core.PVector;
 
 public class Explosive extends ForceGenerator{
 
-	private static final int EXPLOSIVE_FORCE = 2;
+	private static final float EXPLOSIVE_FORCE = 0.9f;
 	
 	public PVector position;
 	public float radius;
@@ -17,6 +17,11 @@ public class Explosive extends ForceGenerator{
 		this.radius = radius;
 		
 		this.lifespan = Explosion.EXPLOSION_LIFESPAN;
+	}
+	
+	public Explosive(PVector position, float radius, int lifespan) {
+		this(position, radius);
+		this.lifespan = lifespan;
 	}
 	
 	@Override

@@ -33,7 +33,6 @@ public class GameEngine{
     public ArrayList<Missile> missiles;
     public ArrayList<Explosion> explosions;
 
-
     public ArrayList<City> cities;
     public ArrayList<Cannon> cannons;
 
@@ -71,10 +70,10 @@ public class GameEngine{
     
 
     public void step() {
-    	System.out.println(parent.frameRate);
 	    spawnMeteors();
 
         drawEngine.display(meteors, missiles, explosions, cities, cannons);
+
         physicsEngine.step(meteors, missiles, explosions);
 	    
 	    destroyObjects();

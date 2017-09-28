@@ -2,6 +2,7 @@ package game;
 import objects.Crosshair;
 import objects.buildings.Cannon;
 import objects.particles.Missile;
+import physics.forces.impl.Explosive;
 import processing.core.PApplet;
 
 public class MissileCommand extends PApplet {
@@ -68,7 +69,12 @@ public class MissileCommand extends PApplet {
 //	    gameEngine.meteors.add(meteor);
 //	    gameEngine.physicsEngine.registerNewParticle(meteor);
 	    
-	    gameEngine.missiles.add(new Missile(this, cannon.position.x, cannon.position.y, xStart, yStart));
+	    if (mouseButton == LEFT) {
+	    	gameEngine.missiles.add(new Missile(this, cannon.position.x, cannon.position.y, xStart, yStart));
+	    } 
+	    else if (mouseButton == RIGHT) {
+	    	
+	    }
 	}
 	
 }
