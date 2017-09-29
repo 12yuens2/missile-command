@@ -27,6 +27,9 @@ public class GameEngine{
 	public static final int NUM_CANNONS = 4;
 	public static final int NUM_CITIES = 5;
 	
+	public static final int METEOR_EXPLODE_SCORE = 11;
+	public static final int METEOR_REMOVED_SCORE = 23;
+	
 	private PApplet parent;
 	
 	public Level level;
@@ -44,11 +47,12 @@ public class GameEngine{
     public ArrayList<City> cities;
     public ArrayList<Cannon> cannons;
 
+    public int score;
 
     
     public GameEngine(PApplet parent) {
     	this.parent = parent;
-    	
+    	this.score = 0;
     	this.level = new Level();
     	
     	physicsEngine = new PhysEngine();
@@ -135,6 +139,10 @@ public class GameEngine{
     	    	it.remove();
     	    	Explosion ex = object.destroy();
     	    	if (ex != null && explode) explosions.add(ex);
+    	    	if (object.getClass().equals(Meteor.class)) {
+    	    		if (explode) score += METEOR_EXPLODE_SCORE;
+    	    		else score += METEOR_REMOVED_SCORE;
+    	    	}
     	    }
     	}
     }

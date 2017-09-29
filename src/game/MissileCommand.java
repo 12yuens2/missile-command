@@ -6,36 +6,26 @@ import objects.particles.BlackHoleMissile;
 import objects.particles.Missile;
 import physics.forces.impl.Explosive;
 import processing.core.PApplet;
+import processing.core.PFont;
 
 public class MissileCommand extends PApplet {
 	
-	public static void main(String[] args) {
-		PApplet.main("game.MissileCommand");
-	}
-	
-
-
-	public Cannon cannon;
-	public float xStart, yStart, xEnd, yEnd;
-	public int tick, currCannon;
-	
+	public float xStart, yStart;
 	
 	public GameEngine gameEngine;
+	PFont f;
+	
 	
 	public void settings() {
 		size(800, 600);
-
 	}
 	
 	public void setup() {
 	    gameEngine = new GameEngine(this);
+	    f = createFont("Arial", 16, true);
 //		frameRate(30);
-	    spawnBuildings();
 	}
 
-	private void spawnBuildings() {
-
-	}
 	
 	public void draw() {
 		gameEngine.step();
@@ -43,19 +33,10 @@ public class MissileCommand extends PApplet {
 		
 		Crosshair crosshair = new Crosshair();
 		crosshair.display(this);
-    
-    
-    //    if (p.getClass().equals(Meteor.class)) {
-    //        for (City city : gameScene.cities) {
-    //            float destroyDistance = city.radius + p.radius;
-    //            PVector distanceBetween = PVector.sub(city.position, p.position);
-                
-    //            if (distanceBetween.mag() < destroyDistance) city.destroyed = true;
-    //        }
-    //    }
-        
-    //    if (p.getClass().equals(Missile.class) && ((Missile) p).lifespan <= 0) particlesToRemove.add(p);
-    //}
+		
+		textFont(f, 16);
+		fill(0);
+		text("Score: " + gameEngine.score, 100, 100);
 
 	}
 
@@ -65,11 +46,7 @@ public class MissileCommand extends PApplet {
 	    yStart = mouseY;
 	
 	    Cannon cannon = gameEngine.getClosestCannon((int)xStart, (int)yStart);
-	    //particles.add(cannon.shoot(new PVector(xStart, yStart)));
-	    
-//	    Meteor meteor = new Meteor((int)random(0, 800), -100, random(-5f, 5f), 0f, random(0.1f, 0.5f));
-//	    gameEngine.meteors.add(meteor);
-//	    gameEngine.physicsEngine.registerNewParticle(meteor);
+	    //particles.add(cannon.shoot(new PVector(xStart, yStart)))
 	    
 	    if (mouseY < gameEngine.GROUND_HEIGHT) {
 		    if (mouseButton == LEFT) {
@@ -79,6 +56,14 @@ public class MissileCommand extends PApplet {
 		    	gameEngine.bhms.add(new BlackHoleMissile(this, cannon.position.x, cannon.position.y, xStart, yStart));
 		    }
 	    }
+	}
+	
+	
+	
+	
+	
+	public static void main(String[] args) {
+		PApplet.main("game.MissileCommand");
 	}
 	
 }
