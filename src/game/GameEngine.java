@@ -72,11 +72,11 @@ public class GameEngine{
     
     private void initGameObjects(PApplet parent) {
 	    for (int i = 0; i < NUM_CANNONS; i++) {
-	        cannons.add(new Cannon(parent, (int)parent.random(100, SCREEN_X-100), 550));
+	        cannons.add(new Cannon(parent, (int)parent.random(100, SCREEN_X-100), GROUND_HEIGHT));
 	    }
 	    
 	    for (int i = 0; i < NUM_CITIES; i++) {
-	        cities.add(new City((int)parent.random(30, SCREEN_X-30), 550));   
+	        cities.add(new City(50 + ((SCREEN_X/NUM_CITIES) * i), GROUND_HEIGHT));   
 	    }	
     }
     
@@ -93,7 +93,7 @@ public class GameEngine{
 
     	PhysicsStep meteorStep = physicsEngine.meteorStep(meteors, blackholes);
     	PhysicsStep missileStep = physicsEngine.missileStep(missiles, meteors, explosions);
-    	PhysicsStep explosionStep = physicsEngine.explosionStep(explosions, meteors);
+    	PhysicsStep explosionStep = physicsEngine.explosionStep(explosions, meteors, cities);
     	PhysicsStep blackholeMissileStep = physicsEngine.blackholeMissileStep(bhms, blackholes);
     	
         drawEngine.display(meteors, missiles, bhms, blackholes, explosions, cities, cannons);

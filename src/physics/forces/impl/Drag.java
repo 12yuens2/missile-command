@@ -25,7 +25,6 @@ public class Drag extends ForceGenerator{
 		PVector resultingForce = velocity.normalize().mult(-dragCoeff);
 		particle.addForce(resultingForce);
 	}
-
 	
 	
 }

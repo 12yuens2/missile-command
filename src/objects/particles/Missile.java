@@ -31,9 +31,10 @@ public class Missile extends Particle {
         if (PVector.sub(destinationPos, position).mag() < DETECT_RANGE || destroyed) {
         	destroyed = true;
         } else {
+        	float size = radius * 2;
             parent.ellipseMode(parent.CENTER);
             parent.fill(col);
-            parent.ellipse(position.x, position.y, radius, radius);
+            parent.ellipse(position.x, position.y, size, size);
         }
     }
 

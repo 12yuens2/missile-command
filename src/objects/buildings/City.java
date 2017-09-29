@@ -4,7 +4,7 @@ import processing.core.PVector;
 
 public class City extends Building{
  
-    float radius = 10;
+    public float radius = 7.5f;
     
     public City(int posX, int posY) {
         position = new PVector(posX, posY);
@@ -16,17 +16,16 @@ public class City extends Building{
             parent.rectMode(parent.CENTER);
             parent.fill(parent.color(0, 255, 0));
             parent.rect(position.x, position.y, 20, 10);
-        }
-        
+        }   
     }
 
 	@Override
 	public void destroy() {
-		radius = 0;
+		destroyed = true;
 	}
 	
 	public void rebuild() {
-		radius = 10;
+		destroyed = false;
 	}
     
 }

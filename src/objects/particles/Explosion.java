@@ -29,12 +29,13 @@ public class Explosion extends Particle{
 
 	public void display(PApplet parent) {
         if (lifespan >= 0) {
+            radius += 1;
+            lifespan--;
+            
+            float size = radius * 2;
             parent.ellipseMode(parent.CENTER);
             parent.fill(255, 127, 80, 200);
-            parent.ellipse(position.x, position.y, radius, radius);
-
-            radius += 2;
-            lifespan--;   
+            parent.ellipse(position.x, position.y, size, size);
         }   
     }
 

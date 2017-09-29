@@ -2,6 +2,7 @@ package physics;
 import java.util.ArrayList;
 import java.util.function.Function;
 
+import objects.buildings.City;
 import objects.particles.BlackHole;
 import objects.particles.BlackHoleMissile;
 import objects.particles.Explosion;
@@ -9,9 +10,8 @@ import objects.particles.Meteor;
 import objects.particles.Missile;
 import objects.particles.Particle;
 import physics.forces.impl.Drag;
-import physics.forces.impl.Explosive;
 import physics.forces.impl.Gravity;
-import physics.forces.ForceGenerator;
+import processing.core.PVector;
 import physics.forces.ForceRegistry;
 
 public class PhysEngine {
@@ -45,42 +45,6 @@ public class PhysEngine {
         
         for (PhysicsStep step : steps) step.apply();
 
-        
-//        for (Meteor m : meteors) {
-//        	m.integrate();
-//        	
-//        	for (BlackHole bh : blackholes) {
-//        		forceRegistry.register(m, bh.attractionForce);
-//        	}
-//        }
-        
-//        for (BlackHoleMissile bhm : blackMissiles) {
-//        	if (bhm.destroyed) {
-//        		blackholes.add(new BlackHole(bhm.position));
-//        	}
-//        	else {
-//        		bhm.integrate();
-//        	}
-//        }
-        
-//        for (Missile m : missiles) {
-//            m.integrate();
-//            
-//            for (Meteor me : meteors) {
-//                Collision collision = m.checkCollision(me);
-//                if (collision != null) explosions.add(m.destroy());
-//            }
-//        }
-//        
-//        
-//        for (Explosion e : explosions) {
-//        	for (Meteor me : meteors) {
-//        		Collision collision = me.checkCollision(e);
-//        		if (collision != null) {
-//        			forceRegistry.register(me, e.getForce());
-//        		}
-//        	}
-//        }
     }
     
     
@@ -130,7 +94,7 @@ public class PhysEngine {
 		});
 	}
 	
-	public PhysicsStep explosionStep(ArrayList<Explosion> explosions, ArrayList<Meteor> meteors) {
+	public PhysicsStep explosionStep(ArrayList<Explosion> explosions, ArrayList<Meteor> meteors, ArrayList<City> cities) {
 		return new PhysicsStep(explosions, new Function<Explosion, Void>() {
 			
 			@Override
@@ -138,6 +102,12 @@ public class PhysEngine {
 				for (Meteor me : meteors) {
 					Collision collision = me.checkCollision(e);
 					if (collision != null) forceRegistry.register(me, e.getForce());
+				}
+				
+				for (City city : cities) {
+					float collideDistance = city.radius + e.radius;
+					float distance = PVector.dist(city.position, e.position);
+					if (distance < collideDistance) city.destroy();
 				}
 				
 				return null;
