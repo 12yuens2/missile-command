@@ -1,9 +1,9 @@
 package game;
 import objects.Crosshair;
 import objects.buildings.Cannon;
+import objects.particles.BlackHole;
 import objects.particles.BlackHoleMissile;
 import objects.particles.Missile;
-import physics.BlackHole;
 import physics.forces.impl.Explosive;
 import processing.core.PApplet;
 
@@ -76,7 +76,7 @@ public class MissileCommand extends PApplet {
 		    	gameEngine.missiles.add(new Missile(this, cannon.position.x, cannon.position.y, xStart, yStart));
 		    } 
 		    else if (mouseButton == RIGHT) {
-		    	gameEngine.blackMissiles.add(new BlackHoleMissile(this, cannon.position.x, cannon.position.y, xStart, yStart));
+		    	gameEngine.bhms.add(new BlackHoleMissile(this, cannon.position.x, cannon.position.y, xStart, yStart));
 		    }
 	    }
 	}

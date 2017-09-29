@@ -1,7 +1,7 @@
 package physics.forces.impl;
 
+import objects.particles.Explosion;
 import objects.particles.Particle;
-import physics.Explosion;
 import physics.forces.ForceGenerator;
 import processing.core.PVector;
 

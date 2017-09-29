@@ -1,7 +1,7 @@
 package physics.forces.impl;
 
+import objects.particles.BlackHole;
 import objects.particles.Particle;
-import physics.BlackHole;
 import physics.forces.ForceGenerator;
 import processing.core.PVector;
 

@@ -1,6 +1,5 @@
 package objects.particles;
 
-import physics.Explosion;
 import processing.core.PApplet;
 import processing.core.PVector;
 

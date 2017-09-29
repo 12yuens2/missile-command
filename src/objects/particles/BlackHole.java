@@ -1,6 +1,5 @@
-package physics;
+package objects.particles;
 
-import objects.particles.Particle;
 import physics.forces.impl.Attraction;
 import processing.core.PApplet;
 import processing.core.PVector;

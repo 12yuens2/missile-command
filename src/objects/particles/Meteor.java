@@ -1,12 +1,11 @@
 package objects.particles;
 import game.GameEngine;
 import game.Level;
-import physics.Explosion;
 import processing.core.PApplet;
 
 public class Meteor extends Particle {
     
-    public static final int METEOR_RADIUS = 15;
+    public static final int METEOR_RADIUS = 10;
     
     public Level level;
     

@@ -4,13 +4,14 @@ import java.util.function.Function;
 
 import objects.buildings.Cannon;
 import objects.buildings.City;
+import objects.particles.BlackHole;
 import objects.particles.BlackHoleMissile;
+import objects.particles.Explosion;
 import objects.particles.Meteor;
 import objects.particles.Missile;
 import objects.particles.Particle;
-import physics.BlackHole;
-import physics.Explosion;
 import physics.PhysEngine;
+import physics.PhysicsStep;
 import physics.forces.impl.Gravity;
 import processing.core.PApplet;
 
@@ -37,7 +38,7 @@ public class GameEngine{
     public ArrayList<Missile> missiles;
     public ArrayList<Explosion> explosions;
     
-	public ArrayList<BlackHoleMissile> blackMissiles;
+	public ArrayList<BlackHoleMissile> bhms;
 	public ArrayList<BlackHole> blackholes;
 	
     public ArrayList<City> cities;
@@ -62,7 +63,7 @@ public class GameEngine{
     	missiles = new ArrayList<Missile>();
     	explosions = new ArrayList<Explosion>();
     
-    	blackMissiles = new ArrayList<BlackHoleMissile>();
+    	bhms = new ArrayList<BlackHoleMissile>();
     	blackholes = new ArrayList<BlackHole>();
     	
     	cities = new ArrayList<City>();
@@ -90,13 +91,14 @@ public class GameEngine{
 		    spawnMeteors(level);
 	    }
 
+    	PhysicsStep meteorStep = physicsEngine.meteorStep(meteors, blackholes);
+    	PhysicsStep missileStep = physicsEngine.missileStep(missiles, meteors, explosions);
+    	PhysicsStep explosionStep = physicsEngine.explosionStep(explosions, meteors);
+    	PhysicsStep blackholeMissileStep = physicsEngine.blackholeMissileStep(bhms, blackholes);
     	
-    	
-    	
-    	
-        drawEngine.display(meteors, missiles, blackMissiles, blackholes, explosions, cities, cannons);
+        drawEngine.display(meteors, missiles, bhms, blackholes, explosions, cities, cannons);
 
-        physicsEngine.step(meteors, missiles, blackMissiles, blackholes, explosions);
+        physicsEngine.step(meteorStep, missileStep, explosionStep, blackholeMissileStep);
 	    
 	    destroyObjects();
 	    
@@ -121,7 +123,7 @@ public class GameEngine{
 	    
 	    for (BlackHole bh : blackholes)	destroy(m -> m.checkCollision(bh) != null, meteors.iterator(), false);
 	    
-	    remove(bhm -> bhm.destroyed == true, blackMissiles.iterator());
+	    remove(bhm -> bhm.destroyed == true, bhms.iterator());
 	    remove(bh -> bh.lifespan <= 0, blackholes.iterator());
 	    
     }

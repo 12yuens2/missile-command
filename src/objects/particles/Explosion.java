@@ -1,5 +1,4 @@
-package physics;
-import objects.particles.Particle;
+package objects.particles;
 import physics.forces.impl.Explosive;
 import processing.core.PApplet;
 import processing.core.PVector;
@@ -33,7 +32,7 @@ public class Explosion extends Particle{
             parent.ellipseMode(parent.CENTER);
             parent.fill(255, 127, 80, 200);
             parent.ellipse(position.x, position.y, radius, radius);
-            
+
             radius += 2;
             lifespan--;   
         }   

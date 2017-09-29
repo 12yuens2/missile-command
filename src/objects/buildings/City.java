@@ -19,5 +19,14 @@ public class City extends Building{
         }
         
     }
+
+	@Override
+	public void destroy() {
+		radius = 0;
+	}
+	
+	public void rebuild() {
+		radius = 10;
+	}
     
 }

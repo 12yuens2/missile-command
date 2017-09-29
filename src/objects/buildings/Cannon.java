@@ -14,5 +14,11 @@ public class Cannon extends Building {
         parent.fill(0);
         parent.rect(position.x, position.y, 10, 10);
     }
+
+	@Override
+	public void destroy() {
+		// TODO Auto-generated method stub
+		
+	}
     
 }

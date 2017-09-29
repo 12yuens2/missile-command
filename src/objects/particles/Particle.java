@@ -3,7 +3,6 @@ package objects.particles;
 import processing.core.PVector;
 import game.IDrawable;
 import physics.Collision;
-import physics.Explosion;
 import processing.core.PApplet;
 
 public abstract class Particle implements IDrawable {
