@@ -28,6 +28,8 @@ public class GameEngine{
 	
 	private PApplet parent;
 	
+	public Level level;
+	
     public PhysEngine physicsEngine;
     public DrawEngine drawEngine;
     
@@ -45,6 +47,8 @@ public class GameEngine{
     
     public GameEngine(PApplet parent) {
     	this.parent = parent;
+    	
+    	this.level = new Level();
     	
     	physicsEngine = new PhysEngine();
 	    drawEngine = new DrawEngine(parent);
@@ -79,8 +83,26 @@ public class GameEngine{
     
 
     public void step() {
-	    spawnMeteors();
 
+	    if (level.state == Level.State.FINISHED) {
+	    	level.state = Level.State.WAITING;
+	    	new Thread(() -> {
+	    		try {
+					Thread.sleep(5000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	    		level.next();
+	    	}).start();
+	    } else if (level.state == Level.State.RUNNING) {
+		    spawnMeteors(level);
+	    }
+
+    	
+    	
+    	
+    	
         drawEngine.display(meteors, missiles, blackMissiles, blackholes, explosions, cities, cannons);
 
         physicsEngine.step(meteors, missiles, blackMissiles, blackholes, explosions);
@@ -90,9 +112,10 @@ public class GameEngine{
 
     }
 
-    private void spawnMeteors() {
-    	if ((int)parent.random(0, 2) == 1) {
-    	    Meteor meteor = new Meteor((int)parent.random(0, SCREEN_X), -100, parent.random(-5f, 5f), 0f, parent.random(0.1f, 0.5f));
+    private void spawnMeteors(Level level) {
+    	if ((int)parent.random(0, 2) == 1 && level.numMeteors > 0) {
+    	    Meteor meteor = new Meteor((int)parent.random(0, SCREEN_X), 0, parent.random(-2f, 2f), 0f, parent.random(0.1f, 0.5f));
+    	    level.spawnMeteor();
     	    meteors.add(meteor);
     	    physicsEngine.registerNewParticle(meteor);
     	}

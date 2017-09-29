@@ -1,17 +1,13 @@
 package physics;
 
-import java.util.ArrayList;
-
-import objects.particles.Meteor;
 import objects.particles.Particle;
-import physics.forces.ForceRegistry;
 import physics.forces.impl.Attraction;
 import processing.core.PApplet;
 import processing.core.PVector;
 
 public class BlackHole extends Particle {
 
-	public static final int BLACKHOLE_MASS = 1000;
+	public static final int BLACKHOLE_MASS = 100;
 	public static final int BLACKHOLE_RADIUS = 50;
 	public static final int BLACKHOLE_LIFESPAN = 100;
 	

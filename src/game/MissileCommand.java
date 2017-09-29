@@ -29,7 +29,7 @@ public class MissileCommand extends PApplet {
 	
 	public void setup() {
 	    gameEngine = new GameEngine(this);
-//		frameRate(10);
+//		frameRate(30);
 	    spawnBuildings();
 	}
 
@@ -71,11 +71,13 @@ public class MissileCommand extends PApplet {
 //	    gameEngine.meteors.add(meteor);
 //	    gameEngine.physicsEngine.registerNewParticle(meteor);
 	    
-	    if (mouseButton == LEFT) {
-	    	gameEngine.missiles.add(new Missile(this, cannon.position.x, cannon.position.y, xStart, yStart));
-	    } 
-	    else if (mouseButton == RIGHT) {
-	    	gameEngine.blackMissiles.add(new BlackHoleMissile(this, cannon.position.x, cannon.position.y, xStart, yStart));
+	    if (mouseY < gameEngine.GROUND_HEIGHT) {
+		    if (mouseButton == LEFT) {
+		    	gameEngine.missiles.add(new Missile(this, cannon.position.x, cannon.position.y, xStart, yStart));
+		    } 
+		    else if (mouseButton == RIGHT) {
+		    	gameEngine.blackMissiles.add(new BlackHoleMissile(this, cannon.position.x, cannon.position.y, xStart, yStart));
+		    }
 	    }
 	}
 	

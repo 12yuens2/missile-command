@@ -13,7 +13,7 @@ import physics.forces.ForceRegistry;
 
 public class PhysEngine {
 
-	public static final float dragk1 = 0.001f;
+	public static final float dragk1 = 0.0001f;
 	public static final float dragk2 = 0.0001f;
 	
     public ArrayList<Collision> collisions;

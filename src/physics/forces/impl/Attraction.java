@@ -23,7 +23,7 @@ public class Attraction extends ForceGenerator {
 		force.normalize();
 		
 		float mag = (GRAV_CONSTANT * attractor.mass * attractee.mass) / (distance * distance);
-		force.mult(-mag);
+		force.mult(mag);
 		
 		attractee.addForce(force);		
 	}
