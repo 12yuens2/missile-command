@@ -10,12 +10,14 @@ public class Level {
 	
 	public int levelNumber;
 	public int numMeteors;
+	public int numToSpawn;
 	public int meteorCount;
 	
 	
 	public Level() {
 		this.levelNumber = 1;
 		this.numMeteors = STARTING_METEORS;
+		this.numToSpawn = numMeteors;
 		this.meteorCount = numMeteors;
 		
 		this.state = State.RUNNING;
@@ -30,14 +32,15 @@ public class Level {
 	public void next() {
 		levelNumber++;
 		numMeteors += 5;
+		numToSpawn = numMeteors;
 		meteorCount = numMeteors;
 		state = State.RUNNING;
 	}
 
 
 	public void spawnMeteor() {
-		meteorCount--;
-		if (meteorCount <= 0) state = State.FINISHED;
+		numToSpawn--;
+		if (numToSpawn <= 0) state = State.FINISHED;
 	}
 	
 }

@@ -84,17 +84,8 @@ public class GameEngine{
 
     public void step() {
 
-	    if (level.state == Level.State.FINISHED) {
-	    	level.state = Level.State.WAITING;
-	    	new Thread(() -> {
-	    		try {
-					Thread.sleep(5000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-	    		level.next();
-	    	}).start();
+	    if (level.state == Level.State.FINISHED && level.meteorCount <= 0) {
+	    	level.next();
 	    } else if (level.state == Level.State.RUNNING) {
 		    spawnMeteors(level);
 	    }
@@ -113,8 +104,8 @@ public class GameEngine{
     }
 
     private void spawnMeteors(Level level) {
-    	if ((int)parent.random(0, 2) == 1 && level.numMeteors > 0) {
-    	    Meteor meteor = new Meteor((int)parent.random(0, SCREEN_X), 0, parent.random(-2f, 2f), 0f, parent.random(0.1f, 0.5f));
+    	if ((int)parent.random(0, 10) == 1 && level.numMeteors > 0) {
+    	    Meteor meteor = new Meteor(level, (int)parent.random(0, SCREEN_X), 0, parent.random(-2f, 2f), 0f, parent.random(0.1f, 0.5f));
     	    level.spawnMeteor();
     	    meteors.add(meteor);
     	    physicsEngine.registerNewParticle(meteor);
@@ -122,27 +113,26 @@ public class GameEngine{
     }
     
     private void destroyObjects() {
-	    destroy(m -> (m.position.y > GROUND_HEIGHT), meteors.iterator());
-	    destroy(m -> m.destroyed == true, missiles.iterator());
-	    destroy(e -> e.lifespan <= 0, explosions.iterator());
+	    destroy(m -> (m.position.y > GROUND_HEIGHT), meteors.iterator(), true);
+	    destroy(m -> m.destroyed == true, missiles.iterator(), true);
+	    destroy(e -> e.lifespan <= 0, explosions.iterator(), true);
+
+	    destroy(m -> (m.position.x + m.radius < 0 || m.position.x - m.radius > SCREEN_X || m.position.y + m.radius < 0), meteors.iterator(), false);
+	    
+	    for (BlackHole bh : blackholes)	destroy(m -> m.checkCollision(bh) != null, meteors.iterator(), false);
 	    
 	    remove(bhm -> bhm.destroyed == true, blackMissiles.iterator());
 	    remove(bh -> bh.lifespan <= 0, blackholes.iterator());
-	    remove(m -> (m.position.x + m.radius < 0 || m.position.x - m.radius > SCREEN_X), meteors.iterator());
 	    
-	    for (BlackHole bh : blackholes) {
-	    	remove(m -> m.checkCollision(bh) != null, meteors.iterator());
-	    }
-
     }
 
-    private <T extends Particle> void destroy(Function<T, Boolean> filter, Iterator<T> it) {
+    private <T extends Particle> void destroy(Function<T, Boolean> filter, Iterator<T> it, boolean explode) {
     	while (it.hasNext()) {
     		T object = it.next();
     	    if(filter.apply(object)) {
     	    	it.remove();
     	    	Explosion ex = object.destroy();
-    	    	if (ex != null)	explosions.add(ex);
+    	    	if (ex != null && explode) explosions.add(ex);
     	    }
     	}
     }
@@ -150,7 +140,9 @@ public class GameEngine{
     private <T extends IDrawable> void remove(Function<T, Boolean> filter, Iterator<T> it) {
     	while (it.hasNext()) {
     		T object = it.next();
-    		if (filter.apply(object)) it.remove();
+    		if (filter.apply(object)) {
+    			it.remove();
+    		}
     	}
     }
     
