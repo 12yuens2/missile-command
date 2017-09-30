@@ -44,7 +44,8 @@ public class DrawEngine {
 
 
 	public void displayGameOver() {
-		// TODO Auto-generated method stub
+		parent.background(0);
+		drawText(64, "Game Over", GameEngine.SCREEN_X/2, GameEngine.SCREEN_Y/2, 255);
 		
 	}
 	

@@ -27,6 +27,7 @@ public class GameEngine{
 	public static final int NUM_PARTICLES = 30;
 	public static final int NUM_CANNONS = 4;
 	public static final int NUM_CITIES = 5;
+	public static final int NUM_STARTING_MISSILES = 10;
 	
 	public static final int METEOR_EXPLODE_SCORE = 11;
 	public static final int METEOR_REMOVED_SCORE = 23;
@@ -49,6 +50,10 @@ public class GameEngine{
     public ArrayList<Cannon> cannons;
 
     public int score;
+    public int numMissiles;
+    public int numBlackholes;
+    
+    public int cityCount;
     public boolean gameOver;
     public GameState state;
 
@@ -58,6 +63,11 @@ public class GameEngine{
     	this.level = new Level();
     	this.gameOver = false;
     	this.state = GameState.PLAYING;
+    	this.cityCount = NUM_CITIES;
+    	
+    	this.score = 0;
+    	this.numMissiles = NUM_STARTING_MISSILES;
+    	this.numBlackholes = 0;
     	
     	physicsEngine = new PhysEngine();
 	    drawEngine = new DrawEngine(parent);
@@ -69,6 +79,7 @@ public class GameEngine{
     private void resetGame() {
     	level = new Level();
     	gameOver = false;
+    	cityCount = NUM_CITIES;
     	
     	initLists();
     	initGameObjects(parent);
@@ -98,26 +109,25 @@ public class GameEngine{
     public void step() {
     	switch(state) {
     	
-    	case START_MENU:
-    		drawEngine.displayStartMenu();
-    		break;
-    		
-    	case PLAYING:
-    		playStep();
-    		drawEngine.displayGame(meteors, missiles, bhms, blackholes, explosions, cities, cannons);
-    		break;
-    		
-    	case PAUSED:
-    		drawEngine.displayGame(meteors, missiles, bhms, blackholes, explosions, cities, cannons);
-    		drawEngine.displayPauseMenu();
-    		break;
-    		
-    	case GAMEOVER:
-    		drawEngine.displayGameOver();
-    		break;
-    	
-    	}
-
+	    	case START_MENU:
+	    		drawEngine.displayStartMenu();
+	    		break;
+	    		
+	    	case PLAYING:
+	    		playStep();
+	    		drawEngine.displayGame(meteors, missiles, bhms, blackholes, explosions, cities, cannons);
+	    		if (cityCount <= 0) state = GameState.GAMEOVER;
+	    		break;
+	    		
+	    	case PAUSED:
+	    		drawEngine.displayGame(meteors, missiles, bhms, blackholes, explosions, cities, cannons);
+	    		drawEngine.displayPauseMenu();
+	    		break;
+	    		
+	    	case GAMEOVER:
+	    		drawEngine.displayGameOver();
+	    		break;
+	    	}
     }
     
 	public void handleMousePress(int mouseX, int mouseY, int mouseButton) {
@@ -153,6 +163,8 @@ public class GameEngine{
         physicsEngine.step(meteorStep, missileStep, explosionStep, blackholeMissileStep);
 	    
 	    destroyObjects();
+	    
+	    checkGameOver();
     }
 
     private void spawnMeteors(Level level) {
@@ -175,7 +187,6 @@ public class GameEngine{
 	    
 	    remove(bhm -> bhm.destroyed == true, bhms.iterator());
 	    remove(bh -> bh.lifespan <= 0, blackholes.iterator());
-	    
     }
 
     private <T extends Particle> void destroy(Function<T, Boolean> filter, Iterator<T> it, boolean explode) {
@@ -202,7 +213,17 @@ public class GameEngine{
     	}
     }
     
-    
+    private void checkGameOver() {
+    	for (City c : cities) {
+    		if (c.destroyed) cityCount--;
+    	}
+		if (cityCount <= 0) {
+			state = GameState.GAMEOVER;
+		}
+		else {
+			cityCount = NUM_CITIES;
+		}
+    }
 
 	public Cannon getClosestCannon(int posX, int posY) {
     	Cannon closestCannon = null;
