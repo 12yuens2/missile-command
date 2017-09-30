@@ -2,6 +2,7 @@ package game;
 import java.util.Iterator;
 import java.util.function.Function;
 
+import game.states.GameInput;
 import objects.buildings.Cannon;
 import objects.buildings.City;
 import objects.particles.BlackHole;
@@ -130,7 +131,10 @@ public class GameEngine{
 	    	}
     }
     
-	public void handleMousePress(int mouseX, int mouseY, int mouseButton) {
+	public void handleMousePress(int mouseX, int mouseY, int mouseButton, int keyPressed) {
+		GameInput input = new GameInput(mouseX, mouseY, mouseButton, keyPressed);
+//		state.handleInput(input);
+		
 	    float xStart = mouseX;
 	    float yStart = mouseY;
 	
