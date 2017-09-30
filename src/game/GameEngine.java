@@ -16,6 +16,7 @@ import physics.forces.impl.Gravity;
 import processing.core.PApplet;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class GameEngine{
 
@@ -82,20 +83,16 @@ public class GameEngine{
     	blackholes = new ArrayList<BlackHole>();
     	
     	cities = new ArrayList<City>();
-	    cannons = new ArrayList<Cannon>();
+    	cannons = new ArrayList<Cannon>();
     }
     
     private void initGameObjects(PApplet parent) {
-	    for (int i = 0; i < NUM_CANNONS; i++) {
-	        cannons.add(new Cannon(parent, (int)parent.random(100, SCREEN_X-100), GROUND_HEIGHT));
-	    }
+	    cannons.add(new Cannon(parent, SCREEN_X/2, GROUND_HEIGHT));
 	    
 	    for (int i = 0; i < NUM_CITIES; i++) {
 	        cities.add(new City(50 + ((SCREEN_X/NUM_CITIES) * i), GROUND_HEIGHT));   
 	    }	
     }
-    
-    
     
 
     public void step() {
@@ -122,6 +119,24 @@ public class GameEngine{
     	}
 
     }
+    
+	public void handleMousePress(int mouseX, int mouseY, int mouseButton) {
+	    float xStart = mouseX;
+	    float yStart = mouseY;
+	
+	    Cannon cannon = getClosestCannon((int)xStart, (int)yStart);
+	    //particles.add(cannon.shoot(new PVector(xStart, yStart)))
+	    
+	    if (mouseY < GROUND_HEIGHT) {
+		    if (mouseButton == parent.LEFT) {
+		    	missiles.add(new Missile(parent, cannon.position.x, cannon.position.y, xStart, yStart));
+		    } 
+		    else if (mouseButton == parent.RIGHT) {
+		    	bhms.add(new BlackHoleMissile(parent, cannon.position.x, cannon.position.y, xStart, yStart));
+		    }
+	    }
+		
+	}
     
     private void playStep() {
 		if (level.state == Level.State.FINISHED && level.meteorCount <= 0) {

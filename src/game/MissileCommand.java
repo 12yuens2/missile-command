@@ -10,8 +10,6 @@ import processing.core.PFont;
 
 public class MissileCommand extends PApplet {
 	
-	public float xStart, yStart;
-	
 	public GameEngine gameEngine;
 	PFont f;
 	
@@ -36,28 +34,12 @@ public class MissileCommand extends PApplet {
 		textFont(f, 16);
 		fill(0);
 		text("Score: " + gameEngine.score, 100, 100);
-
 	}
 
 
 	public void mousePressed() {
-	    xStart = mouseX;
-	    yStart = mouseY;
-	
-	    Cannon cannon = gameEngine.getClosestCannon((int)xStart, (int)yStart);
-	    //particles.add(cannon.shoot(new PVector(xStart, yStart)))
-	    
-	    if (mouseY < gameEngine.GROUND_HEIGHT) {
-		    if (mouseButton == LEFT) {
-		    	gameEngine.missiles.add(new Missile(this, cannon.position.x, cannon.position.y, xStart, yStart));
-		    } 
-		    else if (mouseButton == RIGHT) {
-		    	gameEngine.bhms.add(new BlackHoleMissile(this, cannon.position.x, cannon.position.y, xStart, yStart));
-		    }
-	    }
+		gameEngine.handleMousePress(mouseX, mouseY, mouseButton);
 	}
-	
-	
 	
 	
 	
