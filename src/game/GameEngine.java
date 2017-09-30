@@ -48,18 +48,29 @@ public class GameEngine{
     public ArrayList<Cannon> cannons;
 
     public int score;
+    public boolean gameOver;
+    public GameState state;
 
     
     public GameEngine(PApplet parent) {
     	this.parent = parent;
-    	this.score = 0;
     	this.level = new Level();
+    	this.gameOver = false;
+    	this.state = GameState.PLAYING;
     	
     	physicsEngine = new PhysEngine();
 	    drawEngine = new DrawEngine(parent);
 
 	    initLists();
 	    initGameObjects(parent);
+    }
+    
+    private void resetGame() {
+    	level = new Level();
+    	gameOver = false;
+    	
+    	initLists();
+    	initGameObjects(parent);
     }
     
     private void initLists() {
@@ -88,8 +99,32 @@ public class GameEngine{
     
 
     public void step() {
+    	switch(state) {
+    	
+    	case START_MENU:
+    		drawEngine.displayStartMenu();
+    		break;
+    		
+    	case PLAYING:
+    		playStep();
+    		drawEngine.displayGame(meteors, missiles, bhms, blackholes, explosions, cities, cannons);
+    		break;
+    		
+    	case PAUSED:
+    		drawEngine.displayGame(meteors, missiles, bhms, blackholes, explosions, cities, cannons);
+    		drawEngine.displayPauseMenu();
+    		break;
+    		
+    	case GAMEOVER:
+    		drawEngine.displayGameOver();
+    		break;
+    	
+    	}
 
-	    if (level.state == Level.State.FINISHED && level.meteorCount <= 0) {
+    }
+    
+    private void playStep() {
+		if (level.state == Level.State.FINISHED && level.meteorCount <= 0) {
 	    	level.next();
 	    } else if (level.state == Level.State.RUNNING) {
 		    spawnMeteors(level);
@@ -99,14 +134,10 @@ public class GameEngine{
     	PhysicsStep missileStep = physicsEngine.missileStep(missiles, meteors, explosions);
     	PhysicsStep explosionStep = physicsEngine.explosionStep(explosions, meteors, cities);
     	PhysicsStep blackholeMissileStep = physicsEngine.blackholeMissileStep(bhms, blackholes);
-    	
-        drawEngine.display(meteors, missiles, bhms, blackholes, explosions, cities, cannons);
 
         physicsEngine.step(meteorStep, missileStep, explosionStep, blackholeMissileStep);
 	    
 	    destroyObjects();
-	    
-
     }
 
     private void spawnMeteors(Level level) {
