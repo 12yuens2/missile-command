@@ -32,19 +32,8 @@ public class GameEngine {
     	this.state = new StartState(context, drawEngine);
 
 	    this.drawEngine = drawEngine;
-//
-//	    initLists();
-//	    initGameObjects(parent);
     }
-//    
-//    private void resetGame() {
-//    	level = new Level();
-////    	gameOver = false;
-//    	
-////    	initLists();
-////    	initGameObjects(parent);
-//    }
-//    
+
     public static GameContext createNewContext() {
     	ArrayList<Meteor> meteors = new ArrayList<Meteor>();
     	ArrayList<Missile> missiles = new ArrayList<Missile>();
@@ -64,8 +53,6 @@ public class GameEngine {
     	return new GameContext(meteors, missiles, explosions, bhms, blackholes, 
     							cities, cannons,
     							physicsEngine, level);
-    						
-    	
     }
     
     private static void initObjects(ArrayList<City> cities, ArrayList<Cannon> cannons) {
@@ -78,66 +65,14 @@ public class GameEngine {
     
 
     public void step() {
-    	System.out.println(state);
     	state.display();
     	state = state.update();
-    	
-//    	switch(state) {
-//    	
-//	    	case START_MENU:
-//	    		drawEngine.displayStartMenu();
-//	    		break;
-//	    		
-//	    	case PLAYING:
-//	    		playStep();
-//	    		drawEngine.displayGame(meteors, missiles, bhms, blackholes, explosions, cities, cannons);
-//	    		if (cityCount <= 0) state = GameState.GAMEOVER;
-//	    		break;
-//	    		
-//	    	case PAUSED:
-//	    		drawEngine.displayGame(meteors, missiles, bhms, blackholes, explosions, cities, cannons);
-//	    		drawEngine.displayPauseMenu();
-//	    		break;
-//	    		
-//	    	case GAMEOVER:
-//	    		drawEngine.displayGameOver();
-//	    		break;
-//	    	}
     }
     
 	public void handleInput(int mouseX, int mouseY, int mouseButton, int keyPressed) {
 		GameInput input = new GameInput(mouseX, mouseY, mouseButton, keyPressed);
 		state = state.handleInput(input);
-		
 	}
-    
-//    private void playStep() {
-//		if (level.state == Level.State.FINISHED && level.meteorCount <= 0) {
-//	    	level.next();
-//	    } else if (level.state == Level.State.RUNNING) {
-//		    spawnMeteors(level);
-//	    }
-//
-//    	PhysicsStep meteorStep = physicsEngine.meteorStep(meteors, blackholes);
-//    	PhysicsStep missileStep = physicsEngine.missileStep(missiles, meteors, explosions);
-//    	PhysicsStep explosionStep = physicsEngine.explosionStep(explosions, meteors, cities);
-//    	PhysicsStep blackholeMissileStep = physicsEngine.blackholeMissileStep(bhms, blackholes);
-//
-//        physicsEngine.step(meteorStep, missileStep, explosionStep, blackholeMissileStep);
-//	    
-//	    destroyObjects();
-//	    
-//	    checkGameOver();
-//    }
-//
-//    private void spawnMeteors(Level level) {
-//    	if ((int)parent.random(0, 10) == 1 && level.numMeteors > 0) {
-//    	    Meteor meteor = new Meteor(level, (int)parent.random(0, SCREEN_X), 0, parent.random(-2f, 2f), 0f, parent.random(0.1f, 0.5f));
-//    	    level.spawnMeteor();
-//    	    meteors.add(meteor);
-//    	    physicsEngine.registerNewParticle(meteor);
-//    	}
-//    }
     
 
 

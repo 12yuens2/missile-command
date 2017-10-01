@@ -5,7 +5,6 @@ import java.util.function.Function;
 
 import game.DrawEngine;
 import game.GameConfig;
-import game.GameEngine;
 import game.IDrawable;
 import game.Level;
 import game.states.GameContext;
