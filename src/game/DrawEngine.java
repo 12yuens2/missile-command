@@ -12,7 +12,7 @@ import processing.core.PFont;
 
 public class DrawEngine {
     
-	private PApplet parent;
+	public PApplet parent;
 	
     public DrawEngine(PApplet parent) {
     	this.parent = parent;
@@ -32,24 +32,24 @@ public class DrawEngine {
     
 	public void displayStartMenu() {
 		parent.background(255);
-		drawText(64, "Start game", GameEngine.SCREEN_X/2, GameEngine.SCREEN_Y/2, 0);
+		drawText(64, "Start game", GameConfig.SCREEN_X/2, GameConfig.SCREEN_Y/2, 0);
 	}
 
 
 	public void displayPauseMenu() {
 		parent.fill(200, 100);
 		parent.rect(0, 0, 8000, 6000);
-		drawText(32, "Paused", GameEngine.SCREEN_X/2, GameEngine.SCREEN_Y/2, 0);
+		drawText(32, "Paused", GameConfig.SCREEN_X/2, GameConfig.SCREEN_Y/2, 0);
 	}
 
 
 	public void displayGameOver() {
 		parent.background(0);
-		drawText(64, "Game Over", GameEngine.SCREEN_X/2, GameEngine.SCREEN_Y/2, 255);
+		drawText(64, "Game Over", GameConfig.SCREEN_X/2, GameConfig.SCREEN_Y/2, 255);
 		
 	}
 	
-	private void drawText(int textSize, String text, int posX, int posY, int col) {
+	public void drawText(int textSize, String text, int posX, int posY, int col) {
 		PFont font = parent.createFont("Arial", textSize, true);
 		
 		parent.textFont(font, textSize);
@@ -62,10 +62,10 @@ public class DrawEngine {
     private  void drawGround() {
         parent.fill(128);
         parent.beginShape();
-        parent.vertex(0, GameEngine.GROUND_HEIGHT);
-        parent.vertex(GameEngine.SCREEN_X, GameEngine.GROUND_HEIGHT);
-        parent.vertex(GameEngine.SCREEN_X, GameEngine.SCREEN_Y);
-        parent.vertex(0, GameEngine.SCREEN_Y);
+        parent.vertex(0, GameConfig.GROUND_HEIGHT);
+        parent.vertex(GameConfig.SCREEN_X, GameConfig.GROUND_HEIGHT);
+        parent.vertex(GameConfig.SCREEN_X, GameConfig.SCREEN_Y);
+        parent.vertex(0, GameConfig.SCREEN_Y);
         parent.endShape(parent.CLOSE);
     }
 

@@ -1,0 +1,33 @@
+package game.states.impl;
+
+import game.DrawEngine;
+import game.GameEngine;
+import game.states.GameContext;
+import game.states.GameInput;
+import game.states.GameState;
+import processing.core.PConstants;
+
+public class StartState extends GameState{
+
+	public StartState(GameContext context, DrawEngine drawEngine) {
+		super(context, drawEngine);
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public void display() {
+		drawEngine.displayStartMenu();		
+	}
+
+	@Override
+	public GameState update() {
+		return this;
+	}
+
+	@Override
+	public GameState handleInput(GameInput input) {
+		if (input.mouseButton == PConstants.LEFT) return new PlayingState(context, drawEngine);
+		else return this;
+	}
+
+}

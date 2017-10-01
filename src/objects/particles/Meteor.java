@@ -1,17 +1,20 @@
 package objects.particles;
+import java.util.ArrayList;
+import java.util.function.Function;
+
+import game.GameConfig;
 import game.GameEngine;
 import game.Level;
+import physics.PhysicsStep;
+import physics.forces.ForceRegistry;
 import processing.core.PApplet;
 
 public class Meteor extends Particle {
     
     public static final int METEOR_RADIUS = 10;
     
-    public Level level;
-    
-    public Meteor(Level level, int xPos, int yPos, float xVel, float yVel, float mass) {
+    public Meteor(int xPos, int yPos, float xVel, float yVel, float mass) {
         super(xPos, yPos, xVel, yVel, METEOR_RADIUS, mass);
-        this.level = level;
     }
 	
 	@Override
@@ -25,10 +28,25 @@ public class Meteor extends Particle {
 
 	@Override
 	public Explosion destroy() {
-		level.meteorCount--;
 		destroyed = true;
-		position.y = GameEngine.GROUND_HEIGHT;
+		position.y = GameConfig.GROUND_HEIGHT;
 		return new Explosion(position, radius);
+	}
+	
+	
+	public static PhysicsStep getStep(ArrayList<Meteor> meteors, ArrayList<BlackHole> blackholes, ForceRegistry fr) {
+		return new PhysicsStep(meteors, new Function<Meteor, Void>() {
+			
+			@Override
+			public Void apply(Meteor me) {
+				me.integrate();
+				
+	        	for (BlackHole bh : blackholes) {
+	        		fr.register(me, bh.attractionForce);
+	        	}
+				return null;
+			}
+    	});
 	}
 	
     

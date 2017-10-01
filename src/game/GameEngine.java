@@ -1,8 +1,9 @@
 package game;
-import java.util.Iterator;
-import java.util.function.Function;
 
+import game.states.GameContext;
 import game.states.GameInput;
+import game.states.GameState;
+import game.states.impl.StartState;
 import objects.buildings.Cannon;
 import objects.buildings.City;
 import objects.particles.BlackHole;
@@ -10,237 +11,134 @@ import objects.particles.BlackHoleMissile;
 import objects.particles.Explosion;
 import objects.particles.Meteor;
 import objects.particles.Missile;
-import objects.particles.Particle;
 import physics.PhysEngine;
-import physics.PhysicsStep;
-import physics.forces.impl.Gravity;
 import processing.core.PApplet;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
-public class GameEngine{
-
-	public static final int SCREEN_X = 800;
-	public static final int SCREEN_Y = 600;
-	public static final int GROUND_HEIGHT = 550;
+public class GameEngine {
 	
-	public static final int NUM_PARTICLES = 30;
-	public static final int NUM_CANNONS = 4;
-	public static final int NUM_CITIES = 5;
-	public static final int NUM_STARTING_MISSILES = 10;
+	public PApplet parent;
 	
-	public static final int METEOR_EXPLODE_SCORE = 11;
-	public static final int METEOR_REMOVED_SCORE = 23;
-	
-	private PApplet parent;
-	
-	public Level level;
-	
-    public PhysEngine physicsEngine;
     public DrawEngine drawEngine;
     
-    public ArrayList<Meteor> meteors;
-    public ArrayList<Missile> missiles;
-    public ArrayList<Explosion> explosions;
-    
-	public ArrayList<BlackHoleMissile> bhms;
-	public ArrayList<BlackHole> blackholes;
-	
-    public ArrayList<City> cities;
-    public ArrayList<Cannon> cannons;
-
-    public int score;
-    public int numMissiles;
-    public int numBlackholes;
-    
-    public int cityCount;
-    public boolean gameOver;
+    public GameContext context;
     public GameState state;
 
     
-    public GameEngine(PApplet parent) {
+    public GameEngine(PApplet parent, DrawEngine drawEngine) {
     	this.parent = parent;
-    	this.level = new Level();
-    	this.gameOver = false;
-    	this.state = GameState.PLAYING;
-    	this.cityCount = NUM_CITIES;
-    	
-    	this.score = 0;
-    	this.numMissiles = NUM_STARTING_MISSILES;
-    	this.numBlackholes = 0;
-    	
-    	physicsEngine = new PhysEngine();
-	    drawEngine = new DrawEngine(parent);
+    	this.context = createNewContext();
+    	this.state = new StartState(context, drawEngine);
 
-	    initLists();
-	    initGameObjects(parent);
+	    this.drawEngine = drawEngine;
+//
+//	    initLists();
+//	    initGameObjects(parent);
     }
+//    
+//    private void resetGame() {
+//    	level = new Level();
+////    	gameOver = false;
+//    	
+////    	initLists();
+////    	initGameObjects(parent);
+//    }
+//    
+    public static GameContext createNewContext() {
+    	ArrayList<Meteor> meteors = new ArrayList<Meteor>();
+    	ArrayList<Missile> missiles = new ArrayList<Missile>();
+    	ArrayList<Explosion> explosions = new ArrayList<Explosion>();
     
-    private void resetGame() {
-    	level = new Level();
-    	gameOver = false;
-    	cityCount = NUM_CITIES;
+    	ArrayList<BlackHoleMissile> bhms = new ArrayList<BlackHoleMissile>();
+    	ArrayList<BlackHole> blackholes = new ArrayList<BlackHole>();
     	
-    	initLists();
-    	initGameObjects(parent);
-    }
-    
-    private void initLists() {
-    	meteors = new ArrayList<Meteor>();
-    	missiles = new ArrayList<Missile>();
-    	explosions = new ArrayList<Explosion>();
-    
-    	bhms = new ArrayList<BlackHoleMissile>();
-    	blackholes = new ArrayList<BlackHole>();
+    	ArrayList<City> cities = new ArrayList<City>();
+    	ArrayList<Cannon> cannons = new ArrayList<Cannon>();
     	
-    	cities = new ArrayList<City>();
-    	cannons = new ArrayList<Cannon>();
+    	initObjects(cities, cannons);
+    	
+    	PhysEngine physicsEngine = new PhysEngine();
+    	Level level = new Level();
+    	
+    	return new GameContext(meteors, missiles, explosions, bhms, blackholes, 
+    							cities, cannons,
+    							physicsEngine, level);
+    						
+    	
     }
     
-    private void initGameObjects(PApplet parent) {
-	    cannons.add(new Cannon(parent, SCREEN_X/2, GROUND_HEIGHT));
-	    
-	    for (int i = 0; i < NUM_CITIES; i++) {
-	        cities.add(new City(50 + ((SCREEN_X/NUM_CITIES) * i), GROUND_HEIGHT));   
+    private static void initObjects(ArrayList<City> cities, ArrayList<Cannon> cannons) {
+	    for (int i = 0; i < GameConfig.NUM_CITIES; i++) {
+	        cities.add(new City(50 + ((GameConfig.SCREEN_X/GameConfig.NUM_CITIES) * i), GameConfig.GROUND_HEIGHT));   
 	    }	
+	    
+	    cannons.add(new Cannon(GameConfig.SCREEN_X/2, GameConfig.GROUND_HEIGHT));
     }
     
 
     public void step() {
-    	switch(state) {
+    	System.out.println(state);
+    	state.display();
+    	state = state.update();
     	
-	    	case START_MENU:
-	    		drawEngine.displayStartMenu();
-	    		break;
-	    		
-	    	case PLAYING:
-	    		playStep();
-	    		drawEngine.displayGame(meteors, missiles, bhms, blackholes, explosions, cities, cannons);
-	    		if (cityCount <= 0) state = GameState.GAMEOVER;
-	    		break;
-	    		
-	    	case PAUSED:
-	    		drawEngine.displayGame(meteors, missiles, bhms, blackholes, explosions, cities, cannons);
-	    		drawEngine.displayPauseMenu();
-	    		break;
-	    		
-	    	case GAMEOVER:
-	    		drawEngine.displayGameOver();
-	    		break;
-	    	}
+//    	switch(state) {
+//    	
+//	    	case START_MENU:
+//	    		drawEngine.displayStartMenu();
+//	    		break;
+//	    		
+//	    	case PLAYING:
+//	    		playStep();
+//	    		drawEngine.displayGame(meteors, missiles, bhms, blackholes, explosions, cities, cannons);
+//	    		if (cityCount <= 0) state = GameState.GAMEOVER;
+//	    		break;
+//	    		
+//	    	case PAUSED:
+//	    		drawEngine.displayGame(meteors, missiles, bhms, blackholes, explosions, cities, cannons);
+//	    		drawEngine.displayPauseMenu();
+//	    		break;
+//	    		
+//	    	case GAMEOVER:
+//	    		drawEngine.displayGameOver();
+//	    		break;
+//	    	}
     }
     
-	public void handleMousePress(int mouseX, int mouseY, int mouseButton, int keyPressed) {
+	public void handleInput(int mouseX, int mouseY, int mouseButton, int keyPressed) {
 		GameInput input = new GameInput(mouseX, mouseY, mouseButton, keyPressed);
-//		state.handleInput(input);
-		
-	    float xStart = mouseX;
-	    float yStart = mouseY;
-	
-	    Cannon cannon = getClosestCannon((int)xStart, (int)yStart);
-	    //particles.add(cannon.shoot(new PVector(xStart, yStart)))
-	    
-	    if (mouseY < GROUND_HEIGHT) {
-		    if (mouseButton == parent.LEFT) {
-		    	missiles.add(new Missile(parent, cannon.position.x, cannon.position.y, xStart, yStart));
-		    } 
-		    else if (mouseButton == parent.RIGHT) {
-		    	bhms.add(new BlackHoleMissile(parent, cannon.position.x, cannon.position.y, xStart, yStart));
-		    }
-	    }
+		state = state.handleInput(input);
 		
 	}
     
-    private void playStep() {
-		if (level.state == Level.State.FINISHED && level.meteorCount <= 0) {
-	    	level.next();
-	    } else if (level.state == Level.State.RUNNING) {
-		    spawnMeteors(level);
-	    }
-
-    	PhysicsStep meteorStep = physicsEngine.meteorStep(meteors, blackholes);
-    	PhysicsStep missileStep = physicsEngine.missileStep(missiles, meteors, explosions);
-    	PhysicsStep explosionStep = physicsEngine.explosionStep(explosions, meteors, cities);
-    	PhysicsStep blackholeMissileStep = physicsEngine.blackholeMissileStep(bhms, blackholes);
-
-        physicsEngine.step(meteorStep, missileStep, explosionStep, blackholeMissileStep);
-	    
-	    destroyObjects();
-	    
-	    checkGameOver();
-    }
-
-    private void spawnMeteors(Level level) {
-    	if ((int)parent.random(0, 10) == 1 && level.numMeteors > 0) {
-    	    Meteor meteor = new Meteor(level, (int)parent.random(0, SCREEN_X), 0, parent.random(-2f, 2f), 0f, parent.random(0.1f, 0.5f));
-    	    level.spawnMeteor();
-    	    meteors.add(meteor);
-    	    physicsEngine.registerNewParticle(meteor);
-    	}
-    }
+//    private void playStep() {
+//		if (level.state == Level.State.FINISHED && level.meteorCount <= 0) {
+//	    	level.next();
+//	    } else if (level.state == Level.State.RUNNING) {
+//		    spawnMeteors(level);
+//	    }
+//
+//    	PhysicsStep meteorStep = physicsEngine.meteorStep(meteors, blackholes);
+//    	PhysicsStep missileStep = physicsEngine.missileStep(missiles, meteors, explosions);
+//    	PhysicsStep explosionStep = physicsEngine.explosionStep(explosions, meteors, cities);
+//    	PhysicsStep blackholeMissileStep = physicsEngine.blackholeMissileStep(bhms, blackholes);
+//
+//        physicsEngine.step(meteorStep, missileStep, explosionStep, blackholeMissileStep);
+//	    
+//	    destroyObjects();
+//	    
+//	    checkGameOver();
+//    }
+//
+//    private void spawnMeteors(Level level) {
+//    	if ((int)parent.random(0, 10) == 1 && level.numMeteors > 0) {
+//    	    Meteor meteor = new Meteor(level, (int)parent.random(0, SCREEN_X), 0, parent.random(-2f, 2f), 0f, parent.random(0.1f, 0.5f));
+//    	    level.spawnMeteor();
+//    	    meteors.add(meteor);
+//    	    physicsEngine.registerNewParticle(meteor);
+//    	}
+//    }
     
-    private void destroyObjects() {
-	    destroy(m -> (m.position.y > GROUND_HEIGHT), meteors.iterator(), true);
-	    destroy(m -> m.destroyed == true, missiles.iterator(), true);
-	    destroy(e -> e.lifespan <= 0, explosions.iterator(), true);
 
-	    destroy(m -> (m.position.x + m.radius < 0 || m.position.x - m.radius > SCREEN_X || m.position.y + m.radius < 0), meteors.iterator(), false);
-	    
-	    for (BlackHole bh : blackholes)	destroy(m -> m.checkCollision(bh) != null, meteors.iterator(), false);
-	    
-	    remove(bhm -> bhm.destroyed == true, bhms.iterator());
-	    remove(bh -> bh.lifespan <= 0, blackholes.iterator());
-    }
 
-    private <T extends Particle> void destroy(Function<T, Boolean> filter, Iterator<T> it, boolean explode) {
-    	while (it.hasNext()) {
-    		T object = it.next();
-    	    if(filter.apply(object)) {
-    	    	it.remove();
-    	    	Explosion ex = object.destroy();
-    	    	if (ex != null && explode) explosions.add(ex);
-    	    	if (object.getClass().equals(Meteor.class)) {
-    	    		if (explode) score += METEOR_EXPLODE_SCORE;
-    	    		else score += METEOR_REMOVED_SCORE;
-    	    	}
-    	    }
-    	}
-    }
-    
-    private <T extends IDrawable> void remove(Function<T, Boolean> filter, Iterator<T> it) {
-    	while (it.hasNext()) {
-    		T object = it.next();
-    		if (filter.apply(object)) {
-    			it.remove();
-    		}
-    	}
-    }
-    
-    private void checkGameOver() {
-    	for (City c : cities) {
-    		if (c.destroyed) cityCount--;
-    	}
-		if (cityCount <= 0) {
-			state = GameState.GAMEOVER;
-		}
-		else {
-			cityCount = NUM_CITIES;
-		}
-    }
-
-	public Cannon getClosestCannon(int posX, int posY) {
-    	Cannon closestCannon = null;
-    	float closestDistance = Integer.MAX_VALUE;
-    
-    	for (Cannon cannon : cannons) {
-    	    float distance = PApplet.sqrt(PApplet.sq(cannon.position.x - posX) + PApplet.sq(cannon.position.y - posY));
-    	    if (closestCannon == null || distance < closestDistance) {
-	    		closestCannon = cannon;
-	    		closestDistance = distance;
-    	    }
-    	}
-    
-    	return closestCannon;
-    }
 }

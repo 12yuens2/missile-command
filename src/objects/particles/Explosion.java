@@ -1,4 +1,11 @@
 package objects.particles;
+import java.util.ArrayList;
+import java.util.function.Function;
+
+import objects.buildings.City;
+import physics.Collision;
+import physics.PhysicsStep;
+import physics.forces.ForceRegistry;
 import physics.forces.impl.Explosive;
 import processing.core.PApplet;
 import processing.core.PVector;
@@ -43,5 +50,28 @@ public class Explosion extends Particle{
 	public Explosion destroy() {
 		/* Do not create new explosion when an Explosion is destroyed */
 		return null;
+	}
+	
+	
+	
+	public static PhysicsStep getStep(ArrayList<Explosion> explosions, ArrayList<Meteor> meteors, ArrayList<City> cities, ForceRegistry fr) {
+		return new PhysicsStep(explosions, new Function<Explosion, Void>() {
+			
+			@Override
+			public Void apply(Explosion e) {
+				for (Meteor me : meteors) {
+					Collision collision = me.checkCollision(e);
+					if (collision != null) fr.register(me, e.getForce());
+				}
+				
+				for (City city : cities) {
+					float collideDistance = city.radius + e.radius;
+					float distance = PVector.dist(city.position, e.position);
+					if (distance < collideDistance) city.destroy();
+				}
+				
+				return null;
+			}
+		});
 	}
 }

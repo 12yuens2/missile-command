@@ -11,6 +11,7 @@ import processing.core.PFont;
 public class MissileCommand extends PApplet {
 	
 	public GameEngine gameEngine;
+	public DrawEngine drawEngine;
 	PFont f;
 	
 	
@@ -19,7 +20,8 @@ public class MissileCommand extends PApplet {
 	}
 	
 	public void setup() {
-	    gameEngine = new GameEngine(this);
+	    drawEngine = new DrawEngine(this);
+	    gameEngine = new GameEngine(this, drawEngine);
 	    f = createFont("Arial", 16, true);
 //		frameRate(30);
 	}
@@ -32,12 +34,16 @@ public class MissileCommand extends PApplet {
 		
 		textFont(f, 16);
 		fill(0);
-		text("Score: " + gameEngine.score, 100, 100);
+		text("Score: " + gameEngine.context.score, 100, 100);
 	}
 
 
 	public void mousePressed() {
-		gameEngine.handleMousePress(mouseX, mouseY, mouseButton, keyCode);
+		gameEngine.handleInput(mouseX, mouseY, mouseButton, keyCode);
+	}
+	
+	public void keyPressed() {
+		gameEngine.handleInput(mouseX, mouseY, mouseButton, keyCode);
 	}
 	
 	

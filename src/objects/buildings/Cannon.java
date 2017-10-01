@@ -5,7 +5,7 @@ import processing.core.PVector;
 
 public class Cannon extends Building {
     
-    public Cannon(PApplet parent, int posX, int posY) {
+    public Cannon(int posX, int posY) {
         position = new PVector(posX, posY);
     }
     

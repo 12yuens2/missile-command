@@ -1,5 +1,10 @@
 package objects.particles;
 
+import java.util.ArrayList;
+import java.util.function.Function;
+
+import physics.Collision;
+import physics.PhysicsStep;
 import processing.core.PApplet;
 import processing.core.PVector;
 
@@ -42,6 +47,24 @@ public class Missile extends Particle {
 	public Explosion destroy() {
 		destroyed = true;
 		return new Explosion(position, radius, Explosion.EXPLOSION_LIFESPAN*2);
+	}
+	
+	
+	
+	public static PhysicsStep getStep(ArrayList<Missile> missiles, ArrayList<Meteor> meteors, ArrayList<Explosion> explosions) {
+		return new PhysicsStep(missiles, new Function<Missile, Void>() {
+			
+			@Override
+			public Void apply(Missile m) {
+				m.integrate();
+				
+				for (Meteor me : meteors) {
+					Collision collision = m.checkCollision(me);
+					if (collision != null) explosions.add(m.destroy());
+				}
+				return null;
+			}
+		});
 	}
     
     

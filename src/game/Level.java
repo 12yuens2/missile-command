@@ -4,23 +4,19 @@ public class Level {
 
 	public static final int STARTING_METEORS = 10;
 	
-	public enum State {RUNNING, FINISHED, WAITING};
-	
-	public State state; 
+	public boolean finished; 
 	
 	public int levelNumber;
 	public int numMeteors;
 	public int numToSpawn;
-	public int meteorCount;
 	
 	
 	public Level() {
 		this.levelNumber = 1;
 		this.numMeteors = STARTING_METEORS;
 		this.numToSpawn = numMeteors;
-		this.meteorCount = numMeteors;
 		
-		this.state = State.RUNNING;
+		this.finished = false;
 	}
 	
 	
@@ -33,14 +29,13 @@ public class Level {
 		levelNumber++;
 		numMeteors += 5;
 		numToSpawn = numMeteors;
-		meteorCount = numMeteors;
-		state = State.RUNNING;
+		finished = false;
 	}
 
 
 	public void spawnMeteor() {
 		numToSpawn--;
-		if (numToSpawn <= 0) state = State.FINISHED;
+		if (numToSpawn <= 0) finished = true;
 	}
 	
 }
