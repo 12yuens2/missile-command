@@ -10,7 +10,7 @@ import processing.core.PFont;
 
 public class MissileCommand extends PApplet {
 	
-	public GameEngine gameEngine;
+	public GameController gameEngine;
 	public DrawEngine drawEngine;
 	
 	
@@ -20,7 +20,7 @@ public class MissileCommand extends PApplet {
 	
 	public void setup() {
 	    drawEngine = new DrawEngine(this);
-	    gameEngine = new GameEngine(this, drawEngine);
+	    gameEngine = new GameController(this, drawEngine);
 //		frameRate(30);
 	}
 

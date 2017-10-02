@@ -14,7 +14,7 @@ import physics.forces.impl.Gravity;
 import processing.core.PVector;
 import physics.forces.ForceRegistry;
 
-public class PhysEngine {
+public class PhysicsEngine {
 
 	public static final float dragk1 = 0.0003f;
 	public static final float dragk2 = 0.0001f;
@@ -26,7 +26,7 @@ public class PhysEngine {
     public Drag drag;
     
 
-    public PhysEngine() {
+    public PhysicsEngine() {
     	collisions = new ArrayList<Collision>();
     	
     	forceRegistry = new ForceRegistry();

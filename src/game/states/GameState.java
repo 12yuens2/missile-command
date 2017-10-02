@@ -62,8 +62,7 @@ public abstract class GameState {
 	 * Display most of the game's objects and score information.
 	 */
 	protected void displayGame() {
-		drawEngine.displayGame(context.meteors, context.missiles, context.bhms, context.blackholes, context.explosions, 
-				context.cities, context.cannons);
+		drawEngine.displayGame(context);
 		drawEngine.displayInfo(context.info);
 	}
 	
@@ -72,12 +71,12 @@ public abstract class GameState {
 	 * Update step of the running game to update object positions.
 	 */
 	protected void runningStep() {
-    	PhysicsStep meteorStep = Meteor.getStep(context.meteors, context.blackholes, context.physEngine.forceRegistry);
+    	PhysicsStep meteorStep = Meteor.getStep(context.meteors, context.blackholes, context.forcefields, context.physicsEngine.forceRegistry);
     	PhysicsStep missileStep = Missile.getStep(context.missiles, context.meteors, context.explosions);
-    	PhysicsStep explosionStep = Explosion.getStep(context.explosions, context.meteors, context.cities, context.physEngine.forceRegistry);
+    	PhysicsStep explosionStep = Explosion.getStep(context.explosions, context.meteors, context.cities, context.physicsEngine.forceRegistry);
     	PhysicsStep blackholeMissileStep = BlackHoleMissile.getStep(context.bhms, context.blackholes);
 
-        context.physEngine.step(meteorStep, missileStep, explosionStep, blackholeMissileStep);
+        context.physicsEngine.step(meteorStep, missileStep, explosionStep, blackholeMissileStep);
 	    
 	    destroyObjects();
 	}
@@ -93,6 +92,7 @@ public abstract class GameState {
 	    
 	    remove(bhm -> bhm.destroyed == true, context.bhms.iterator());
 	    remove(bh -> bh.lifespan <= 0, context.blackholes.iterator());
+	    remove(ff -> ff.lifespan <= 0, context.forcefields.iterator());
     }
 	
     private <T extends Particle> void destroy(Function<T, Boolean> filter, Iterator<T> it, boolean explode) {

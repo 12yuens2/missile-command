@@ -1,6 +1,6 @@
 package objects.particles;
 
-import physics.forces.impl.Attraction;
+import physics.forces.impl.Attractive;
 import processing.core.PApplet;
 import processing.core.PVector;
 
@@ -11,13 +11,13 @@ public class BlackHole extends Particle {
 	public static final int BLACKHOLE_LIFESPAN = 100;
 	
 	public int lifespan;
-	public Attraction attractionForce;
+	public Attractive attractionForce;
 	
 	public BlackHole(PVector position) {
 		super(position.x, position.y, 0, 0, BLACKHOLE_RADIUS, BLACKHOLE_MASS);
 		this.lifespan = BLACKHOLE_LIFESPAN;
 		
-		attractionForce = new Attraction(this);
+		attractionForce = new Attractive(this);
 	}
 
 	@Override

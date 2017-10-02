@@ -2,7 +2,7 @@ package game.states.impl;
 
 import game.DrawEngine;
 import game.GameConfig;
-import game.GameEngine;
+import game.GameController;
 import game.states.GameContext;
 import game.states.GameInput;
 import game.states.GameState;
@@ -36,7 +36,7 @@ public class GameOverState extends GameState {
 	@Override
 	public GameState handleInput(GameInput input) {
 		if (input.keyPressed == PConstants.RETURN || input.keyPressed == PConstants.ENTER) {
-			GameContext newGame = GameEngine.createNewContext();
+			GameContext newGame = new GameContext();
 			return new StartState(newGame, drawEngine);
 		}
 		else return this;

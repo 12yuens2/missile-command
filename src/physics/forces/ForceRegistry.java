@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import objects.particles.Particle;
-import physics.forces.impl.Attraction;
+import physics.forces.impl.Attractive;
 
 
 public class ForceRegistry {

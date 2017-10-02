@@ -2,7 +2,7 @@ package game.states.impl;
 
 import game.DrawEngine;
 import game.GameConfig;
-import game.GameEngine;
+import game.GameController;
 import game.states.GameContext;
 import game.states.GameInput;
 import game.states.GameState;

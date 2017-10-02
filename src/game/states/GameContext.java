@@ -4,21 +4,22 @@ import java.util.ArrayList;
 
 import game.DrawEngine;
 import game.GameConfig;
-import game.GameEngine;
+import game.GameController;
 import game.Level;
 import objects.buildings.Cannon;
 import objects.buildings.City;
 import objects.particles.BlackHole;
 import objects.particles.BlackHoleMissile;
 import objects.particles.Explosion;
+import objects.particles.ForceField;
 import objects.particles.Meteor;
 import objects.particles.Missile;
-import physics.PhysEngine;
+import physics.PhysicsEngine;
 import processing.core.PApplet;
 
 public class GameContext {
 
-	public PhysEngine physEngine;
+	public PhysicsEngine physicsEngine;
 	
 	public ArrayList<Meteor> meteors;
     public ArrayList<Missile> missiles;
@@ -26,6 +27,7 @@ public class GameContext {
     
 	public ArrayList<BlackHoleMissile> bhms;
 	public ArrayList<BlackHole> blackholes;
+	public ArrayList<ForceField> forcefields;
 	
     public ArrayList<City> cities;
     public ArrayList<Cannon> cannons;
@@ -35,34 +37,39 @@ public class GameContext {
 
     public int cityCount;
     public int meteorCount;
+
     
-    public GameContext(ArrayList<Meteor> meteors, 
-    				ArrayList<Missile> missiles, 
-    				ArrayList<Explosion> explosions,
-    				ArrayList<BlackHoleMissile> bhms,
-    				ArrayList<BlackHole> blackholes,
-    				ArrayList<City> cities,
-    				ArrayList<Cannon> cannons,
-    				
-    				PhysEngine physEngine,
-    				Level level) {
-    	
-    	this.meteors = meteors;
-    	this.missiles = missiles;
-    	this.explosions = explosions;
-    	this.bhms = bhms;
-    	this.blackholes = blackholes;
-    	this.cities = cities;
-    	this.cannons = cannons;
-    	
-    	this.physEngine = physEngine;
-    	
-    	this.level = level;
+    public GameContext() {
+    	initFields();
+    	initGameObjects(cities, cannons);
     	
     	this.cityCount = cities.size();
     	this.meteorCount = level.numMeteors;
     	
     	this.info = new GameInfo(0, GameConfig.NUM_STARTING_MISSILES, 0, 0, cityCount);    	
+    }
+    
+    private void initFields() {
+    	this.meteors = new ArrayList<Meteor>();
+    	this.missiles = new ArrayList<Missile>();
+    	this.explosions = new ArrayList<Explosion>();
+    	this.bhms = new ArrayList<BlackHoleMissile>();
+    	this.blackholes = new ArrayList<BlackHole>();
+    	this.forcefields = new ArrayList<ForceField>();
+    	this.cities = new ArrayList<City>();
+    	this.cannons = new ArrayList<Cannon>();
+    	
+    	this.physicsEngine = new PhysicsEngine();
+    	this.level = new Level();
+    }
+    
+    
+    private void initGameObjects(ArrayList<City> cities, ArrayList<Cannon> cannons) {
+	    for (int i = 0; i < GameConfig.NUM_CITIES; i++) {
+	        cities.add(new City(50 + ((GameConfig.SCREEN_X/GameConfig.NUM_CITIES) * i), GameConfig.GROUND_HEIGHT));   
+	    }	
+	    
+	    cannons.add(new Cannon(GameConfig.SCREEN_X/2, GameConfig.GROUND_HEIGHT));
     }
     
 

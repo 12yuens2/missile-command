@@ -13,7 +13,6 @@ import processing.core.PVector;
 public class Explosion extends Particle{
     
 	public static final int EXPLOSION_LIFESPAN = 20;
-	
 
     public int lifespan = EXPLOSION_LIFESPAN;
     

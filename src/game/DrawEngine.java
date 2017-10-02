@@ -1,6 +1,7 @@
 package game;
 import java.util.ArrayList;
 
+import game.states.GameContext;
 import game.states.GameInfo;
 import objects.buildings.Cannon;
 import objects.buildings.City;
@@ -20,11 +21,24 @@ public class DrawEngine {
     }
     
     
-    public void displayGame(ArrayList<? extends IDrawable>... drawObjects) {
+    public void displayGame(GameContext context) {
         parent.background(255);
         drawGround();
         
-        for (ArrayList<? extends IDrawable> drawList : drawObjects) {
+        displayDrawables(context.meteors, 
+        		context.missiles, 
+        		context.explosions, 
+        		context.bhms, 
+        		context.blackholes, 
+        		context.forcefields, 
+        		context.cities, 
+        		context.cannons);
+        
+
+    }
+    
+    private void displayDrawables(ArrayList<? extends IDrawable>... drawables) {
+        for (ArrayList<? extends IDrawable> drawList : drawables) {
         	for (IDrawable drawable : drawList) {
         		drawable.display(parent);
         	}
