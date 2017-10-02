@@ -17,17 +17,19 @@ public class GameOverState extends GameState {
 
 	@Override
 	public void display() {
-		parent.background(100);
-		drawEngine.displayGame(context.meteors, context.missiles, context.bhms, context.blackholes, context.explosions, 
-				context.cities, context.cannons);
+		displayGame();
 		
-		drawEngine.drawText(64, "Game Over", GameConfig.SCREEN_X/2, GameConfig.SCREEN_Y/2, 0);
+		int textX = GameConfig.SCREEN_X/2;
+		int textY = GameConfig.SCREEN_Y/3;
+		drawEngine.drawText(32, "Game Over", textX, textY, 0);
+		drawEngine.drawText(32, "Final score: " + context.info.score, textX, textY + 50, 0);
+		drawEngine.drawText(16, "Press Enter to play again.", textX, textY + 100, 0);
 
 	}
 
 	@Override
 	public GameState update() {
-		// TODO Auto-generated method stub
+		runningStep();
 		return this;
 	}
 
@@ -38,6 +40,11 @@ public class GameOverState extends GameState {
 			return new StartState(newGame, drawEngine);
 		}
 		else return this;
+	}
+
+	@Override
+	public void updateScore(int score) {
+		/* Don't update score on game over state */		
 	}
 
 }

@@ -1,6 +1,7 @@
 package game;
 import java.util.ArrayList;
 
+import game.states.GameInfo;
 import objects.buildings.Cannon;
 import objects.buildings.City;
 import objects.particles.Explosion;
@@ -68,6 +69,15 @@ public class DrawEngine {
         parent.vertex(0, GameConfig.SCREEN_Y);
         parent.endShape(parent.CLOSE);
     }
+
+
+	public void displayInfo(GameInfo info) {
+		drawText(16, "Score: " + info.score, 100, 50, 0);
+		drawText(16, "Missiles: " + info.missilesLeft, 100, 75, 0);
+		drawText(16, "Blackholes: " + info.blackholesLeft, 600, 50, 0);
+		drawText(16, "Forcefields: " + info.forcefieldsLeft, 600, 75, 0);
+		
+	}
 
 
 

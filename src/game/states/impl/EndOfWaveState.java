@@ -22,32 +22,36 @@ public class EndOfWaveState extends GameState{
 
 	@Override
 	public void display() {
-		drawEngine.displayGame(context.meteors, context.missiles, context.bhms, context.blackholes, context.explosions, 
-				context.cities, context.cannons);
+		displayGame();
 		
-		drawEngine.drawText(32, "Wave " + context.level.levelNumber + " finished.", GameConfig.SCREEN_X/2, GameConfig.SCREEN_Y/2, 0);
+		int textX = GameConfig.SCREEN_X/2;
+		int textY = GameConfig.SCREEN_Y/3;
+		drawEngine.drawText(32, "Wave " + context.level.levelNumber + " finished.", textX, textY, 0);
+		drawEngine.drawText(16, "Press Enter to start next wave.", textX, textY+50, 0);
 	}
 
 	@Override
 	public GameState update() {
-    	PhysicsStep meteorStep = Meteor.getStep(context.meteors, context.blackholes, context.physEngine.forceRegistry);
-    	PhysicsStep missileStep = Missile.getStep(context.missiles, context.meteors, context.explosions);
-    	PhysicsStep explosionStep = Explosion.getStep(context.explosions, context.meteors, context.cities, context.physEngine.forceRegistry);
-    	PhysicsStep blackholeMissileStep = BlackHoleMissile.getStep(context.bhms, context.blackholes);
-
-        context.physEngine.step(meteorStep, missileStep, explosionStep, blackholeMissileStep);
-        
-		return this;
+    	runningStep();
+	    GameState s = checkGameOver();
+    	
+		return s;
 	}
 
 	@Override
 	public GameState handleInput(GameInput input) {
-		if (input.mouseButton == PConstants.LEFT) {
+		if (input.keyPressed == PConstants.ENTER || input.keyPressed == PConstants.RETURN) {
 	    	context.level.next();
+	    	context.info.resetWaveStart(context.level.levelNumber);
 			context.meteorCount = context.level.numMeteors;
 			return new PlayingState(context, drawEngine);
 		}
 		else return this;
+	}
+
+	@Override
+	public void updateScore(int score) {
+		this.context.info.score += score;
 	}
 
 }

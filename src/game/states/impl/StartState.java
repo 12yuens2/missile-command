@@ -30,4 +30,9 @@ public class StartState extends GameState{
 		else return this;
 	}
 
+	@Override
+	public void updateScore(int score) {
+		/* Do not update score on start state */		
+	}
+
 }

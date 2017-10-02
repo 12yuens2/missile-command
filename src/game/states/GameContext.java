@@ -31,10 +31,8 @@ public class GameContext {
     public ArrayList<Cannon> cannons;
 
     public Level level;
-    
-    public int score;
-    public int numMissiles;
-    public int numBlackholes;
+    public GameInfo info;
+
     public int cityCount;
     public int meteorCount;
     
@@ -61,12 +59,10 @@ public class GameContext {
     	
     	this.level = level;
     	
-    	this.score = 0;
-    	this.numMissiles = GameConfig.NUM_STARTING_MISSILES;
-    	this.numBlackholes = 0;
     	this.cityCount = cities.size();
     	this.meteorCount = level.numMeteors;
     	
+    	this.info = new GameInfo(0, GameConfig.NUM_STARTING_MISSILES, 0, 0, cityCount);    	
     }
     
 
