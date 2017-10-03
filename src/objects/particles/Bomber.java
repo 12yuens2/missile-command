@@ -14,8 +14,10 @@ import processing.core.PConstants;
 
 public class Bomber extends Particle {
 
-	public static final int BOMB_SPAWN = 20;
-	public static final float BOMB_MASS = 1.2f;
+	public static final int BOMB_SPAWN = 220;
+	public static final float BOMB_MASS = 0.8f;
+	public static final float BOMB_SPEED_BASE = 2f;
+	public static final float BOMB_SPEED_MULTIPLIER = 2f;
 	
 	public Bomber(float xPos, float yPos, float xVel, float yVel, float radius, float mass) {
 		super(xPos, yPos, xVel, yVel, radius, 1);
@@ -24,7 +26,7 @@ public class Bomber extends Particle {
 	@Override
 	public void display(PApplet parent) {
 		parent.ellipseMode(PConstants.CENTER);
-        parent.fill(255, 127, 80, 200);
+        parent.fill(204, 0, 204);
         parent.ellipse(position.x, position.y, 50, 20);
 	}
 
@@ -36,7 +38,7 @@ public class Bomber extends Particle {
 	
 	private void spawnBomb(ArrayList<Meteor> meteors, PhysicsEngine physicsEngine, Random r) {
 		float xVel = r.nextFloat()-1f;
-		float yVel = 3f + r.nextFloat() * 4f;
+		float yVel = BOMB_SPEED_BASE + r.nextFloat() * BOMB_SPEED_MULTIPLIER;
 		
 		Meteor meteor = new Meteor(position.x, position.y, xVel, yVel, BOMB_MASS, 0);
 		meteors.add(meteor);

@@ -48,7 +48,8 @@ public class DrawEngine {
     
 	public void displayStartMenu() {
 		parent.background(255);
-		drawText(64, "Start game", GameConfig.SCREEN_X/2, GameConfig.SCREEN_Y/2, 0);
+		drawText(64, "Start game", GameConfig.SCREEN_X/2, GameConfig.SCREEN_Y/2, 0);		
+		drawText(32, "Press Enter to start.", GameConfig.SCREEN_X/2, GameConfig.SCREEN_Y/2+75, 0);
 	}
 
 

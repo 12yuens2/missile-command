@@ -17,6 +17,10 @@ public class Meteor extends Particle {
         super(xPos, yPos, xVel, yVel, METEOR_RADIUS, mass);
     }
     
+    public Meteor(float xPos, float yPos, float xVel, float yVel, float mass, float radius) {
+    	super(xPos, yPos, xVel, yVel, radius, mass);
+    }
+    
     public Meteor(float xPos, float yPos, float xVel, float yVel, float mass, int col) {
     	super(xPos, yPos, xVel, yVel, METEOR_RADIUS, mass);
     	this.col = col;
@@ -35,7 +39,7 @@ public class Meteor extends Particle {
 	public Explosion destroy() {
 		destroyed = true;
 		position.y = GameConfig.GROUND_HEIGHT;
-		return new Explosion(position, radius);
+		return new Explosion(position, radius, false);
 	}
 	
 	

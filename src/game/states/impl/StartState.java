@@ -1,6 +1,7 @@
 package game.states.impl;
 
 import game.DrawEngine;
+import game.GameConfig;
 import game.GameController;
 import game.states.GameContext;
 import game.states.GameInput;
@@ -16,7 +17,7 @@ public class StartState extends GameState{
 
 	@Override
 	public void display() {
-		drawEngine.displayStartMenu();		
+		drawEngine.displayStartMenu();
 	}
 
 	@Override
@@ -26,7 +27,7 @@ public class StartState extends GameState{
 
 	@Override
 	public GameState handleInput(GameInput input) {
-		if (input.mouseButton == PConstants.LEFT) return new PlayingState(context, drawEngine);
+		if (input.keyPressed == PConstants.ENTER || input.keyPressed == PConstants.RETURN) return new PlayingState(context, drawEngine);
 		else return this;
 	}
 

@@ -16,18 +16,20 @@ public class Explosion extends Particle{
 	public static final int EXPLOSION_LIFESPAN = 20;
 
     public int lifespan = EXPLOSION_LIFESPAN;
+    public boolean friendly;
     
-    public Explosion(float posX, float posY, float startRadius, int lifespan) {
+    public Explosion(float posX, float posY, float startRadius, int lifespan, boolean friendly) {
         super(posX, posY, 0, 0, startRadius, 0);
         this.lifespan = lifespan;
+        this.friendly = friendly;
     }
     
-    public Explosion(PVector position, float radius) {
-		this(position.x, position.y, radius, EXPLOSION_LIFESPAN);
+    public Explosion(PVector position, float radius, boolean friendly) {
+		this(position.x, position.y, radius, EXPLOSION_LIFESPAN, friendly);
 	}
     
-    public Explosion(PVector position, float radius, int lifespan) {
-    	this(position.x, position.y, radius, lifespan);
+    public Explosion(PVector position, float radius, int lifespan, boolean friendly) {
+    	this(position.x, position.y, radius, lifespan, friendly);
     }
     
     public Explosive getForce() {
@@ -67,7 +69,7 @@ public class Explosion extends Particle{
 				for (City city : context.cities) {
 					float collideDistance = city.radius + e.radius;
 					float distance = PVector.dist(city.position, e.position);
-					if (distance < collideDistance) city.destroy();
+					if (distance < collideDistance && !e.friendly) city.destroy();
 				}
 				
 				return null;

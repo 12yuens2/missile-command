@@ -61,7 +61,7 @@ public class PlayingState extends GameState {
 		    	context.info.missilesLeft--;
 		    	context.missiles.add(new Missile(parent, cannon.position.x, cannon.position.y, mouseX, mouseY));
 		    } 
-		    else if (input.mouseButton == PConstants.RIGHT && context.info.blackholesLeft > 0) {
+		    else if (input.mouseButton == PConstants.RIGHT) {
 		    	context.info.blackholesLeft--;
 		    	context.bhms.add(new BlackHoleMissile(parent, cannon.position.x, cannon.position.y, mouseX, mouseY));
 		    }

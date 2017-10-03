@@ -47,7 +47,7 @@ public class Missile extends Particle {
 	@Override
 	public Explosion destroy() {
 		destroyed = true;
-		return new Explosion(position, radius, Explosion.EXPLOSION_LIFESPAN*2);
+		return new Explosion(position, radius, Explosion.EXPLOSION_LIFESPAN*2, true);
 	}
 	
 	
