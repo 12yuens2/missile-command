@@ -15,9 +15,13 @@ import processing.core.PConstants;
 
 public class EndOfWaveState extends GameState{
 
-	public EndOfWaveState(GameContext context, DrawEngine drawEngine) {
+	private int bonusScore;
+	
+	public EndOfWaveState(GameContext context, DrawEngine drawEngine, int bonusScore) {
 		super(context, drawEngine);
-		// TODO Auto-generated constructor stub
+		this.bonusScore = bonusScore;
+		
+		updateScore(bonusScore);
 	}
 
 	@Override
@@ -25,9 +29,10 @@ public class EndOfWaveState extends GameState{
 		displayGame();
 		
 		int textX = GameConfig.SCREEN_X/2;
-		int textY = GameConfig.SCREEN_Y/3;
+		int textY = GameConfig.SCREEN_Y/4;
 		drawEngine.drawText(32, "Wave " + context.level.levelNumber + " finished.", textX, textY, 0);
-		drawEngine.drawText(16, "Press Enter to start next wave.", textX, textY+50, 0);
+		drawEngine.drawText(16, bonusScore + " bonus score for remaining cities and missiles.", textX, textY+50, 0);
+		drawEngine.drawText(16, "Press Enter to start next wave.", textX, textY+75, 0);
 	}
 
 	@Override
@@ -43,7 +48,7 @@ public class EndOfWaveState extends GameState{
 		if (input.keyPressed == PConstants.ENTER || input.keyPressed == PConstants.RETURN) {
 	    	context.level.next();
 	    	context.info.resetWaveStart(context.level.levelNumber);
-			context.meteorCount = context.level.numMeteors;
+			context.meteorCount = context.level.meteorSpawnCount;
 			return new PlayingState(context, drawEngine);
 		}
 		else return this;

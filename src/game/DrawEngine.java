@@ -27,7 +27,8 @@ public class DrawEngine {
         
         displayDrawables(context.meteors, 
         		context.missiles, 
-        		context.explosions, 
+        		context.explosions,
+        		context.bombers,
         		context.bhms, 
         		context.blackholes, 
         		context.forcefields, 

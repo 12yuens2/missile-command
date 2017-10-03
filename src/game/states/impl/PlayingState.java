@@ -8,6 +8,7 @@ import game.states.GameInput;
 import game.states.GameState;
 import objects.buildings.Cannon;
 import objects.particles.BlackHoleMissile;
+import objects.particles.Bomber;
 import objects.particles.ForceField;
 import objects.particles.Meteor;
 import objects.particles.Missile;
@@ -30,13 +31,15 @@ public class PlayingState extends GameState {
 	public GameState update() {
 
 		if (context.level.finished && context.meteorCount <= 0) {
-			updateScore(context.info.citiesLeft * GameConfig.CITY_SURVIVE_SCORE);
-			updateScore(context.info.missilesLeft * GameConfig.MISSILE_LEFT_SCORE);
-	    	return new EndOfWaveState(context, drawEngine);
+			int bonusCityScore = context.info.citiesLeft * GameConfig.CITY_SURVIVE_SCORE;
+			int bonusMissileScore = context.info.missilesLeft * GameConfig.MISSILE_LEFT_SCORE;
+
+	    	return new EndOfWaveState(context, drawEngine, bonusCityScore + bonusMissileScore);
 	    } 
 		
 		if (!context.level.finished) {
 		    spawnMeteors(context.level);
+		    spawnBomber(context.level);
 	    }
 		
     	runningStep();
@@ -52,7 +55,6 @@ public class PlayingState extends GameState {
 	    float mouseY = input.mouseY;
 	
 	    Cannon cannon = context.getClosestCannon((int)mouseX, (int)mouseY);
-	    //particles.add(cannon.shoot(new PVector(xStart, yStart)))
 	    
 	    if (mouseY < GameConfig.GROUND_HEIGHT) {
 		    if (input.mouseButton == PConstants.LEFT && context.info.missilesLeft > 0) {
@@ -72,15 +74,23 @@ public class PlayingState extends GameState {
 	    return this;
 	}
 	
-	
     private void spawnMeteors(Level level) {
-    	if ((int)parent.random(0, 10) == 1 && level.numMeteors > 0) {
-    	    Meteor meteor = new Meteor((int)parent.random(0, GameConfig.SCREEN_X), 0, parent.random(-2f, 2f), 0f, parent.random(0.1f, 0.5f));
+    	if ((int)parent.random(0, 10) == 1) {
+    	    Meteor meteor = new Meteor(parent.random(100, GameConfig.SCREEN_X - 100), 0, parent.random(-2f, 2f), 0f, parent.random(0.1f, 0.5f));
     	    level.spawnMeteor();
     	    context.meteors.add(meteor);
     	    context.physicsEngine.registerNewParticle(meteor);
     	}
     }
+    
+	private void spawnBomber(Level level) {
+    	if ((int)parent.random(0, 10) == 1 && level.numBombers > 0) {
+    		Bomber bomber = new Bomber(0, parent.random(50, 200), 1f, parent.random(-0.2f, 0.2f), 0f, 0);
+    		level.spawnBomber();
+    	    context.bombers.add(bomber);
+    	    /* For simplicity, bombers are not affected by any forces, so do not add to the force registry. */
+    	}
+	}
 
 	@Override
 	public void updateScore(int score) {

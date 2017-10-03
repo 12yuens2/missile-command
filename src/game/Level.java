@@ -7,14 +7,20 @@ public class Level {
 	public boolean finished; 
 	
 	public int levelNumber;
+	public int meteorSpawnCount;
 	public int numMeteors;
-	public int numToSpawn;
 	
+	public int numBombers;
+	public int bomberSpawnCount;
 	
 	public Level() {
 		this.levelNumber = 1;
-		this.numMeteors = STARTING_METEORS;
-		this.numToSpawn = numMeteors;
+		
+		this.meteorSpawnCount = STARTING_METEORS;
+		this.numMeteors = meteorSpawnCount;
+		
+		this.bomberSpawnCount = 1;
+		this.numBombers = bomberSpawnCount;
 		
 		this.finished = false;
 	}
@@ -27,15 +33,24 @@ public class Level {
 	
 	public void next() {
 		levelNumber++;
-		numMeteors += 5;
-		numToSpawn = numMeteors;
+		
+		meteorSpawnCount += 5;
+		numMeteors = meteorSpawnCount;
+		
+		if (levelNumber % 5 == 0) bomberSpawnCount += 1;
+		numBombers = bomberSpawnCount;
+		
 		finished = false;
 	}
 
 
 	public void spawnMeteor() {
-		numToSpawn--;
-		if (numToSpawn <= 0) finished = true;
+		numMeteors--;
+		if (numMeteors <= 0) finished = true;
+	}
+	
+	public void spawnBomber() {
+		if (numBombers > 0) numBombers--;
 	}
 	
 }

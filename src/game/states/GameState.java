@@ -10,6 +10,7 @@ import game.states.impl.GameOverState;
 import objects.buildings.City;
 import objects.particles.BlackHole;
 import objects.particles.BlackHoleMissile;
+import objects.particles.Bomber;
 import objects.particles.Explosion;
 import objects.particles.Meteor;
 import objects.particles.Missile;
@@ -75,8 +76,9 @@ public abstract class GameState {
     	PhysicsStep missileStep = Missile.getStep(context.missiles, context.meteors, context.explosions);
     	PhysicsStep explosionStep = Explosion.getStep(context.explosions, context.meteors, context.cities, context.physicsEngine.forceRegistry);
     	PhysicsStep blackholeMissileStep = BlackHoleMissile.getStep(context.bhms, context.blackholes);
+    	PhysicsStep bomberStep = Bomber.getStep(this.getClass(), context.bombers, context.meteors, context.physicsEngine);
 
-        context.physicsEngine.step(meteorStep, missileStep, explosionStep, blackholeMissileStep);
+        context.physicsEngine.step(meteorStep, missileStep, explosionStep, blackholeMissileStep, bomberStep);
 	    
 	    destroyObjects();
 	}

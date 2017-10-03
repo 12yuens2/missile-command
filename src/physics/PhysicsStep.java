@@ -15,7 +15,7 @@ public class PhysicsStep {
 		this.particles = particles;
 		this.step = function;
 	}
-	
+
 	public void apply() {
 		for (Particle p : particles) {
 			step.apply(p);

@@ -10,6 +10,7 @@ import objects.buildings.Cannon;
 import objects.buildings.City;
 import objects.particles.BlackHole;
 import objects.particles.BlackHoleMissile;
+import objects.particles.Bomber;
 import objects.particles.Explosion;
 import objects.particles.ForceField;
 import objects.particles.Meteor;
@@ -24,6 +25,7 @@ public class GameContext {
 	public ArrayList<Meteor> meteors;
     public ArrayList<Missile> missiles;
     public ArrayList<Explosion> explosions;
+    public ArrayList<Bomber> bombers;
     
 	public ArrayList<BlackHoleMissile> bhms;
 	public ArrayList<BlackHole> blackholes;
@@ -44,7 +46,7 @@ public class GameContext {
     	initGameObjects(cities, cannons);
     	
     	this.cityCount = cities.size();
-    	this.meteorCount = level.numMeteors;
+    	this.meteorCount = level.meteorSpawnCount;
     	
     	this.info = new GameInfo(0, GameConfig.NUM_STARTING_MISSILES, 0, 0, cityCount);    	
     }
@@ -53,6 +55,7 @@ public class GameContext {
     	this.meteors = new ArrayList<Meteor>();
     	this.missiles = new ArrayList<Missile>();
     	this.explosions = new ArrayList<Explosion>();
+    	this.bombers = new ArrayList<Bomber>();
     	this.bhms = new ArrayList<BlackHoleMissile>();
     	this.blackholes = new ArrayList<BlackHole>();
     	this.forcefields = new ArrayList<ForceField>();
