@@ -3,6 +3,7 @@ package objects.particles;
 import java.util.ArrayList;
 import java.util.function.Function;
 
+import game.states.GameContext;
 import physics.Collision;
 import physics.PhysicsStep;
 import processing.core.PApplet;
@@ -51,16 +52,16 @@ public class Missile extends Particle {
 	
 	
 	
-	public static PhysicsStep getStep(ArrayList<Missile> missiles, ArrayList<Meteor> meteors, ArrayList<Explosion> explosions) {
-		return new PhysicsStep(missiles, new Function<Missile, Void>() {
+	public static PhysicsStep getStep(GameContext context) {
+		return new PhysicsStep(context.missiles, new Function<Missile, Void>() {
 			
 			@Override
 			public Void apply(Missile m) {
 				m.integrate();
 				
-				for (Meteor me : meteors) {
+				for (Meteor me : context.meteors) {
 					Collision collision = m.checkCollision(me);
-					if (collision != null) explosions.add(m.destroy());
+					if (collision != null) context.explosions.add(m.destroy());
 				}
 				return null;
 			}

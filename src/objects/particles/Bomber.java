@@ -5,6 +5,7 @@ import java.util.Random;
 import java.util.function.Function;
 
 import game.Level;
+import game.states.GameContext;
 import game.states.GameState;
 import game.states.impl.PlayingState;
 import physics.PhysicsEngine;
@@ -42,15 +43,15 @@ public class Bomber extends Particle {
 		physicsEngine.registerNewParticle(meteor);
 	}
 
-	public static PhysicsStep getStep(Class<? extends GameState> stateClass, ArrayList<Bomber> bombers, ArrayList<Meteor> meteors, PhysicsEngine physicsEngine) {
-		return new PhysicsStep(bombers, new Function<Bomber, Void>() {
+	public static PhysicsStep getStep(Class<? extends GameState> stateClass, GameContext context) {
+		return new PhysicsStep(context.bombers, new Function<Bomber, Void>() {
 			
 			@Override
 			public Void apply(Bomber b) {
 				b.integrate();
 				
 				Random r = new Random();
-				if (r.nextInt(bombSpawn) == 0 && stateClass.equals(PlayingState.class)) b.spawnBomb(meteors, physicsEngine, r);
+				if (r.nextInt(bombSpawn) == 0 && stateClass.equals(PlayingState.class)) b.spawnBomb(context.meteors, context.physicsEngine, r);
 				
 				return null;
 			}

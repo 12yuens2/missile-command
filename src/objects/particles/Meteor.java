@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.function.Function;
 
 import game.GameConfig;
+import game.states.GameContext;
 import physics.PhysicsStep;
 import physics.forces.ForceRegistry;
 import processing.core.PApplet;
@@ -38,20 +39,19 @@ public class Meteor extends Particle {
 	}
 	
 	
-	public static PhysicsStep getStep(ArrayList<Meteor> meteors, ArrayList<BlackHole> blackholes, ArrayList<ForceField> forcefields, 
-			ForceRegistry fr) {
-		return new PhysicsStep(meteors, new Function<Meteor, Void>() {
+	public static PhysicsStep getStep(GameContext context) {
+		return new PhysicsStep(context.meteors, new Function<Meteor, Void>() {
 			
 			@Override
 			public Void apply(Meteor me) {
 				me.integrate();
 				
-	        	for (BlackHole bh : blackholes) {
-	        		fr.register(me, bh.attractionForce);
+	        	for (BlackHole bh : context.blackholes) {
+	        		context.physicsEngine.forceRegistry.register(me, bh.attractionForce);
 	        	}
 	        	
-	        	for (ForceField ff : forcefields) {
-	        		fr.register(me, ff.repulsiveForce);
+	        	for (ForceField ff : context.forcefields) {
+	        		context.physicsEngine.forceRegistry.register(me, ff.repulsiveForce);
 	        	}
 				return null;
 			}

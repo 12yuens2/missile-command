@@ -72,11 +72,11 @@ public abstract class GameState {
 	 * Update step of the running game to update object positions.
 	 */
 	protected void runningStep() {
-    	PhysicsStep meteorStep = Meteor.getStep(context.meteors, context.blackholes, context.forcefields, context.physicsEngine.forceRegistry);
-    	PhysicsStep missileStep = Missile.getStep(context.missiles, context.meteors, context.explosions);
-    	PhysicsStep explosionStep = Explosion.getStep(context.explosions, context.meteors, context.cities, context.physicsEngine.forceRegistry);
-    	PhysicsStep blackholeMissileStep = BlackHoleMissile.getStep(context.bhms, context.blackholes);
-    	PhysicsStep bomberStep = Bomber.getStep(this.getClass(), context.bombers, context.meteors, context.physicsEngine);
+    	PhysicsStep meteorStep = Meteor.getStep(context);
+    	PhysicsStep missileStep = Missile.getStep(context);
+    	PhysicsStep explosionStep = Explosion.getStep(context);
+    	PhysicsStep blackholeMissileStep = BlackHoleMissile.getStep(context);
+    	PhysicsStep bomberStep = Bomber.getStep(this.getClass(), context);
 
         context.physicsEngine.step(meteorStep, missileStep, explosionStep, blackholeMissileStep, bomberStep);
 	    

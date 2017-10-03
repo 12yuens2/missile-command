@@ -2,6 +2,7 @@ package objects.particles;
 import java.util.ArrayList;
 import java.util.function.Function;
 
+import game.states.GameContext;
 import objects.buildings.City;
 import physics.Collision;
 import physics.PhysicsStep;
@@ -53,17 +54,17 @@ public class Explosion extends Particle{
 	
 	
 	
-	public static PhysicsStep getStep(ArrayList<Explosion> explosions, ArrayList<Meteor> meteors, ArrayList<City> cities, ForceRegistry fr) {
-		return new PhysicsStep(explosions, new Function<Explosion, Void>() {
+	public static PhysicsStep getStep(GameContext context) {
+		return new PhysicsStep(context.explosions, new Function<Explosion, Void>() {
 			
 			@Override
 			public Void apply(Explosion e) {
-				for (Meteor me : meteors) {
+				for (Meteor me : context.meteors) {
 					Collision collision = me.checkCollision(e);
-					if (collision != null) fr.register(me, e.getForce());
+					if (collision != null) context.physicsEngine.forceRegistry.register(me, e.getForce());
 				}
 				
-				for (City city : cities) {
+				for (City city : context.cities) {
 					float collideDistance = city.radius + e.radius;
 					float distance = PVector.dist(city.position, e.position);
 					if (distance < collideDistance) city.destroy();
