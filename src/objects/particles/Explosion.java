@@ -1,14 +1,14 @@
 package objects.particles;
-import java.util.ArrayList;
+
 import java.util.function.Function;
 
 import game.states.GameContext;
 import objects.buildings.City;
 import physics.Collision;
 import physics.PhysicsStep;
-import physics.forces.ForceRegistry;
 import physics.forces.impl.Explosive;
 import processing.core.PApplet;
+import processing.core.PConstants;
 import processing.core.PVector;
 
 public class Explosion extends Particle{
@@ -40,7 +40,7 @@ public class Explosion extends Particle{
             lifespan--;
             
             float size = radius * 2;
-            parent.ellipseMode(parent.CENTER);
+            parent.ellipseMode(PConstants.CENTER);
             parent.fill(255, 127, 80, 200);
             parent.ellipse(position.x, position.y, size, size);
         }   

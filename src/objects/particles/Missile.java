@@ -1,21 +1,21 @@
 package objects.particles;
 
-import java.util.ArrayList;
 import java.util.function.Function;
 
 import game.states.GameContext;
 import physics.Collision;
 import physics.PhysicsStep;
 import processing.core.PApplet;
+import processing.core.PConstants;
 import processing.core.PVector;
 
 public class Missile extends Particle {
 
 	public static final int MISSILE_MASS = 2;
 	public static final int MISSILE_RADIUS = 10;
-	public static final float MISSILE_SPEED_MULT = 6f;
+	public static final float MISSILE_SPEED_MULT = 5f;
 	
-	private static final float DETECT_RANGE = 3f;
+	private static final float DETECT_RANGE = 5f;
 	
     public PVector destinationPos;
     
@@ -38,7 +38,7 @@ public class Missile extends Particle {
         	destroyed = true;
         } else {
         	float size = radius * 2;
-            parent.ellipseMode(parent.CENTER);
+            parent.ellipseMode(PConstants.CENTER);
             parent.fill(col);
             parent.ellipse(position.x, position.y, size, size);
         }
@@ -58,10 +58,9 @@ public class Missile extends Particle {
 			@Override
 			public Void apply(Missile m) {
 				m.integrate();
-				
 				for (Meteor me : context.meteors) {
 					Collision collision = m.checkCollision(me);
-					if (collision != null) context.explosions.add(m.destroy());
+					if (collision != null) m.destroy();
 				}
 				return null;
 			}

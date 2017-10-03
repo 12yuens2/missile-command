@@ -74,6 +74,8 @@ public class PlayingState extends GameState {
 	    return this;
 	}
 	
+	
+	
     private void spawnMeteors(Level level) {
     	if ((int)parent.random(0, 10) == 1) {
     	    Meteor meteor = new Meteor(parent.random(100, GameConfig.SCREEN_X - 100), 0, parent.random(-2f, 2f), 0f, parent.random(0.1f, 0.5f));

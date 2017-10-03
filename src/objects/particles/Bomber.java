@@ -4,18 +4,18 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.function.Function;
 
-import game.Level;
 import game.states.GameContext;
 import game.states.GameState;
 import game.states.impl.PlayingState;
 import physics.PhysicsEngine;
 import physics.PhysicsStep;
-import physics.forces.ForceRegistry;
 import processing.core.PApplet;
+import processing.core.PConstants;
 
 public class Bomber extends Particle {
 
-	public static final int bombSpawn = 150;
+	public static final int BOMB_SPAWN = 20;
+	public static final float BOMB_MASS = 1.2f;
 	
 	public Bomber(float xPos, float yPos, float xVel, float yVel, float radius, float mass) {
 		super(xPos, yPos, xVel, yVel, radius, 1);
@@ -23,7 +23,7 @@ public class Bomber extends Particle {
 
 	@Override
 	public void display(PApplet parent) {
-		parent.ellipseMode(parent.CENTER);
+		parent.ellipseMode(PConstants.CENTER);
         parent.fill(255, 127, 80, 200);
         parent.ellipse(position.x, position.y, 50, 20);
 	}
@@ -38,7 +38,7 @@ public class Bomber extends Particle {
 		float xVel = r.nextFloat()-1f;
 		float yVel = 3f + r.nextFloat() * 4f;
 		
-		Meteor meteor = new Meteor(position.x, position.y, xVel, yVel, 10, 0);
+		Meteor meteor = new Meteor(position.x, position.y, xVel, yVel, BOMB_MASS, 0);
 		meteors.add(meteor);
 		physicsEngine.registerNewParticle(meteor);
 	}
@@ -51,7 +51,10 @@ public class Bomber extends Particle {
 				b.integrate();
 				
 				Random r = new Random();
-				if (r.nextInt(bombSpawn) == 0 && stateClass.equals(PlayingState.class)) b.spawnBomb(context.meteors, context.physicsEngine, r);
+				if (r.nextInt(BOMB_SPAWN) == 0 && stateClass.equals(PlayingState.class)) {
+					b.spawnBomb(context.meteors, context.physicsEngine, r);
+					context.meteorCount++;
+				}
 				
 				return null;
 			}
