@@ -15,6 +15,7 @@ import processing.core.PConstants;
 public class Bomber extends Particle {
 
 	public static final int BOMB_SPAWN = 220;
+	public static final float BOMB_RADIUS = 10;
 	public static final float BOMB_MASS = 0.8f;
 	public static final float BOMB_SPEED_BASE = 2f;
 	public static final float BOMB_SPEED_MULTIPLIER = 2f;
@@ -40,7 +41,7 @@ public class Bomber extends Particle {
 		float xVel = r.nextFloat()-1f;
 		float yVel = BOMB_SPEED_BASE + r.nextFloat() * BOMB_SPEED_MULTIPLIER;
 		
-		Meteor meteor = new Meteor(position.x, position.y, xVel, yVel, BOMB_MASS, 0);
+		Meteor meteor = new Meteor(position.x, position.y, xVel, yVel, BOMB_RADIUS, BOMB_MASS, 0);
 		meteors.add(meteor);
 		physicsEngine.registerNewParticle(meteor);
 	}

@@ -1,28 +1,26 @@
 package objects.particles;
 
-import java.util.ArrayList;
 import java.util.function.Function;
 
 import game.GameConfig;
 import game.states.GameContext;
 import physics.PhysicsStep;
-import physics.forces.ForceRegistry;
 import processing.core.PApplet;
 
 public class Meteor extends Particle {
     
-    public static final int METEOR_RADIUS = 10;
+    public static final int METEOR_RADIUS_BASE = 20;
     
     public Meteor(float xPos, float yPos, float xVel, float yVel, float mass) {
-        super(xPos, yPos, xVel, yVel, METEOR_RADIUS, mass);
+        super(xPos, yPos, xVel, yVel, METEOR_RADIUS_BASE * mass, mass);
     }
     
-    public Meteor(float xPos, float yPos, float xVel, float yVel, float mass, float radius) {
+    public Meteor(float xPos, float yPos, float xVel, float yVel, float radius, float mass) {
     	super(xPos, yPos, xVel, yVel, radius, mass);
     }
     
-    public Meteor(float xPos, float yPos, float xVel, float yVel, float mass, int col) {
-    	super(xPos, yPos, xVel, yVel, METEOR_RADIUS, mass);
+    public Meteor(float xPos, float yPos, float xVel, float yVel, float radius, float mass, int col) {
+    	super(xPos, yPos, xVel, yVel, radius, mass);
     	this.col = col;
     }
 	

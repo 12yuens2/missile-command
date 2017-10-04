@@ -15,11 +15,13 @@ public class Explosion extends Particle{
     
 	public static final int EXPLOSION_LIFESPAN = 20;
 
+	public float initialRadius;
     public int lifespan = EXPLOSION_LIFESPAN;
     public boolean friendly;
     
     public Explosion(float posX, float posY, float startRadius, int lifespan, boolean friendly) {
         super(posX, posY, 0, 0, startRadius, 0);
+        this.initialRadius = startRadius;
         this.lifespan = lifespan;
         this.friendly = friendly;
     }
@@ -38,7 +40,7 @@ public class Explosion extends Particle{
 
 	public void display(PApplet parent) {
         if (lifespan >= 0) {
-            radius += 1;
+            radius += initialRadius/10f;
             lifespan--;
             
             float size = radius * 2;

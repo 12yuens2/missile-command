@@ -78,7 +78,13 @@ public class PlayingState extends GameState {
 	
     private void spawnMeteors(Level level) {
     	if ((int)parent.random(0, 10) == 1) {
-    	    Meteor meteor = new Meteor(parent.random(100, GameConfig.SCREEN_X - 100), 0, parent.random(-2f, 2f), 0f, parent.random(0.1f, 0.5f));
+    		float xPos = parent.random(100, GameConfig.SCREEN_X - 100);
+    		float yPos = 0;
+    		float xVel = parent.random(-2f, 2f);
+    		float yVel = parent.random(0, 3f);
+    		float mass = parent.random(0.1f, 0.5f);
+    		
+    	    Meteor meteor = new Meteor(xPos, yPos, xVel, yVel, mass);
     	    level.spawnMeteor();
     	    context.meteors.add(meteor);
     	    context.physicsEngine.registerNewParticle(meteor);
