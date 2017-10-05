@@ -7,6 +7,7 @@ import game.DrawEngine;
 import game.GameConfig;
 import game.IDrawable;
 import game.states.impl.GameOverState;
+import game.states.impl.StartState;
 import objects.buildings.City;
 import objects.particles.BlackHole;
 import objects.particles.BlackHoleMissile;
@@ -120,5 +121,11 @@ public abstract class GameState {
     			it.remove();
     		}
     	}
+    }
+    
+    
+    protected StartState newGame() {
+		GameContext newGame = new GameContext();
+		return new StartState(newGame, drawEngine);
     }
 }

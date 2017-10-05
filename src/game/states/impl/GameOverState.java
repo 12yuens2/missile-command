@@ -36,10 +36,9 @@ public class GameOverState extends GameState {
 	@Override
 	public GameState handleInput(GameInput input) {
 		if (input.keyPressed == PConstants.RETURN || input.keyPressed == PConstants.ENTER) {
-			GameContext newGame = new GameContext();
-			return new StartState(newGame, drawEngine);
+			return newGame();
 		}
-		else return this;
+		return this;
 	}
 
 	@Override

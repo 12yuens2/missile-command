@@ -21,7 +21,7 @@ public class GameInfo {
 	}
 
 	public void resetWaveStart(int levelNumber) {
-		missilesLeft = GameConfig.NUM_STARTING_MISSILES + (2 * levelNumber);
+		missilesLeft += GameConfig.NUM_STARTING_MISSILES + (2 * levelNumber);
 		if (levelNumber % 5 == 0) blackholesLeft++;
 		if (levelNumber % 10 == 0) forcefieldsLeft++;		
 	}

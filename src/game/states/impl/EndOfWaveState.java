@@ -1,5 +1,7 @@
 package game.states.impl;
 
+import java.awt.event.KeyEvent;
+
 import game.DrawEngine;
 import game.GameConfig;
 import game.GameController;
@@ -32,7 +34,8 @@ public class EndOfWaveState extends GameState{
 		int textY = GameConfig.SCREEN_Y/4;
 		drawEngine.drawText(32, "Wave " + context.level.levelNumber + " finished.", textX, textY, 0);
 		drawEngine.drawText(16, bonusScore + " bonus score for remaining cities and missiles.", textX, textY+50, 0);
-		drawEngine.drawText(16, "Press Enter to start next wave.", textX, textY+75, 0);
+		drawEngine.drawText(16, "Press F to go to shop", textX, textY+100, 0);
+		drawEngine.drawText(16, "Press Enter to start next wave.", textX, textY+125, 0);
 	}
 
 	@Override
@@ -45,18 +48,30 @@ public class EndOfWaveState extends GameState{
 
 	@Override
 	public GameState handleInput(GameInput input) {
-		if (input.keyPressed == PConstants.ENTER || input.keyPressed == PConstants.RETURN) {
-	    	context.level.next();
-	    	context.info.resetWaveStart(context.level.levelNumber);
-			context.meteorCount = context.level.meteorSpawnCount;
-			return new PlayingState(context, drawEngine);
+		switch(input.keyPressed) {
+			case PConstants.ENTER:
+			case PConstants.RETURN:
+				return nextLevel();
+				
+			case KeyEvent.VK_F:
+				return new ShopState(context, drawEngine, this);
+				
+			default:
+				return this;
 		}
-		else return this;
+	}
+	
+	private PlayingState nextLevel() {
+    	context.level.next();
+    	context.info.resetWaveStart(context.level.levelNumber);
+		context.meteorCount = context.level.meteorSpawnCount;
+		return new PlayingState(context, drawEngine);
 	}
 
 	@Override
 	public void updateScore(int score) {
-		this.context.info.score += score;
+		context.info.missilesLeft = 0;
+		context.info.score += score;
 	}
 
 }
