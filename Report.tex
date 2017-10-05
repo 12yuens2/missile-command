@@ -1,0 +1,99 @@
+\documentclass{article}
+\usepackage{color}
+\usepackage{tikz}
+\usepackage{float}
+\usepackage{tabularx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{enumitem}
+\usepackage{syntax}
+\usepackage{csquotes}
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  numbers=left,
+  stepnumber=1,
+  language=Java,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numberstyle=\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=2,
+  moredelim=**[is][\color{red}]{@}{@},
+}
+
+\setlength{\grammarindent}{12em}
+
+%\renewcommand{\lstlistingname}{Algorithm}
+%\newcommand{\tablerow}[4]{ #1 & #2 & #3 & #4\\}
+\newcommand{\n}[0]{\\[\baselineskip]}
+%\newcommand{\qa}[2]{\textbf{Q:} #1 \\ \textbf{A:} #2}
+%\newcommand{\argument}[4]{\textbf{#1:} #2 \\ \textbf{#3:} #4}
+
+\title{CS4303 Particle Command Report}
+\author{Sizhe Yuen}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+In this practical we were tasked to implement the video game \textit{Particle Command}, which is a variant on missile command where the particles are blasted away from the explosion rather than being destroyed. In my game, I have implemented all the features in the practical specifications as well as some additional features.
+\n
+TODO RUN INSTRUCTIONS
+
+\section{Game features}
+
+\subsection{Basic}
+\subsubsection*{Meteors}
+The particles falling are implemented in the \texttt{Meteor} class. They spawn from a random location at the top of the screen and have a random initial velocity. This initial random velocity goes from \texttt{-2f} to \texttt{2f} in the x direction and from \texttt{0} to \texttt{3f} in the y direction. The random y velocity makes some particles come down faster than others to make the game a bit more interesting. They do not have a random negative y velocity because all particles not in the screen are destroyed. 
+
+\subsubsection*{Cities}
+There are five locations where the cities are placed on the ground of the play area. These are static and do not change. This was done for simplicity and a fair balance so there are not occasional games where the cities are very far away, making the game more difficult. 
+
+\subsubsection*{Explosions}
+All particles can create explosions when they are destroyed as it is an abstract method all \texttt{Particle} subclasses must implement. In my game, both the meteors and player missiles create explosions. The explosion radius is based off of the particle's initial radius, increasing with each time step until they've reach the end of their lifespan. Any particles caught in the blast radius are blown away with an \texttt{Explosive} force. 
+
+\subsubsection*{Player missiles}
+The player missiles fire from the center of the ground. Their velocity is normalised so it takes a bit of planning to properly defend the cities that are further away. The missile explode either when they reach their destination - the position of the mouse cursor when the missile was fired - or when they collide with a meteor during their trajectory. 
+
+
+\subsubsection*{Waves}
+
+
+
+\subsection{Extension}
+
+\subsubsection*{Black holes}
+
+\subsubsection*{Forcefield}
+
+\subsubsection*{Bombers}
+
+
+
+\section{Design}
+
+
+\subsection{Physics}
+
+
+\subsection{Collision}
+ 
+
+\subsection{State management}
+
+
+
+
+\end{document}
