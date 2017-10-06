@@ -69,16 +69,22 @@ The player missiles fire from the center of the ground. Their velocity is normal
 
 
 \subsubsection*{Waves}
-
+The game is organised into waves. At the beginning of each wave, the number of missiles the player has is increased. Each wave has increasing difficulty as more meteors are spawned. Every few waves, the player is rewarded with a black hole or forcefield to help them survive. However, every few waves a bomber also comes which makes the game more difficult.
 
 
 \subsection{Extension}
 
 \subsubsection*{Black holes}
-
+To add the force of gravitational attraction to the game, I added a special missile that player's can shoot which would create a black hole. The black holes apply gravitational attraction to all meteors on screen and because they are intentionally much heavier than the meteors, most will be sucked into the black hole and destroyed. Meteors that are further away may be affected less.
+\n
+The black holes only last for a short while before disappearing. This means that if a meteor was being accelerated towards it but did not get sucked in, even though it no longer has the gravitational force acting on it, it may have been accelerated to a very fast velocity and crash down onto a player's city. This makes the use of black holes more strategic and a double edged sword if used improperly. 
 \subsubsection*{Forcefield}
-
+Unlike explosions, forcefield use a different kind of force to repel particles which makes them a more global and powerful tool to deflect meteors compared to missiles. Instead of applying an explosive force to knock the meteors away, forcefields use the opposite force of gravitational attraction. The meteors are repulsed away from the forcefield by multiplying the force of gravitational attraction by -1. 
+\n
+The button for using forcefields is the middle mouse button.
 \subsubsection*{Bombers}
+
+\subsubsection*{Shop}
 
 
 
