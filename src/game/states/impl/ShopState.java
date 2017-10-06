@@ -17,7 +17,6 @@ public class ShopState extends GameState {
 	
 	public ShopState(GameContext context, DrawEngine drawEngine, EndOfWaveState prevState) {
 		super(context, drawEngine);
-		context.info.score = 100000;
 		this.prevState = prevState;
 	}
 

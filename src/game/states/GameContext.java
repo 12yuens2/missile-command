@@ -18,6 +18,11 @@ import objects.particles.Missile;
 import physics.PhysicsEngine;
 import processing.core.PApplet;
 
+/**
+ * Class to abstract over all game data.
+ * @author sy35
+ *
+ */
 public class GameContext {
 
 	public PhysicsEngine physicsEngine;

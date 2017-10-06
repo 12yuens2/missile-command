@@ -16,6 +16,11 @@ import processing.core.PApplet;
 
 import java.util.ArrayList;
 
+/**
+ * Keep's track of the current State of the game and interacts with the main MissileCommand class used by Processing.
+ * @author sy35
+ *
+ */
 public class GameController {
 	
 	public PApplet parent;

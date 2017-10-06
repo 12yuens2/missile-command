@@ -10,7 +10,7 @@ import processing.core.PFont;
 
 public class MissileCommand extends PApplet {
 	
-	public GameController gameEngine;
+	public GameController gameController;
 	public DrawEngine drawEngine;
 	
 	
@@ -20,24 +20,24 @@ public class MissileCommand extends PApplet {
 	
 	public void setup() {
 	    drawEngine = new DrawEngine(this);
-	    gameEngine = new GameController(this, drawEngine);
+	    gameController = new GameController(this, drawEngine);
 //		frameRate(30);
 	}
 
 	
 	public void draw() {
-		gameEngine.step();
+		gameController.step();
 		Crosshair crosshair = new Crosshair();
 		crosshair.display(this);
 	}
 
 
 	public void mousePressed() {
-		gameEngine.handleInput(mouseX, mouseY, mouseButton, 0);
+		gameController.handleInput(mouseX, mouseY, mouseButton, 0);
 	}
 	
 	public void keyPressed() {
-		gameEngine.handleInput(mouseX, mouseY, 0, keyCode);
+		gameController.handleInput(mouseX, mouseY, 0, keyCode);
 	}
 	
 	

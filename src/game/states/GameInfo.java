@@ -2,6 +2,11 @@ package game.states;
 
 import game.GameConfig;
 
+/**
+ * Class to abstract over all game information that is displayed to the player.
+ * @author sy35
+ *
+ */
 public class GameInfo {
 
 	public int score;

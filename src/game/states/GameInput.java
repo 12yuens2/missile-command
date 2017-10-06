@@ -1,5 +1,10 @@
 package game.states;
 
+/**
+ * Class to abstract over all player input.
+ * @author sy35
+ *
+ */
 public class GameInput {
 
 	public float mouseX, mouseY;
