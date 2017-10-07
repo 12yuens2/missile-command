@@ -12,9 +12,12 @@ public class Level {
 	
 	public int numBombers;
 	public int bomberSpawnCount;
+
+	public float meteorMassBase;
 	
 	public Level() {
 		this.levelNumber = 1;
+		this.meteorMassBase = 0.2f;
 		
 		this.meteorSpawnCount = STARTING_METEORS;
 		this.numMeteors = meteorSpawnCount;
@@ -33,7 +36,8 @@ public class Level {
 	
 	public void next() {
 		levelNumber++;
-		
+
+		if (levelNumber % 7 == 0) meteorMassBase += 0.75f;
 		meteorSpawnCount += 5;
 		numMeteors = meteorSpawnCount;
 		

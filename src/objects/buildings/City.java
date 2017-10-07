@@ -17,7 +17,7 @@ public class City extends Building{
             parent.fill(parent.color(0, 255, 0));
             parent.rect(position.x, position.y, 20, 10);
             parent.ellipse(position.x, position.y, radius*2, radius*2);
-        }   
+        } 
     }
 
 	@Override

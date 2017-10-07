@@ -29,7 +29,6 @@ public class PlayingState extends GameState {
 
 	@Override
 	public GameState update() {
-
 		if (context.level.finished && context.meteorCount <= 0) {
 			int bonusCityScore = context.info.citiesLeft * GameConfig.CITY_SURVIVE_SCORE;
 			int bonusMissileScore = context.info.missilesLeft * GameConfig.MISSILE_LEFT_SCORE;
@@ -38,8 +37,8 @@ public class PlayingState extends GameState {
 	    } 
 		
 		if (!context.level.finished) {
-		    spawnMeteors(context.level);
-		    spawnBomber(context.level);
+		    spawnMeteor();
+		    spawnBomber();
 	    }
 		
     	runningStep();
@@ -74,27 +73,25 @@ public class PlayingState extends GameState {
 	    return this;
 	}
 	
-	
-	
-    private void spawnMeteors(Level level) {
+    private void spawnMeteor() {
     	if ((int)parent.random(0, 10) == 1) {
     		float xPos = parent.random(100, GameConfig.SCREEN_X - 100);
     		float yPos = 0;
     		float xVel = parent.random(-2f, 2f);
     		float yVel = parent.random(0, 3f);
-    		float mass = parent.random(0.1f, 0.5f);
+    		float mass = parent.random(0.1f, 0.5f) + context.level.meteorMassBase;
     		
     	    Meteor meteor = new Meteor(xPos, yPos, xVel, yVel, mass);
-    	    level.spawnMeteor();
+    	    context.level.spawnMeteor();
     	    context.meteors.add(meteor);
     	    context.physicsEngine.registerNewParticle(meteor);
     	}
     }
-    
-	private void spawnBomber(Level level) {
-    	if ((int)parent.random(0, 10) == 1 && level.numBombers > 0) {
+	
+	private void spawnBomber() {
+    	if ((int)parent.random(0, 10) == 1 && context.level.numBombers > 0) {
     		Bomber bomber = new Bomber(0, parent.random(50, 200), 1f, parent.random(-0.2f, 0.2f), 0f, 0);
-    		level.spawnBomber();
+    		context.level.spawnBomber();
     	    context.bombers.add(bomber);
     	    /* For simplicity, bombers are not affected by any forces, so do not add to the force registry. */
     	}

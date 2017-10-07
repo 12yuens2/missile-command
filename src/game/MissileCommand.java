@@ -26,6 +26,7 @@ public class MissileCommand extends PApplet {
 
 	
 	public void draw() {
+		line(0, 300, 600, 300);
 		gameController.step();
 		Crosshair crosshair = new Crosshair();
 		crosshair.display(this);

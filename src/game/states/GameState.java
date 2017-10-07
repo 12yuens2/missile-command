@@ -1,11 +1,14 @@
 package game.states;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Random;
 import java.util.function.Function;
 
 import game.DrawEngine;
 import game.GameConfig;
 import game.IDrawable;
+import game.Level;
 import game.states.impl.GameOverState;
 import game.states.impl.StartState;
 import objects.buildings.City;
@@ -104,10 +107,44 @@ public abstract class GameState {
     	PhysicsStep bomberStep = Bomber.getStep(this.getClass(), context);
 
         context.physicsEngine.step(meteorStep, missileStep, explosionStep, blackholeMissileStep, bomberStep);
-	    
+
+	    splitMeteors();
 	    destroyObjects();
 	}
 	
+	
+
+	
+	
+	
+	private void splitMeteors() {
+		Random r = new Random();
+		ArrayList<Meteor> newMeteors = new ArrayList<Meteor>();
+		Iterator<Meteor> it = context.meteors.iterator();
+		
+		while (it.hasNext()) {
+			Meteor m = it.next();
+			
+			if (m.radius >= GameConfig.METEOR_SPLIT_MIN_RADIUS && m.position.y < GameConfig.METEOR_SPLIT_MAX_HEIGHT && m.position.y > GameConfig.METEOR_SPLIT_MIN_HEIGHT) {
+				if (r.nextInt(GameConfig.METEOR_SPLIT_RATE) == 0) {
+					int numChildren = 2 + r.nextInt(1 + context.level.levelNumber/5);
+					for (int i = 0; i < numChildren; i++) {
+						Meteor child = new Meteor(m.position.x, m.position.y, parent.random(-2f, 2f), parent.random(-0.5f, -2f), m.mass/2f);
+						newMeteors.add(child);
+					}
+					context.meteorCount--;
+					it.remove();
+				}
+			}
+		}
+		
+		for (Meteor child : newMeteors) {
+			context.meteorCount++;
+    	    context.meteors.add(child);
+    	    context.physicsEngine.registerNewParticle(child);
+		}
+	}
+
 	/**
 	 * Clean up of each step to destroy any objects and forces that should be destroyed after they've bee updated.
 	 */
