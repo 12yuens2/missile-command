@@ -118,7 +118,7 @@ public class ShopState extends GameState {
 		drawEngine.drawText(12, "[2] Buy a forcefield for " + GameConfig.FORCEFIELD_COST, shopX + 465, shopY, 0);
 		
 		/* Missile */
-		Missile missile = new Missile(parent, shopX, shopY + 100, 0, 0);
+		Missile missile = new Missile(shopX, shopY + 100, 0, 0, parent.color(255, 0, 0));
 		missile.display(parent);
 		drawEngine.drawText(12, "[3] Buy a missile for " + GameConfig.MISSILE_COST, shopX + 90, shopY + 100, 0);
 		

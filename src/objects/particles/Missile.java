@@ -12,7 +12,7 @@ import processing.core.PVector;
 public class Missile extends Particle {
 
 	public static final int MISSILE_MASS = 2;
-	public static final int MISSILE_RADIUS = 7;
+	public static final int MISSILE_RADIUS = 10;
 	public static final float MISSILE_SPEED_MULT = 7f;
 	
 	private static final float DETECT_RANGE = 5f;
@@ -21,18 +21,18 @@ public class Missile extends Particle {
 	
     public PVector destinationPos;
     
-    public Missile(PApplet parent, float xPos, float yPos, float destX, float destY) {
+    public Missile(float xPos, float yPos, float destX, float destY, int col) {
     	super(xPos, yPos, 0, 0, MISSILE_RADIUS, MISSILE_MASS);
 		this.velocity = new PVector((destX - xPos), (destY - yPos)).normalize().mult(MISSILE_SPEED_MULT);
     	
-		this.col = parent.color(255, 0, 0);
+		this.col = col;
 		
 		this.friendlyUpgrade = false;
 		this.destinationPos = new PVector(destX, destY);
     }
     
     public Missile(PApplet parent, float xPos, float yPos, float destX, float destY, boolean friendly) {
-    	this(parent, xPos, yPos, destX, destY);
+    	this(xPos, yPos, destX, destY, 0);
     	this.friendlyUpgrade = friendly;
     	
     	if (friendly) this.col = parent.color(255, 30, 30);
@@ -46,6 +46,7 @@ public class Missile extends Particle {
     
     public void display(PApplet parent) {
         if (PVector.sub(destinationPos, position).mag() < DETECT_RANGE || destroyed) {
+        	
         	destroyed = true;
         } else {
         	float size = radius * 2;
