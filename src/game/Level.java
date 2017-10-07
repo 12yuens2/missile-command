@@ -22,7 +22,7 @@ public class Level {
 		this.meteorSpawnCount = STARTING_METEORS;
 		this.numMeteors = meteorSpawnCount;
 		
-		this.bomberSpawnCount = 1;
+		this.bomberSpawnCount = 0;
 		this.numBombers = bomberSpawnCount;
 		
 		this.finished = false;
@@ -37,7 +37,7 @@ public class Level {
 	public void next() {
 		levelNumber++;
 
-		if (levelNumber % 7 == 0) meteorMassBase += 0.75f;
+		if (levelNumber % 7 == 0) meteorMassBase += 0.1f;
 		meteorSpawnCount += 5;
 		numMeteors = meteorSpawnCount;
 		

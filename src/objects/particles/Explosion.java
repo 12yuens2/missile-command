@@ -11,7 +11,7 @@ import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PVector;
 
-public class Explosion extends Particle{
+public class Explosion extends Particle {
     
 	public static final int EXPLOSION_LIFESPAN = 20;
 
@@ -45,7 +45,8 @@ public class Explosion extends Particle{
             
             float size = radius * 2;
             parent.ellipseMode(PConstants.CENTER);
-            parent.fill(255, 127, 80, 200);
+            if (friendly) parent.fill(255, 30, 30, 210);
+            else parent.fill(255, 127, 80, 200);
             parent.ellipse(position.x, position.y, size, size);
         }   
     }

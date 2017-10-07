@@ -45,6 +45,8 @@ public class GameContext {
     public int cityCount;
     public int meteorCount;
 
+	public boolean friendlyExplosions;
+
     
     public GameContext() {
     	initFields();
@@ -52,6 +54,7 @@ public class GameContext {
     	
     	this.cityCount = cities.size();
     	this.meteorCount = level.meteorSpawnCount;
+    	this.friendlyExplosions = false;
     	
     	this.info = new GameInfo(0, GameConfig.NUM_STARTING_MISSILES, 0, 0, cityCount);    	
     }

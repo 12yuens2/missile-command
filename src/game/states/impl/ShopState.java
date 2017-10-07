@@ -9,7 +9,10 @@ import game.states.GameInfo;
 import game.states.GameInput;
 import game.states.GameState;
 import objects.buildings.City;
+import objects.particles.BlackHole;
+import objects.particles.Missile;
 import processing.core.PConstants;
+import processing.core.PVector;
 
 public class ShopState extends GameState {
 
@@ -22,8 +25,9 @@ public class ShopState extends GameState {
 
 	@Override
 	public void display() {
-		drawEngine.drawShopScreen();
+		drawEngine.displayGame(context);
 		drawEngine.displayInfo(context.info);
+		drawShopScreen();
 	}
 
 	@Override
@@ -38,8 +42,7 @@ public class ShopState extends GameState {
 			case KeyEvent.VK_F:
 				return prevState;
 				
-			case PConstants.ENTER:
-			case PConstants.RETURN:
+			case KeyEvent.VK_0:
 				if (info.score >= GameConfig.END_GAME_COST && info.citiesLeft == GameConfig.NUM_CITIES) {
 					info.score -= GameConfig.END_GAME_COST;
 					return new GameWinState(context, drawEngine);
@@ -74,6 +77,12 @@ public class ShopState extends GameState {
 					rebuildCity();
 				}
 				break;
+				
+			case KeyEvent.VK_5:
+				if (info.score >= GameConfig.FRIENDLY_EXPLOSIONS_COST && !context.friendlyExplosions) {
+					info.score -= GameConfig.FRIENDLY_EXPLOSIONS_COST;
+					context.friendlyExplosions = true;
+				}
 		}
 		return this;
 	}
@@ -86,6 +95,52 @@ public class ShopState extends GameState {
 				return;
 			}
 		}
+	}
+	
+	private void drawShopScreen() {
+		int textX = GameConfig.SCREEN_X/2;
+		int textY = GameConfig.SCREEN_Y/4;
+		
+		drawEngine.drawText(16, "Welcome to the shop, press F to leave.", textX, textY, 0);
+
+		int shopX = 150;
+		int shopY = GameConfig.SCREEN_Y/2 - 75;
+		
+		/* Black hole */
+		BlackHole blackhole = new BlackHole(new PVector(shopX, shopY));
+		blackhole.display(parent);
+		drawEngine.drawText(12, "[1] Buy a blackhole for " + GameConfig.BLACK_HOLE_COST, shopX + 115, shopY, 0);
+		
+		/* Force field */
+		parent.ellipseMode(parent.CENTER);
+		parent.fill(0, 0, 100, 100);
+		parent.ellipse(shopX + 350, shopY, 50, 50);
+		drawEngine.drawText(12, "[2] Buy a forcefield for " + GameConfig.FORCEFIELD_COST, shopX + 465, shopY, 0);
+		
+		/* Missile */
+		Missile missile = new Missile(parent, shopX, shopY + 100, 0, 0);
+		missile.display(parent);
+		drawEngine.drawText(12, "[3] Buy a missile for " + GameConfig.MISSILE_COST, shopX + 90, shopY + 100, 0);
+		
+		
+		/* City */
+		City city = new City(shopX + 350, shopY + 100);
+		city.display(parent);
+		drawEngine.drawText(12, "[4] Rebuild a city for " + GameConfig.CITY_COST, shopX + 450, shopY + 100, 0);
+		
+		
+		/* Player explosions */
+		if (!context.friendlyExplosions) {
+			drawEngine.drawText(12, "[5] Missile explosions don't destroy your own cities.", shopX+70, shopY + 165, parent.color(20, 20, 250));
+		} else {
+			drawEngine.drawText(12, "[5] Upgrade purchased!", shopX + 90, shopY + 165, parent.color(20, 20, 250));
+		}
+		
+		/* End game */
+		drawEngine.drawText(16, "To beat the game, you must have all cities alive and pay " + GameConfig.END_GAME_COST + " score", 
+				textX, textY+300, 0);
+		drawEngine.drawText(16, "Press [0] to pay", textX, textY+325, 0);
+		
 	}
 
 	@Override

@@ -98,49 +98,7 @@ public class DrawEngine {
 	}
 
 
-	public void drawShopScreen() {
-		int textX = GameConfig.SCREEN_X/2;
-		int textY = GameConfig.SCREEN_Y/4;
-		
-		parent.background(255);		
-		drawText(16, "Welcome to the shop, press F to leave.", textX, textY, 0);
-
-		int shopX = 150;
-		int shopY = GameConfig.SCREEN_Y/2 - 75;
-		
-		/* Black hole */
-		BlackHole blackhole = new BlackHole(new PVector(shopX, shopY));
-		blackhole.display(parent);
-		drawText(12, "[1] Buy a blackhole for " + GameConfig.BLACK_HOLE_COST, shopX + 115, shopY, 0);
-		
-		/* Force field */
-		parent.ellipseMode(parent.CENTER);
-		parent.fill(0, 0, 100, 100);
-		parent.ellipse(shopX + 350, shopY, 50, 50);
-		drawText(12, "[2] Buy a forcefield for " + GameConfig.FORCEFIELD_COST, shopX + 465, shopY, 0);
-		
-		/* Missile */
-		Missile missile = new Missile(parent, shopX, shopY + 100, 0, 0);
-		missile.display(parent);
-		drawText(12, "[3] Buy a missile for " + GameConfig.MISSILE_COST, shopX + 90, shopY + 100, 0);
-		
-		
-		/* City */
-		City city = new City(shopX + 350, shopY + 100);
-		city.display(parent);
-		drawText(12, "[4] Rebuild a city for " + GameConfig.CITY_COST, shopX + 450, shopY + 100, 0);
-		
-		
-		/* End game */
-		drawText(16, "To beat the game, you must have all cities alive and pay " + GameConfig.END_GAME_COST + " score", 
-				textX, textY+300, 0);
-		drawText(16, "Press Enter to pay", textX, textY+325, 0);
-		
-	}
-
-
 	public void displayWin(int score) {
-
 		parent.background(255);
 		int textX = GameConfig.SCREEN_X/2;
 		int textY = GameConfig.SCREEN_Y/3;

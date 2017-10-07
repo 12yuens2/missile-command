@@ -69,7 +69,6 @@ public abstract class GameState {
  * These are functions that multiple GameStates use.
  */
 	
-	
     protected GameState checkGameOver() {
     	for (City c : context.cities) {
     		if (c.destroyed) context.cityCount--;
@@ -108,13 +107,10 @@ public abstract class GameState {
 
         context.physicsEngine.step(meteorStep, missileStep, explosionStep, blackholeMissileStep, bomberStep);
 
-	    splitMeteors();
+        if (context.level.levelNumber > GameConfig.METEOR_SPLIT_STARTING_LEVEL) splitMeteors();
+        
 	    destroyObjects();
 	}
-	
-	
-
-	
 	
 	
 	private void splitMeteors() {
