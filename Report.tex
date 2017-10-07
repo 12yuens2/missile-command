@@ -101,33 +101,44 @@ In the code, the bombs are implemented as meteors but drawn with a darker colour
 
 \subsubsection*{Black holes}
 To add the force of gravitational attraction to the game, I added a special missile that player's can shoot which would create a black hole. The black holes apply gravitational attraction to all meteors on screen and because they are intentionally much heavier than the meteors, most will be sucked into the black hole and destroyed. Meteors that are further away may be affected less.
-\n
-The black holes only last for a short while before disappearing. This means that if a meteor was being accelerated towards it but did not get sucked in, even though it no longer has the gravitational force acting on it, it may have been accelerated to a very fast velocity and crash down onto a player's city. This makes the use of black holes more strategic and a double edged sword if used improperly. 
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth]{imgs/Blackhole.png}
+\end{figure}
+The black holes only last for a short while before disappearing. This means that if a meteor was being accelerated towards it but did not get sucked in, it will no longer have a force applied to it, but it will retain its fast velocity, only being slowed by drag. This makes the use of black holes more strategic and a double edged sword if used improperly as the disappearing of one at the wrong time could cause a meteor to crash down really fast onto a city. Because of this danger, the black hole missiles will not create a black hole on impact, only when they reach their destination. Use right click instead of left click to shoot out a missile that creates a black hole.
+ 
 \subsubsection*{Forcefield}
 Unlike explosions, forcefield use a different kind of force to repel particles which makes them a more global and powerful tool to deflect meteors compared to missiles. Instead of applying an explosive force to knock the meteors away, forcefields use the opposite force of gravitational attraction. The meteors are repulsed away from the forcefield by multiplying the force of gravitational attraction by -1. 
-\n
-The button for using forcefields is the middle mouse button.
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth]{imgs/Forcefield.png}
+\end{figure}
+\noindent
+This also means that the display of the forcefield moving outwards does not properly reflect how it works as the radius does not affect how much the particles are pushed away by. However, it does show what the forcefield does in an easy way to understand. The button for using forcefields is the middle mouse button.
 
 
 
 \subsubsection*{Shop}
 To allow the player the ability to use more of these special particles, I have added a little shop screen for players to spend score to purchase extra black holes, forcefields and missiles. Because these cost score to buy, the player must choose between keeping their score high, or using it to ensure they don't lose in the next round. 
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth, keepaspectratio]{imgs/Shop.png}
+\end{figure}
 
 
 \section{Design}
 
 
 \subsection{Physics}
-
+Following the lectures and examples, I implemented the forces in physics as a \texttt{ForceGenerator}, with the game having a \texttt{ForceRegistry} to register all the particles and the forces acting on them. The registry and global forces are kept in the \texttt{PhysicsEngine}. Each new particle that is registered will register the two global gravity and drag forces. Any other forces are registered as they are needed, for example an \texttt{Explosive} force on a meteor is only registered when the game has checked that the meteor is within the blast radius. 
+\n
+The class \texttt{PhysicsStep} is an abstraction over what each type of particle should do on each step of the game. For example, meteors and missiles must first \texttt{integrate} to work out and move to their next position. Then meteors are affected by other forces like black holes and explosions so that force must be registered. 
 
 \subsection{Collision}
- 
+I use the collision code provided in the lectures to deal with meteor/meteor collisions. To prevent the bug where the meteors would stick together due to them overlapping, I check for the overlap and force them apart before resolving the collision as normal. 
 
 \subsection{State management}
 To split the game up into different states such as start of game, end of wave, shop etc, I've implemented each state as its own separate class and made the game change states like a state machine. I got this idea from the state chapter of the book Game Programming Patterns (http://gameprogrammingpatterns.com/state.html).
-\n
-The idea is that on each \texttt{update()} or \texttt{handleInput()} step, the current state will return what the next state should be. For example if the game is currently in the \texttt{EndOfWaveState} and it gets the enter key - the key to start the next wave - it returns a \texttt{PlayingState} with the next wave of enemies. This allows each state to only keep track of themselves and handle everything that happens in the state within their own class. 
-\n
 \begin{figure}[H]
 \begin{tikzpicture}[shorten >=1pt,node distance=3cm,on grid,auto]
 		\node[state,initial] (Start) {Start};
@@ -149,6 +160,20 @@ The idea is that on each \texttt{update()} or \texttt{handleInput()} step, the c
 \end{tikzpicture}
 \caption{State machine of the game.}
 \end{figure}
+\noindent
+The idea is that on each \texttt{update()} or \texttt{handleInput()} step, the current state will return what the next state should be. For example if the game is currently in the \texttt{EndOfWaveState} and it gets the enter key - the key to start the next wave - it returns a \texttt{PlayingState} with the next wave of enemies. This allows each state to only keep track of themselves and handle everything that happens in the state within their own class. The controller then does not care about what each state is or what it does, but simply calls the update and draw functions of the current state. 
+\n
+To complement the state machine, the \texttt{GameContext} class is used to encapsulate all information about the game, such as the lists of objects, the score, the current level etc. 
+
+\subsection{Scoring system}
+
+\subsection{Increasing difficulty}
+
+\subsection{City arrangement}
+
+
+
+
 \printbibliography
 
 \end{document}
