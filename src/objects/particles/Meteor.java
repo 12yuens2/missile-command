@@ -4,6 +4,7 @@ import java.util.function.Function;
 
 import game.GameConfig;
 import game.states.GameContext;
+import physics.Collision;
 import physics.PhysicsStep;
 import processing.core.PApplet;
 
@@ -47,6 +48,13 @@ public class Meteor extends Particle {
 			@Override
 			public Void apply(Meteor me) {
 				me.integrate();
+				
+				for (Meteor m : context.meteors) {
+					Collision c = m.checkCollision(me);
+					if (c != null) {
+						context.physicsEngine.collisions.add(c);
+					}
+				}
 				
 	        	for (BlackHole bh : context.blackholes) {
 	        		context.physicsEngine.forceRegistry.register(me, bh.attractionForce);

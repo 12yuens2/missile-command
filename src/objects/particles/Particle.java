@@ -51,8 +51,8 @@ public abstract class Particle implements IDrawable {
         
         float distance = PVector.dist(position, collider.position);
         
-        if (distance < collideDistance && collider.getClass() != this.getClass()) {
-            return new Collision(this, collider);
+        if (distance <= collideDistance) {
+            return new Collision(this, collider, (distance < collideDistance));
         }
         
         return null;

@@ -44,8 +44,8 @@ public class PhysicsEngine {
     
     
     public void resolveCollisions() {
-//        for (Collision c : collisions) c.resolveCollision();
-//        collisions.clear();
+        for (Collision c : collisions) c.resolveCollision();
+        collisions.clear();
     }
 
 	public void registerNewParticle(Particle p) {

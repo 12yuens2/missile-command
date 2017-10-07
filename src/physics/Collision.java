@@ -7,19 +7,23 @@ public class Collision {
     private Particle p1, p2;
     
     private float c;
+    private boolean overlap;
     
     private PVector contactNormal;
     
-    public Collision(Particle p1, Particle p2) {
+    public Collision(Particle p1, Particle p2, boolean overlap) {
         this.p1 = p1;
         this.p2 = p2;
-        this.c = 0.6f;
+        this.c = 0.9f;
+        this.overlap = overlap;
         
         this.contactNormal = PVector.sub(p2.position,  p1.position).normalize();
     }
     
     public void resolveCollision() {
-        float closingVel = calculateClosingVelocity();
+    	if (overlap) p1.position.add(contactNormal.copy().mult(-1));
+    	
+		float closingVel = calculateClosingVelocity();
         
         float deltaVel = (-closingVel * c) - closingVel;
         
@@ -32,6 +36,7 @@ public class Collision {
 
         p1.velocity.add(p1Impulse);
         p2.velocity.add(p2Impulse);
+    	   
     }
     
     public float calculateClosingVelocity() {
