@@ -76,23 +76,35 @@ There are five locations where the cities are placed on the ground of the play a
 
 \subsubsection*{Explosions}
 All particles can create explosions when they are destroyed as it is an abstract method all \texttt{Particle} subclasses must implement. In my game, both the meteors and player missiles create explosions. The explosion radius is based off of the particle's initial radius, increasing with each time step until they've reach the end of their lifespan. Any particles caught in the blast radius are blown away with an \texttt{Explosive} force. 
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth, keepaspectratio]{imgs/NormalExplosion.png}
+\caption{Normal explosions from player missiles.}
+\end{figure}
+\noindent
+Initially both player missile explosions and meteor explosions can destroy cities. This was because they were the same piece of code and did not differentiate between them. However, I thought it was good to keep it like this because it prevents the player from just clicking missiles on top of their cities and deflecting all meteors. Since I have also implemented a shop, I have allowed players to purchase a permanent upgrade so missile explosions do not destroy the cities any more. The colour of the missiles and explosions also change to indicate this. 
+
 
 \subsubsection*{Player missiles}
-The player missiles fire from the center of the ground. Their velocity is normalised so it takes a bit of planning to properly defend the cities that are further away. The missile explode either when they reach their destination - the position of the mouse cursor when the missile was fired - or when they collide with a meteor during their trajectory. 
-
+The player missiles fire from the center of the ground. Their velocity is normalised and not very fast so it takes a bit of planning to properly defend the cities that are further away. The missile explode either when they reach their destination - the position of the mouse cursor when the missile was fired - or when they collide with a meteor during their trajectory. 
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth, keepaspectratio]{imgs/UpgradedExplosion.png}
+\caption{Upgraded explosions from player missiles. These do not destroy cities. The colour is different to indicate the change.}
+\end{figure}
 
 \subsubsection*{Waves}
+The game is organised into waves. At the beginning of each wave, the number of missiles the player has is increased. Each wave has increasing difficulty as more meteors are spawned. Every few waves, the player is rewarded with a black hole or forcefield to help them survive. However, every few waves a bomber also comes which makes the game more difficult.
 \begin{figure}[H]
 \centering
 \includegraphics[width=1\textwidth, keepaspectratio]{imgs/WaveFinished.png}
 \end{figure}
-The game is organised into waves. At the beginning of each wave, the number of missiles the player has is increased. Each wave has increasing difficulty as more meteors are spawned. Every few waves, the player is rewarded with a black hole or forcefield to help them survive. However, every few waves a bomber also comes which makes the game more difficult.
 
 
 \subsection{Extension}
 
 \subsubsection*{Split into child meteors}
-To make the game more difficult, the extension for splitting meteors into child meteors is also implemented. Meteors that are larger than a certain radius have a chance to split into 2 or more child meteors. As the player goes into higher levels, the number of child meteors that spawn is increased. 
+To make the game more difficult, the extension for splitting meteors into child meteors is also implemented. Meteors that are larger than a certain radius have a chance to split into 2 or more child meteors. As the player goes into higher levels, the number of child meteors that spawn is increased. Meteors only begin to split at a certain level (\texttt{METEOR\_SPLIT\_STARTING\_LEVEL}) so the beginning of the game isn't too hard. 
 
 \subsubsection*{Bombers}
 In addition to splitting the meteors, bombers that drop "bombs" are also implemented in the game. These bombers fly across the screen and drop "bombs" that are much heavier than normal meteors. They are also given an initial downwards velocity to make them fly faster towards the player's cities.
@@ -116,8 +128,6 @@ Unlike explosions, forcefield use a different kind of force to repel particles w
 \noindent
 This also means that the display of the forcefield moving outwards does not properly reflect how it works as the radius does not affect how much the particles are pushed away by. However, it does show what the forcefield does in an easy way to understand. The button for using forcefields is the middle mouse button.
 
-
-
 \subsubsection*{Shop}
 To allow the player the ability to use more of these special particles, I have added a little shop screen for players to spend score to purchase extra black holes, forcefields and missiles. Because these cost score to buy, the player must choose between keeping their score high, or using it to ensure they don't lose in the next round. 
 \begin{figure}[H]
@@ -128,14 +138,45 @@ To allow the player the ability to use more of these special particles, I have a
 
 \section{Design}
 
+\subsection{Scoring system}
+There are two components to the scoring system: during the wave and at the end of the wave. \n
+During the wave, if a meteor hits the ground and explodes, it adds a bit of score. If the meteor is instead knocked away outside of the screen, more score is added. By having meteors give score regardless, it allows players who are not very skilled to still get score that they can use in the shop. 
+\subsection{Increasing difficulty}
+There are multiple things that I've done to increase the difficulty of the game. 
+\begin{itemize}
+\item Increase number of meteors every wave.
+\item Bombers start to appear on the fifth wave and every fifth wave adds another bomber.
+\item Meteors have increased mass which causes them to have a higher chance of splitting into smaller meteors.
+\item Number of child meteors from a meteor splitting also increases 
+\end{itemize}
+\subsection{City arrangement}
+The city arrangement is static and in evenly spread locations. This is so there aren't any balance issues with cities being too concentrated in certain locations. The number of cities can be changed and the game is able to place any number of them evenly. 
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth, keepaspectratio]{imgs/FiveCities.png}
+\caption{Five cities}
+\end{figure}
 
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth, keepaspectratio]{imgs/EightCities.png}
+\caption{Eight cities}
+\end{figure}
+\noindent
+
+\section{Implementation}
+\subsection{Particles}
+Almost all the game objects inherit from the abstract \texttt{Particle} class. This class contains all the fields that game objects need like position, velocity and the force accumulator. The \texttt{Particle} super class also implements the \texttt{IDrawable} interface, which means all particle sub classes must include a display function.
+\n
+This design allows each class to define its own draw function and change it accordingly based on its properties. For example an explosion has increasing radius as it is drawn, or a missile should stop displaying after reaching its destination. 
 \subsection{Physics}
 Following the lectures and examples, I implemented the forces in physics as a \texttt{ForceGenerator}, with the game having a \texttt{ForceRegistry} to register all the particles and the forces acting on them. The registry and global forces are kept in the \texttt{PhysicsEngine}. Each new particle that is registered will register the two global gravity and drag forces. Any other forces are registered as they are needed, for example an \texttt{Explosive} force on a meteor is only registered when the game has checked that the meteor is within the blast radius. 
 \n
-The class \texttt{PhysicsStep} is an abstraction over what each type of particle should do on each step of the game. For example, meteors and missiles must first \texttt{integrate} to work out and move to their next position. Then meteors are affected by other forces like black holes and explosions so that force must be registered. 
+With the \texttt{ForceGenerator}, I can implement many different forces which each has their own formula for updating the force. For example \texttt{Gravity} is simply a downwards force while \texttt{Attractive} uses the proper gravitational attraction formula. 
+The class \texttt{PhysicsStep} is an abstraction over what each type of particle should do on each step of the game. For example, meteors and missiles must first \texttt{integrate} to work out and move to their next position. Then meteors are affected by other forces like black holes and explosions so those forces must be added to the register. This allows each class to define what happens in its own step and for the physics engine to take in any generic step and apply it. 
 
 \subsection{Collision}
-I use the collision code provided in the lectures to deal with meteor/meteor collisions. To prevent the bug where the meteors would stick together due to them overlapping, I check for the overlap and force them apart before resolving the collision as normal. 
+I use the collision code provided in the lectures to deal with meteor/meteor collisions. To prevent the bug where the meteors would stick together due to them overlapping, I check for the overlap and force them apart before resolving the collision as normal. This collision makes the game a bit more realistic and slightly more difficult because the meteors could collide with each other and make them move into different trajectories. 
 
 \subsection{State management}
 To split the game up into different states such as start of game, end of wave, shop etc, I've implemented each state as its own separate class and made the game change states like a state machine. I got this idea from the state chapter of the book Game Programming Patterns (http://gameprogrammingpatterns.com/state.html).
@@ -161,18 +202,12 @@ To split the game up into different states such as start of game, end of wave, s
 \caption{State machine of the game.}
 \end{figure}
 \noindent
-The idea is that on each \texttt{update()} or \texttt{handleInput()} step, the current state will return what the next state should be. For example if the game is currently in the \texttt{EndOfWaveState} and it gets the enter key - the key to start the next wave - it returns a \texttt{PlayingState} with the next wave of enemies. This allows each state to only keep track of themselves and handle everything that happens in the state within their own class. The controller then does not care about what each state is or what it does, but simply calls the update and draw functions of the current state. 
+The idea is that on each \texttt{update()} or \texttt{handleInput()} step, the current state will return what the next state should be. For example if the game is currently in the \texttt{EndOfWaveState} and it gets the enter key - the key to start the next wave - it returns a \texttt{PlayingState} with the next wave of enemies. This allows each state to only keep track of themselves and handle everything that happens in the state within their own class. The controller then does not care about what each state is or what it does, but simply calls the update and draw functions of the current state.
 \n
-To complement the state machine, the \texttt{GameContext} class is used to encapsulate all information about the game, such as the lists of objects, the score, the current level etc. 
-
-\subsection{Scoring system}
-
-\subsection{Increasing difficulty}
-
-\subsection{City arrangement}
+To complement the state machine, there are three classes that encapsulate many game properties. The \texttt{GameContext} class is used to encapsulate all information about the game, such as the lists of objects, the physics engine, the current level etc. \texttt{GameInfo} is for all information that is displayed to the player, for example the number of missiles left or the score. \texttt{GameInput} represents all the input from the player and has fields such as the mouse position and the key that was pressed.
 
 
-
+\section{Conclusion}
 
 \printbibliography
 
