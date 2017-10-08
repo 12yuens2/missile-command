@@ -3,6 +3,10 @@ package game;
 public class Level {
 
 	public static final int STARTING_METEORS = 10;
+	public static final int METEOR_INCREASE_PER_LEVEL = 2;
+	
+	public static final int LEVEL_INCREASE_MASS = 7;
+	public static final int LEVEL_INCREASE_BOMBER = 6;
 	
 	public boolean finished; 
 	
@@ -37,11 +41,11 @@ public class Level {
 	public void next() {
 		levelNumber++;
 
-		if (levelNumber % 7 == 0) meteorMassBase += 0.1f;
-		meteorSpawnCount += 5;
+		if (levelNumber % LEVEL_INCREASE_MASS == 0) meteorMassBase += 0.5f;
+		meteorSpawnCount += METEOR_INCREASE_PER_LEVEL;
 		numMeteors = meteorSpawnCount;
 		
-		if (levelNumber % 5 == 0) bomberSpawnCount += 1;
+		if (levelNumber % LEVEL_INCREASE_BOMBER == 0) bomberSpawnCount += 1;
 		numBombers = bomberSpawnCount;
 		
 		finished = false;

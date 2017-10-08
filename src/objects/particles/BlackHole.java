@@ -1,14 +1,16 @@
 package objects.particles;
 
+import game.DrawEngine;
 import physics.forces.impl.Attractive;
 import processing.core.PApplet;
+import processing.core.PConstants;
 import processing.core.PVector;
 
 public class BlackHole extends Particle {
 
-	public static final int BLACKHOLE_MASS = 100;
-	public static final int BLACKHOLE_RADIUS = 50;
-	public static final int BLACKHOLE_LIFESPAN = 100;
+	public static final int BLACKHOLE_MASS = 150;
+	public static final int BLACKHOLE_RADIUS = 30;
+	public static final int BLACKHOLE_LIFESPAN = 110;
 	
 	public int lifespan;
 	public Attractive attractionForce;
@@ -21,12 +23,14 @@ public class BlackHole extends Particle {
 	}
 
 	@Override
-	public void display(PApplet parent) {
+	public void display(DrawEngine drawEngine) {
 		attractionForce.lifespan--;
 		lifespan--;
-		parent.ellipseMode(parent.CENTER);
-		parent.fill(0);
-		parent.ellipse(position.x, position.y, radius, radius);
+		
+		drawEngine.drawEllipse(0, position.x, position.y, radius * 2, radius * 2);
+//		parent.ellipseMode(PConstants.CENTER);
+//		parent.fill(0);
+//		parent.ellipse(position.x, position.y, radius, radius);
 	}
 
 	@Override

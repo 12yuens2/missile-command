@@ -8,7 +8,6 @@ import java.util.function.Function;
 import game.DrawEngine;
 import game.GameConfig;
 import game.IDrawable;
-import game.Level;
 import game.states.impl.GameOverState;
 import game.states.impl.StartState;
 import objects.buildings.City;
@@ -20,6 +19,7 @@ import objects.particles.Meteor;
 import objects.particles.Missile;
 import objects.particles.Particle;
 import physics.PhysicsStep;
+
 import processing.core.PApplet;
 
 /**
@@ -45,13 +45,18 @@ public abstract class GameState {
 		this.parent = drawEngine.parent;
 	}
 	
+	/**
+	 * Draw the state to the screen.
+	 */
 	public abstract void display();
+	
 	
 	/**
 	 * Updates that happen on each frame in the state.
 	 * @return the next state of the game
 	 */
 	public abstract GameState update();
+	
 	
 	/**
 	 * Handle player input.
@@ -61,6 +66,11 @@ public abstract class GameState {
 	public abstract GameState handleInput(GameInput input);
 	
 	
+	/**
+	 * Function for updating the score.
+	 * Different states may change the score differently or choose not to update the score at all.
+	 * @param score
+	 */
 	public abstract void updateScore(int score);
 	
 
@@ -69,6 +79,10 @@ public abstract class GameState {
  * These are functions that multiple GameStates use.
  */
 	
+	/**
+	 * Check if all cities are destroyed.
+	 * @return - GameOverState if the game is over. 'this' otherwise.
+	 */
     protected GameState checkGameOver() {
     	for (City c : context.cities) {
     		if (c.destroyed) context.cityCount--;
@@ -123,7 +137,7 @@ public abstract class GameState {
 			
 			if (m.radius >= GameConfig.METEOR_SPLIT_MIN_RADIUS && m.position.y < GameConfig.METEOR_SPLIT_MAX_HEIGHT && m.position.y > GameConfig.METEOR_SPLIT_MIN_HEIGHT) {
 				if (r.nextInt(GameConfig.METEOR_SPLIT_RATE) == 0) {
-					int numChildren = 2 + r.nextInt(1 + context.level.levelNumber/5);
+					int numChildren = 2 + r.nextInt(1 + context.level.levelNumber/GameConfig.METEOR_SPLIT_LEVEL);
 					for (int i = 0; i < numChildren; i++) {
 						Meteor child = new Meteor(m.position.x, m.position.y, parent.random(-2f, 2f), parent.random(-0.5f, -2f), m.mass/2f);
 						newMeteors.add(child);

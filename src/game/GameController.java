@@ -4,17 +4,7 @@ import game.states.GameContext;
 import game.states.GameInput;
 import game.states.GameState;
 import game.states.impl.StartState;
-import objects.buildings.Cannon;
-import objects.buildings.City;
-import objects.particles.BlackHole;
-import objects.particles.BlackHoleMissile;
-import objects.particles.Explosion;
-import objects.particles.Meteor;
-import objects.particles.Missile;
-import physics.PhysicsEngine;
 import processing.core.PApplet;
-
-import java.util.ArrayList;
 
 /**
  * Keep's track of the current State of the game and interacts with the main MissileCommand class used by Processing.
@@ -40,6 +30,10 @@ public class GameController {
     }
     
 
+    /**
+     * Each step of the game.
+     * Called at every frame.
+     */
     public void step() {
     	state.display();
     	state = state.update();

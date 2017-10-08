@@ -1,6 +1,9 @@
 package game.states.impl;
 
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.stream.Collectors;
 
 import game.DrawEngine;
 import game.GameConfig;
@@ -88,13 +91,15 @@ public class ShopState extends GameState {
 	}
 
 	private void rebuildCity() {
-		for (City c : context.cities) {
-			if (c.destroyed) {
-				c.rebuild();
-				context.info.citiesLeft += 1;
-				return;
-			}
-		}
+		ArrayList<City> destroyedCities = (ArrayList<City>) context.cities.stream()
+																		.filter(c -> c.destroyed)
+																		.collect(Collectors.toList());
+		
+		Random r = new Random();
+		City city = destroyedCities.get(r.nextInt(destroyedCities.size()));
+		
+		city.rebuild();
+		context.info.citiesLeft++;
 	}
 	
 	private void drawShopScreen() {
@@ -108,24 +113,24 @@ public class ShopState extends GameState {
 		
 		/* Black hole */
 		BlackHole blackhole = new BlackHole(new PVector(shopX, shopY));
-		blackhole.display(parent);
+		blackhole.display(drawEngine);
 		drawEngine.drawText(12, "[1] Buy a blackhole for " + GameConfig.BLACK_HOLE_COST, shopX + 115, shopY, 0);
 		
 		/* Force field */
-		parent.ellipseMode(parent.CENTER);
+		parent.ellipseMode(PConstants.CENTER);
 		parent.fill(0, 0, 100, 100);
 		parent.ellipse(shopX + 350, shopY, 50, 50);
 		drawEngine.drawText(12, "[2] Buy a forcefield for " + GameConfig.FORCEFIELD_COST, shopX + 465, shopY, 0);
 		
 		/* Missile */
 		Missile missile = new Missile(shopX, shopY + 100, 0, 0, parent.color(255, 0, 0));
-		missile.display(parent);
+		missile.display(drawEngine);
 		drawEngine.drawText(12, "[3] Buy a missile for " + GameConfig.MISSILE_COST, shopX + 90, shopY + 100, 0);
 		
 		
 		/* City */
 		City city = new City(shopX + 350, shopY + 100);
-		city.display(parent);
+		city.display(drawEngine);
 		drawEngine.drawText(12, "[4] Rebuild a city for " + GameConfig.CITY_COST, shopX + 450, shopY + 100, 0);
 		
 		

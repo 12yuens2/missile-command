@@ -2,7 +2,6 @@ package game.states.impl;
 
 import game.DrawEngine;
 import game.GameConfig;
-import game.GameController;
 import game.states.GameContext;
 import game.states.GameInput;
 import game.states.GameState;
@@ -17,7 +16,9 @@ public class StartState extends GameState{
 
 	@Override
 	public void display() {
-		drawEngine.displayStartMenu();
+		parent.background(255);
+		drawEngine.drawText(64, "Start game", GameConfig.SCREEN_X/2, GameConfig.SCREEN_Y/2, 0);		
+		drawEngine.drawText(32, "Press Enter to start.", GameConfig.SCREEN_X/2, GameConfig.SCREEN_Y/2+75, 0);
 	}
 
 	@Override

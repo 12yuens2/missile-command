@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.function.Function;
 
+import game.DrawEngine;
 import game.states.GameContext;
 import game.states.GameState;
 import game.states.impl.PlayingState;
@@ -25,10 +26,12 @@ public class Bomber extends Particle {
 	}
 
 	@Override
-	public void display(PApplet parent) {
-		parent.ellipseMode(PConstants.CENTER);
-        parent.fill(204, 0, 204);
-        parent.ellipse(position.x, position.y, 50, 20);
+	public void display(DrawEngine drawEngine) {
+		int col = drawEngine.parent.color(204, 0, 204);
+		drawEngine.drawEllipse(col, position.x, position.y, 50, 20);
+//		parent.ellipseMode(PConstants.CENTER);
+//        parent.fill(204, 0, 204);
+//        parent.ellipse(position.x, position.y, 50, 20);
 	}
 
 	@Override

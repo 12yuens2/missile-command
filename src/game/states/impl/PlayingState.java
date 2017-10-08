@@ -1,5 +1,7 @@
 package game.states.impl;
 
+import java.util.Random;
+
 import game.DrawEngine;
 import game.GameConfig;
 import game.Level;
@@ -16,10 +18,12 @@ import processing.core.PConstants;
 
 public class PlayingState extends GameState {
 	
+	Random random;
 	
 	public PlayingState(GameContext context, DrawEngine drawEngine) {
 		super(context, drawEngine);
-		// TODO Auto-generated constructor stub
+		
+		this.random = new Random();
 	}
 
 	@Override
@@ -64,7 +68,7 @@ public class PlayingState extends GameState {
 		    	context.info.blackholesLeft--;
 		    	context.bhms.add(new BlackHoleMissile(parent, cannon.position.x, cannon.position.y, mouseX, mouseY));
 		    }
-		    else if (input.mouseButton == PConstants.CENTER /*&& context.info.forcefieldsLeft > 0*/) {
+		    else if (input.mouseButton == PConstants.CENTER && context.info.forcefieldsLeft > 0) {
 		    	context.info.forcefieldsLeft--;
 		    	context.forcefields.add(new ForceField(mouseX, mouseY));
 		    }
@@ -74,7 +78,7 @@ public class PlayingState extends GameState {
 	}
 	
     private void spawnMeteor() {
-    	if ((int)parent.random(0, 10) == 1) {
+    	if (random.nextInt(GameConfig.METEOR_SPAWN_RATE_INV) == 0) {
     		float xPos = parent.random(100, GameConfig.SCREEN_X - 100);
     		float yPos = 0;
     		float xVel = parent.random(-2f, 2f);

@@ -2,10 +2,10 @@ package game.states.impl;
 
 import game.DrawEngine;
 import game.GameConfig;
-import game.GameController;
 import game.states.GameContext;
 import game.states.GameInput;
 import game.states.GameState;
+
 import processing.core.PConstants;
 
 public class GameOverState extends GameState {
@@ -24,7 +24,6 @@ public class GameOverState extends GameState {
 		drawEngine.drawText(32, "Game Over", textX, textY, 0);
 		drawEngine.drawText(32, "Final score: " + context.info.score, textX, textY + 50, 0);
 		drawEngine.drawText(16, "Press Enter to play again.", textX, textY + 100, 0);
-
 	}
 
 	@Override

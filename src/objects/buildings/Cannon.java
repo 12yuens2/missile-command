@@ -1,6 +1,8 @@
 package objects.buildings;
-import objects.particles.Particle;
+
+import game.DrawEngine;
 import processing.core.PApplet;
+import processing.core.PConstants;
 import processing.core.PVector;
 
 public class Cannon extends Building {
@@ -9,10 +11,12 @@ public class Cannon extends Building {
         position = new PVector(posX, posY);
     }
     
-    public void display(PApplet parent) {
-        parent.rectMode(parent.CENTER);
-        parent.fill(0);
-        parent.rect(position.x, position.y, 10, 10);
+    @Override
+    public void display(DrawEngine drawEngine) {
+    	drawEngine.drawRectangle(0, position.x, position.y, 10, 10);
+//        parent.rectMode(PConstants.CENTER);
+//        parent.fill(0);
+//        parent.rect(position.x, position.y, 10, 10);
     }
 
 	@Override

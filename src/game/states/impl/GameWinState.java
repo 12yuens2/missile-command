@@ -3,6 +3,7 @@ package game.states.impl;
 import java.awt.event.KeyEvent;
 
 import game.DrawEngine;
+import game.GameConfig;
 import game.states.GameContext;
 import game.states.GameInput;
 import game.states.GameState;
@@ -16,18 +17,25 @@ public class GameWinState extends GameState {
 
 	@Override
 	public void display() {
-		drawEngine.displayWin(context.info.score);
+		parent.background(255);
+		int textX = GameConfig.SCREEN_X/2;
+		int textY = GameConfig.SCREEN_Y/3;
+		
+		drawEngine.drawText(64, "Win!", textX, textY, 0);
+		drawEngine.drawText(32, "Score: " + context.info.score, textX, textY + 75, 0);
+		drawEngine.drawText(32, "Enter to restart", textX, textY + 150, 0);
 	}
 
 	@Override
 	public GameState update() {
-		// TODO Auto-generated method stub
+		/* Always return 'this' as there is nothing to update in this state. */
 		return this;
 	}
 
 	@Override
 	public GameState handleInput(GameInput input) {
 		if (input.keyPressed == PConstants.RETURN || input.keyPressed == PConstants.ENTER) {
+			/* Create a new game */
 			return newGame();
 		}
 		return this;
@@ -35,8 +43,7 @@ public class GameWinState extends GameState {
 
 	@Override
 	public void updateScore(int score) {
-		// TODO Auto-generated method stub
-
+		/* Do nothing as there is no score to update in this state */
 	}
 
 }

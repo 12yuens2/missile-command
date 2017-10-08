@@ -3,16 +3,9 @@ import java.util.ArrayList;
 
 import game.states.GameContext;
 import game.states.GameInfo;
-import objects.buildings.Cannon;
-import objects.buildings.City;
-import objects.particles.BlackHole;
-import objects.particles.Explosion;
-import objects.particles.Meteor;
-import objects.particles.Missile;
-import physics.forces.impl.Explosive;
 import processing.core.PApplet;
+import processing.core.PConstants;
 import processing.core.PFont;
-import processing.core.PVector;
 
 public class DrawEngine {
     
@@ -36,59 +29,73 @@ public class DrawEngine {
         		context.forcefields, 
         		context.cities, 
         		context.cannons);
-        
-
     }
     
     private void displayDrawables(ArrayList<? extends IDrawable>... drawables) {
         for (ArrayList<? extends IDrawable> drawList : drawables) {
         	for (IDrawable drawable : drawList) {
-        		drawable.display(parent);
+        		drawable.display(this);
         	}
         }
     }
     
-	public void displayStartMenu() {
-		parent.background(255);
-		drawText(64, "Start game", GameConfig.SCREEN_X/2, GameConfig.SCREEN_Y/2, 0);		
-		drawText(32, "Press Enter to start.", GameConfig.SCREEN_X/2, GameConfig.SCREEN_Y/2+75, 0);
-	}
-
-
-	public void displayPauseMenu() {
-		parent.fill(200, 100);
-		parent.rect(0, 0, 8000, 6000);
-		drawText(32, "Paused", GameConfig.SCREEN_X/2, GameConfig.SCREEN_Y/2, 0);
-	}
-
-
-	public void displayGameOver() {
-		parent.background(0);
-		drawText(64, "Game Over", GameConfig.SCREEN_X/2, GameConfig.SCREEN_Y/2, 255);
-		
-	}
-	
-	public void drawText(int textSize, String text, int posX, int posY, int col) {
-		PFont font = parent.createFont("Arial", textSize, true);
-		
-		parent.textFont(font, textSize);
-		parent.fill(col);
-		parent.text(text, posX, posY);
-		parent.textAlign(parent.CENTER, parent.CENTER);
-		
-	}
-    
-    private  void drawGround() {
+    private void drawGround() {
         parent.fill(128);
         parent.beginShape();
         parent.vertex(0, GameConfig.GROUND_HEIGHT);
         parent.vertex(GameConfig.SCREEN_X, GameConfig.GROUND_HEIGHT);
         parent.vertex(GameConfig.SCREEN_X, GameConfig.SCREEN_Y);
         parent.vertex(0, GameConfig.SCREEN_Y);
-        parent.endShape(parent.CLOSE);
+        parent.endShape(PConstants.CLOSE);
     }
 
+    /**
+     * Generic draw text function for other classes to draw text to the screen
+     * @param textSize - size of the text
+     * @param text - text to be drawn
+     * @param posX - x position of the text
+     * @param posY - y position of the text
+     * @param col - colour of the text
+     */
+	public void drawText(int textSize, String text, int posX, int posY, int col) {
+		PFont font = parent.createFont("Arial", textSize, true);
+		
+		parent.textFont(font, textSize);
+		parent.fill(col);
+		parent.text(text, posX, posY);
+		parent.textAlign(PConstants.CENTER, PConstants.CENTER);
+	}
+	
+	/**
+	 * Draw an ellipse based on given parameters.
+	 * @param col - colour of the circle
+	 * @param xPos - x coordinate of the circle 
+	 * @param yPos - y coordinate of the circle
+	 * @param width - width of the circle
+	 * @param height - height of the circle 
+	 * @param i 
+	 */
+	public void drawEllipse(int col, float xPos, float yPos, float width, float height) {
+		parent.ellipseMode(PConstants.CENTER);
+		parent.fill(col);
+		parent.ellipse(xPos, yPos, width, height);
+	}
+	
+	
+	public void drawRectangle(int col, float xPos, float yPos, float width, float height) {
+		parent.rectMode(PConstants.CENTER);
+		parent.fill(col);
+		parent.rect(xPos, yPos, width, height);
+	}
 
+	/**
+	 * Draw information for the player. This includes:
+	 * 	- score
+	 * 	- number of missiles
+	 * 	- number of blackholes
+	 * 	- number of forcefields
+	 * @param info - player information of the game
+	 */
 	public void displayInfo(GameInfo info) {
 		drawText(16, "Score: " + info.score, 100, 50, 0);
 		drawText(16, "Missiles: " + info.missilesLeft, 100, 75, 0);
@@ -97,17 +104,6 @@ public class DrawEngine {
 		
 	}
 
-
-	public void displayWin(int score) {
-		parent.background(255);
-		int textX = GameConfig.SCREEN_X/2;
-		int textY = GameConfig.SCREEN_Y/3;
-		
-		drawText(64, "Win!", textX, textY, 0);
-		drawText(32, "Score: " + score, textX, textY + 75, 0);
-		drawText(32, "Enter to restart", textX, textY + 150, 0);
-		
-	}
 
 
 

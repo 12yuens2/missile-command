@@ -2,6 +2,7 @@ package objects.particles;
 
 import java.util.function.Function;
 
+import game.DrawEngine;
 import game.states.GameContext;
 import objects.buildings.City;
 import physics.Collision;
@@ -38,16 +39,23 @@ public class Explosion extends Particle {
     	return new Explosive(position, radius);
     }
 
-	public void display(PApplet parent) {
+    @Override
+	public void display(DrawEngine drawEngine) {
         if (lifespan >= 0) {
             radius += initialRadius/10f;
             lifespan--;
             
-            float size = radius * 2;
-            parent.ellipseMode(PConstants.CENTER);
-            if (friendly) parent.fill(255, 30, 30, 210);
-            else parent.fill(255, 127, 80, 200);
-            parent.ellipse(position.x, position.y, size, size);
+            int col;
+            if (friendly) col = drawEngine.parent.color(255, 30, 30, 210);
+            else col = drawEngine.parent.color(255, 127, 80, 200);
+            
+            drawEngine.drawEllipse(col, position.x, position.y, radius * 2, radius * 2);
+            
+//            float size = radius * 2;
+//            parent.ellipseMode(PConstants.CENTER);
+//            if (friendly) parent.fill(255, 30, 30, 210);
+//            else parent.fill(255, 127, 80, 200);
+//            parent.ellipse(position.x, position.y, size, size);
         }   
     }
 

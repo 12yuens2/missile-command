@@ -2,6 +2,7 @@ package objects.particles;
 
 import java.util.function.Function;
 
+import game.DrawEngine;
 import game.states.GameContext;
 import physics.Collision;
 import physics.PhysicsStep;
@@ -44,15 +45,17 @@ public class Missile extends Particle {
 		position.add(velocity);
     }
     
-    public void display(PApplet parent) {
+	@Override
+    public void display(DrawEngine drawEngine) {
         if (PVector.sub(destinationPos, position).mag() < DETECT_RANGE || destroyed) {
         	position = destinationPos;
         	destroyed = true;
         } else {
         	float size = radius * 2;
-            parent.ellipseMode(PConstants.CENTER);
-            parent.fill(col);
-            parent.ellipse(position.x, position.y, size, size);
+        	drawEngine.drawEllipse(col, position.x, position.y, size, size);
+//            parent.ellipseMode(PConstants.CENTER);
+//            parent.fill(col);
+//            parent.ellipse(position.x, position.y, size, size);
         }
     }
 

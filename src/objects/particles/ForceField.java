@@ -1,13 +1,15 @@
 package objects.particles;
 
+import game.DrawEngine;
 import physics.forces.impl.Repulsive;
 import processing.core.PApplet;
+import processing.core.PConstants;
 
 public class ForceField extends Particle {
 
 	private static final int FORCEFIELD_MASS = 100;
 	private static final int FORCEFIELD_LIFESPAN = 80;
-	private static final int FORCEFIELD_RADIUS = 50;
+	private static final int FORCEFIELD_RADIUS = 30;
 	
 	
 	public int lifespan;
@@ -21,15 +23,14 @@ public class ForceField extends Particle {
 	}
 
 	@Override
-	public void display(PApplet parent) {
+	public void display(DrawEngine drawEngine) {
 		repulsiveForce.lifespan--;
 		lifespan--;
 		
-		parent.ellipseMode(parent.CENTER);
-		parent.fill(0, 0, 100, 100);
-		parent.ellipse(position.x, position.y, radius, radius);
+		int col = drawEngine.parent.color(0, 0, 100, 100);
+		drawEngine.drawEllipse(col, position.x, position.y, radius * 2, radius * 2);
 		
-		radius += 15f;
+		radius += 10f;
 	}
 
 	@Override

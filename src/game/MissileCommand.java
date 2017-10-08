@@ -1,12 +1,8 @@
 package game;
+
 import objects.Crosshair;
-import objects.buildings.Cannon;
-import objects.particles.BlackHole;
-import objects.particles.BlackHoleMissile;
-import objects.particles.Missile;
-import physics.forces.impl.Explosive;
+
 import processing.core.PApplet;
-import processing.core.PFont;
 
 public class MissileCommand extends PApplet {
 	
@@ -29,9 +25,7 @@ public class MissileCommand extends PApplet {
 		line(0, 300, 600, 300);
 		gameController.step();
 		Crosshair crosshair = new Crosshair();
-		crosshair.display(this);
-
-		System.out.println("ashdkas");
+		crosshair.display(drawEngine);
 	}
 
 
@@ -42,8 +36,6 @@ public class MissileCommand extends PApplet {
 	public void keyPressed() {
 		gameController.handleInput(mouseX, mouseY, 0, keyCode);
 	}
-	
-	
 	
 	public static void main(String[] args) {
 		PApplet.main("game.MissileCommand");

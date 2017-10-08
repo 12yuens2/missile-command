@@ -2,11 +2,13 @@ package objects.particles;
 
 import java.util.function.Function;
 
+import game.DrawEngine;
 import game.GameConfig;
 import game.states.GameContext;
 import physics.Collision;
 import physics.PhysicsStep;
 import processing.core.PApplet;
+import processing.core.PConstants;
 
 public class Meteor extends Particle {
     
@@ -26,12 +28,9 @@ public class Meteor extends Particle {
     }
 	
 	@Override
-    public void display(PApplet parent) {
+    public void display(DrawEngine drawEngine) {
         float size = radius * 2;
-        
-        parent.ellipseMode(parent.CENTER);
-        parent.fill(col);
-        parent.ellipse(position.x, position.y, size, size);
+        drawEngine.drawEllipse(col, position.x, position.y, size, size);
     }
 
 	@Override

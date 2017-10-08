@@ -31,6 +31,11 @@ public abstract class Particle implements IDrawable {
         forceAccumulator = new PVector(0, 0);
     }
     
+    /**
+     * Destroy this entity in the game.
+     * Some particles may explode when destroyed and so return an Explosion.
+     * If not they return null.
+     */
     public abstract Explosion destroy();
     
     public void integrate() {
@@ -41,14 +46,12 @@ public abstract class Particle implements IDrawable {
         
         velocity.add(acceleration);
 
-        //reset accumulator
+        /* Reset accumulator */
         forceAccumulator.set(0, 0);
     }
     
     public Collision checkCollision(Particle collider) {
         float collideDistance = radius + collider.radius;
-        PVector distanceBetween = PVector.sub(position, collider.position);
-        
         float distance = PVector.dist(position, collider.position);
         
         if (distance <= collideDistance) {
