@@ -30,6 +30,8 @@ public class MissileCommand extends PApplet {
 		gameController.step();
 		Crosshair crosshair = new Crosshair();
 		crosshair.display(this);
+
+		System.out.println("ashdkas");
 	}
 
 

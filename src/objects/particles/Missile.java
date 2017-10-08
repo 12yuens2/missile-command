@@ -13,7 +13,7 @@ public class Missile extends Particle {
 
 	public static final int MISSILE_MASS = 2;
 	public static final int MISSILE_RADIUS = 10;
-	public static final float MISSILE_SPEED_MULT = 7f;
+	public static final float MISSILE_SPEED_MULT = 8f;
 	
 	private static final float DETECT_RANGE = 5f;
 	
@@ -46,7 +46,7 @@ public class Missile extends Particle {
     
     public void display(PApplet parent) {
         if (PVector.sub(destinationPos, position).mag() < DETECT_RANGE || destroyed) {
-        	
+        	position = destinationPos;
         	destroyed = true;
         } else {
         	float size = radius * 2;

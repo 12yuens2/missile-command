@@ -20,6 +20,10 @@ public class Collision {
         this.contactNormal = PVector.sub(p2.position,  p1.position).normalize();
     }
     
+    /**
+     * Resolve this collision between two particles.
+     * Code mostly follows example collision code given in lectures.
+     */
     public void resolveCollision() {
     	if (overlap) p1.position.add(contactNormal.copy().mult(-1));
     	
