@@ -29,7 +29,7 @@ public class ShopState extends GameState {
 	@Override
 	public void display() {
 		drawEngine.displayGame(context);
-		drawEngine.displayInfo(context.info);
+		drawEngine.displayInfo(context.info, context.level);
 		drawShopScreen();
 	}
 
@@ -136,7 +136,7 @@ public class ShopState extends GameState {
 		
 		/* Player explosions */
 		if (!context.friendlyExplosions) {
-			drawEngine.drawText(12, "[5] Missile explosions don't destroy your own cities.", shopX+70, shopY + 165, parent.color(20, 20, 250));
+			drawEngine.drawText(12, "[5] Missile explosions don't destroy your own cities for " + GameConfig.FRIENDLY_EXPLOSIONS_COST, shopX+70, shopY + 165, parent.color(20, 20, 250));
 		} else {
 			drawEngine.drawText(12, "[5] Upgrade purchased!", shopX + 90, shopY + 165, parent.color(20, 20, 250));
 		}

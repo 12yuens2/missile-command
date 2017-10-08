@@ -1,13 +1,21 @@
 package game;
 
+import java.util.Random;
+
 public class Level {
 
 	public static final int STARTING_METEORS = 10;
-	public static final int METEOR_INCREASE_PER_LEVEL = 2;
-	public static final float MASS_INCREASE_PER_LEVEL = 0.15f;
+	public static final int METEOR_INCREASE_PER_LEVEL = 3;
+	public static final float MASS_INCREASE_PER_LEVEL = 0.1f;
 	
-	public static final int LEVEL_INCREASE_MASS = 2;
+	/* Number of levels before each base mass increase of meteors */
+	public static final int LEVEL_INCREASE_MASS = 7;
+	
+	/* Number of levels before adding bomber */
 	public static final int LEVEL_INCREASE_BOMBER = 6;
+	
+	/* Number of levels before adding even more meteors per level */
+	public static final int LEVEL_INCREASE_METEOR = 5;
 	
 	public boolean finished; 
 	
@@ -40,10 +48,12 @@ public class Level {
 	
 	
 	public void next() {
+		Random random = new Random();
 		levelNumber++;
 
 		if (levelNumber % LEVEL_INCREASE_MASS == 0) meteorMassBase += MASS_INCREASE_PER_LEVEL;
-		meteorSpawnCount += METEOR_INCREASE_PER_LEVEL;
+		if (levelNumber > LEVEL_INCREASE_METEOR) meteorSpawnCount += random.nextInt(levelNumber);
+		meteorSpawnCount += random.nextInt(METEOR_INCREASE_PER_LEVEL);
 		numMeteors = meteorSpawnCount;
 		
 		if (levelNumber % LEVEL_INCREASE_BOMBER == 0) bomberSpawnCount += 1;

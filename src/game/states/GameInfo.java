@@ -1,5 +1,7 @@
 package game.states;
 
+import java.util.Random;
+
 import game.GameConfig;
 
 /**
@@ -26,9 +28,10 @@ public class GameInfo {
 	}
 
 	public void resetWaveStart(int levelNumber) {
-		missilesLeft += GameConfig.NUM_STARTING_MISSILES + (2 * levelNumber);
-		if (levelNumber % 5 == 0) blackholesLeft++;
-		if (levelNumber % 10 == 0) forcefieldsLeft++;		
+		Random random = new Random();
+		missilesLeft += GameConfig.NUM_STARTING_MISSILES + levelNumber + random.nextInt(levelNumber);
+		if (levelNumber % 4 == 0) blackholesLeft++;
+		if (levelNumber % 6 == 0) forcefieldsLeft++;		
 	}
 	
 }

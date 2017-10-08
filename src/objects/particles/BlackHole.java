@@ -2,8 +2,7 @@ package objects.particles;
 
 import game.DrawEngine;
 import physics.forces.impl.Attractive;
-import processing.core.PApplet;
-import processing.core.PConstants;
+
 import processing.core.PVector;
 
 public class BlackHole extends Particle {

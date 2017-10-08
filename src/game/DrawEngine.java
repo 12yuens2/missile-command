@@ -82,6 +82,14 @@ public class DrawEngine {
 	}
 	
 	
+	/**
+	 * Draw a rectangle based on given parameters.
+	 * @param col - colour of the rectangle
+	 * @param xPos - x coordinate of the circle
+	 * @param yPos - y coordinate of the circle
+	 * @param width - width of the rectangle
+	 * @param height - height of the rectangle
+	 */
 	public void drawRectangle(int col, float xPos, float yPos, float width, float height) {
 		parent.rectMode(PConstants.CENTER);
 		parent.fill(col);
@@ -96,7 +104,8 @@ public class DrawEngine {
 	 * 	- number of forcefields
 	 * @param info - player information of the game
 	 */
-	public void displayInfo(GameInfo info) {
+	public void displayInfo(GameInfo info, Level level) {
+		drawText(16, "Level: " + level.levelNumber, 100, 25, 0);
 		drawText(16, "Score: " + info.score, 100, 50, 0);
 		drawText(16, "Missiles: " + info.missilesLeft, 100, 75, 0);
 		drawText(16, "Blackholes: " + info.blackholesLeft, 600, 50, 0);

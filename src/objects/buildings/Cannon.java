@@ -13,9 +13,6 @@ public class Cannon extends Building {
     @Override
     public void display(DrawEngine drawEngine) {
     	drawEngine.drawRectangle(0, position.x, position.y, 10, 10);
-//        parent.rectMode(PConstants.CENTER);
-//        parent.fill(0);
-//        parent.rect(position.x, position.y, 10, 10);
     }
 
 	@Override

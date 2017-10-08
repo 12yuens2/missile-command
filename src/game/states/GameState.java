@@ -105,7 +105,7 @@ public abstract class GameState {
 	 */
 	protected void displayGame() {
 		drawEngine.displayGame(context);
-		drawEngine.displayInfo(context.info);
+		drawEngine.displayInfo(context.info, context.level);
 	}
 	
 	

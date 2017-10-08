@@ -8,8 +8,7 @@ import objects.buildings.City;
 import physics.Collision;
 import physics.PhysicsStep;
 import physics.forces.impl.Explosive;
-import processing.core.PApplet;
-import processing.core.PConstants;
+
 import processing.core.PVector;
 
 public class Explosion extends Particle {
@@ -33,10 +32,6 @@ public class Explosion extends Particle {
     
     public Explosion(PVector position, float radius, int lifespan, boolean friendly) {
     	this(position.x, position.y, radius, lifespan, friendly);
-    }
-    
-    public Explosive getForce() {
-    	return new Explosive(position, radius);
     }
 
     @Override
@@ -81,4 +76,8 @@ public class Explosion extends Particle {
 			}
 		});
 	}
+	
+    public Explosive getForce() {
+    	return new Explosive(position, radius);
+    }
 }
