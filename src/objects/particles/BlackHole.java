@@ -28,9 +28,6 @@ public class BlackHole extends Particle {
 		lifespan--;
 		
 		drawEngine.drawEllipse(0, position.x, position.y, radius * 2, radius * 2);
-//		parent.ellipseMode(PConstants.CENTER);
-//		parent.fill(0);
-//		parent.ellipse(position.x, position.y, radius, radius);
 	}
 
 	@Override

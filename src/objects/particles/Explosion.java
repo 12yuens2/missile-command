@@ -50,12 +50,6 @@ public class Explosion extends Particle {
             else col = drawEngine.parent.color(255, 127, 80, 200);
             
             drawEngine.drawEllipse(col, position.x, position.y, radius * 2, radius * 2);
-            
-//            float size = radius * 2;
-//            parent.ellipseMode(PConstants.CENTER);
-//            if (friendly) parent.fill(255, 30, 30, 210);
-//            else parent.fill(255, 127, 80, 200);
-//            parent.ellipse(position.x, position.y, size, size);
         }   
     }
 

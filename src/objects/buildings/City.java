@@ -1,8 +1,7 @@
 package objects.buildings;
 
 import game.DrawEngine;
-import processing.core.PApplet;
-import processing.core.PConstants;
+
 import processing.core.PVector;
 
 public class City extends Building{
@@ -19,9 +18,6 @@ public class City extends Building{
         if (!destroyed) {
         	int col = drawEngine.parent.color(0, 255, 0);
         	drawEngine.drawRectangle(col, position.x, position.y, 20, 10);
-//            parent.rectMode(PConstants.CENTER);
-//            parent.fill(parent.color(0, 255, 0));
-//            parent.rect(position.x, position.y, 20, 10);
         } 
     }
 

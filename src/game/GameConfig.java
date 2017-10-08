@@ -7,7 +7,7 @@ public class GameConfig {
 	
 	public static final int NUM_PARTICLES = 30;
 	public static final int NUM_CANNONS = 4;
-	public static final int NUM_CITIES = 5;
+	public static final int NUM_CITIES = 8;
 	public static final int NUM_STARTING_MISSILES = 1000;
 	
 

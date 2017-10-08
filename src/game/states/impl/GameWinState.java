@@ -1,7 +1,5 @@
 package game.states.impl;
 
-import java.awt.event.KeyEvent;
-
 import game.DrawEngine;
 import game.GameConfig;
 import game.states.GameContext;

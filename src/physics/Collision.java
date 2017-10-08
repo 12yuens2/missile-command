@@ -25,6 +25,8 @@ public class Collision {
      * Code mostly follows example collision code given in lectures.
      */
     public void resolveCollision() {
+    	
+    	/* Fix for overlapping by moving p1's position */
     	if (overlap) p1.position.add(contactNormal.copy().mult(-1));
     	
 		float closingVel = calculateClosingVelocity();

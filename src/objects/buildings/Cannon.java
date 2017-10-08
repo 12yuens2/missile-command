@@ -1,8 +1,7 @@
 package objects.buildings;
 
 import game.DrawEngine;
-import processing.core.PApplet;
-import processing.core.PConstants;
+
 import processing.core.PVector;
 
 public class Cannon extends Building {

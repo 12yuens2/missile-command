@@ -29,9 +29,6 @@ public class Bomber extends Particle {
 	public void display(DrawEngine drawEngine) {
 		int col = drawEngine.parent.color(204, 0, 204);
 		drawEngine.drawEllipse(col, position.x, position.y, 50, 20);
-//		parent.ellipseMode(PConstants.CENTER);
-//        parent.fill(204, 0, 204);
-//        parent.ellipse(position.x, position.y, 50, 20);
 	}
 
 	@Override

@@ -4,8 +4,9 @@ public class Level {
 
 	public static final int STARTING_METEORS = 10;
 	public static final int METEOR_INCREASE_PER_LEVEL = 2;
+	public static final float MASS_INCREASE_PER_LEVEL = 0.15f;
 	
-	public static final int LEVEL_INCREASE_MASS = 7;
+	public static final int LEVEL_INCREASE_MASS = 2;
 	public static final int LEVEL_INCREASE_BOMBER = 6;
 	
 	public boolean finished; 
@@ -41,7 +42,7 @@ public class Level {
 	public void next() {
 		levelNumber++;
 
-		if (levelNumber % LEVEL_INCREASE_MASS == 0) meteorMassBase += 0.5f;
+		if (levelNumber % LEVEL_INCREASE_MASS == 0) meteorMassBase += MASS_INCREASE_PER_LEVEL;
 		meteorSpawnCount += METEOR_INCREASE_PER_LEVEL;
 		numMeteors = meteorSpawnCount;
 		

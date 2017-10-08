@@ -6,9 +6,6 @@ import physics.Collision;
 import processing.core.PApplet;
 
 public abstract class Particle implements IDrawable {
-
-	public static final PVector GRAVITY = new PVector(0, 0.1f);
-    public static final float DAMPING = 0.995f;
   
     public boolean destroyed;
     
@@ -38,6 +35,9 @@ public abstract class Particle implements IDrawable {
      */
     public abstract Explosion destroy();
     
+    /**
+     * Integrate step where velocity and forces are applied to the particle.
+     */
     public void integrate() {
         position.add(velocity);
         
