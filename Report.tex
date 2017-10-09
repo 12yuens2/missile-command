@@ -48,7 +48,7 @@
 %\newcommand{\argument}[4]{\textbf{#1:} #2 \\ \textbf{#3:} #4}
 
 \title{CS4303 Particle Command Report}
-\author{Sizhe Yuen}
+\author{140011146}
 
 \begin{document}
 
@@ -57,21 +57,25 @@
 \section{Introduction}
 In this practical we were tasked to implement the video game \textit{Particle Command}, which is a variant on missile command where the particles are blasted away from the explosion rather than being destroyed. In my game, I have implemented all the features in the practical specifications as well as some additional features.
 \n
-TODO RUN INSTRUCTIONS
+To build and run the game, run \texttt{ant} in the submission directory.
 
 \section{Game features}
 
 \subsection{Basic}
 \subsubsection*{Meteors}
-The particles falling are implemented in the \texttt{Meteor} class. They spawn from a random location at the top of the screen and have a random initial velocity. This initial random velocity goes from \texttt{-2f} to \texttt{2f} in the x direction and from \texttt{0} to \texttt{3f} in the y direction. The random y velocity makes some particles come down faster than others to make the game a bit more interesting. They do not have a random negative y velocity because all particles not in the screen are destroyed. 
+The particles falling are implemented in the \texttt{Meteor} class. They spawn from a random location at the top of the screen and have a random initial velocity. This initial random velocity goes in both the x and y direction. The random y velocity makes some particles come down faster than others to make the game a bit more interesting and the x velocity makes it so the particles don't all just fall straight down. They do not have a random negative y velocity because all particles not in the screen are destroyed so they should not be spawned then move up initially. 
+\n
+The meteors are also affected by a force of gravity and drag, implemented as \texttt{ForceGenerators}. \texttt{Gravity} is implemented just as a downwards force because it is much simpler compared to modelling the ground as Earth and doing gravitational attraction. The force of gravitational attraction is implemented, but not used for the "gravity" pushing the meteors down. 
+\n
+\texttt{Drag} is fully implemented following the formula given in the lecture slides with \texttt{k1} and \texttt{k2} constants of drag.
 
 \subsubsection*{Cities}
-There are five locations where the cities are placed on the ground of the play area. These are static and do not change. This was done for simplicity and a fair balance so there are not occasional games where the cities are very far away, making the game more difficult. 
+The cities placed on the ground are static and do not change. This was done for simplicity and a fair balance so there are not occasional games where the cities are very far away, making the game more difficult. Although the cities are drawn as rectangles, their detection uses a circle so it is not completely accurate, but the difference is very small and hard to notice for a player. 
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=1\textwidth, keepaspectratio]{imgs/Meteors.png}
-\caption{Meteors falling from the sky. The one on the left has hit the ground and caused an explosion. Remaining cities can be seen in green.}
+\caption{Meteors falling from the sky. The one on the left has hit the ground and caused an explosion. Remaining cities can be seen in green. The circle indicates their detection radius for being destroyed.}
 \end{figure}
 
 \subsubsection*{Explosions}
@@ -86,38 +90,46 @@ Initially both player missile explosions and meteor explosions can destroy citie
 
 
 \subsubsection*{Player missiles}
-The player missiles fire from the center of the ground. Their velocity is normalised and not very fast so it takes a bit of planning to properly defend the cities that are further away. The missile explode either when they reach their destination - the position of the mouse cursor when the missile was fired - or when they collide with a meteor during their trajectory. 
+The player missiles fire from the center of the ground. Their velocity is normalised and not very fast so it takes a bit of planning to properly defend the cities that are further away. The missiles explode either when they reach their destination - the position of the mouse cursor when the missile was fired - or when they collide with a meteor during their trajectory. 
 \begin{figure}[H]
 \centering
 \includegraphics[width=1\textwidth, keepaspectratio]{imgs/UpgradedExplosion.png}
 \caption{Upgraded explosions from player missiles. These do not destroy cities. The colour is different to indicate the change.}
 \end{figure}
+\noindent
+To calculate where they have to go and when to explode, the missiles store their destination position vector which lets them calculate where to go and check if they are close to the destination before exploding. 
 
 \subsubsection*{Waves}
-The game is organised into waves. At the beginning of each wave, the number of missiles the player has is increased. Each wave has increasing difficulty as more meteors are spawned. Every few waves, the player is rewarded with a black hole or forcefield to help them survive. However, every few waves a bomber also comes which makes the game more difficult.
+The game is organised into waves. At the beginning of each wave, the number of missiles the player has is increased by a random scaling amount. Each wave has increasing difficulty as more meteors are spawned. Every few waves, the player is rewarded with a black hole or forcefield to help them survive. However, every few waves a bomber also comes which makes the game more difficult.
 \begin{figure}[H]
 \centering
 \includegraphics[width=1\textwidth, keepaspectratio]{imgs/WaveFinished.png}
 \end{figure}
 
 
-\subsection{Extension}
+\subsection{Extensions}
 
 \subsubsection*{Split into child meteors}
-To make the game more difficult, the extension for splitting meteors into child meteors is also implemented. Meteors that are larger than a certain radius have a chance to split into 2 or more child meteors. As the player goes into higher levels, the number of child meteors that spawn is increased. Meteors only begin to split at a certain level (\texttt{METEOR\_SPLIT\_STARTING\_LEVEL}) so the beginning of the game isn't too hard. 
+To make the game more difficult, the extension for splitting meteors into child meteors is also implemented. Meteors that are larger than a certain radius have a chance to split into 2 or more child meteors. As the player goes into higher levels, the number of child meteors that spawn is increased. Meteors only begin to split at after a certain level so the beginning of the game isn't too hard. 
 
 \subsubsection*{Bombers}
-In addition to splitting the meteors, bombers that drop "bombs" are also implemented in the game. These bombers fly across the screen and drop "bombs" that are much heavier than normal meteors. They are also given an initial downwards velocity to make them fly faster towards the player's cities.
-\n
-In the code, the bombs are implemented as meteors but drawn with a darker colour. This is because apart from flying faster to the ground they are the same as regular meteors. 
+In addition to splitting the meteors, bombers that drop "bombs" are also implemented in the game. These bombers fly across the screen and drop "bombs" that are much heavier than normal meteors. They are also given an initial downwards velocity to make them fly faster towards the player's cities. I have not allowed players to be able to destroy bombers because I found that a player will always go to destroy the bomber immediately so it is not there for long enough to add a challenge.
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth, keepaspectratio]{imgs/Bomber.png}
+\caption{Bomber flying across the screen. The darker grey meteor is one of the "bombs".}
+\end{figure}
+\noindent
+In the code, the bombs that are dropped are implemented as meteors but drawn with a darker colour. This is because have the exact same properties as meteors, only they have a set mass, radius and larger initial downwards velocity.  
 
 \subsubsection*{Black holes}
-To add the force of gravitational attraction to the game, I added a special missile that player's can shoot which would create a black hole. The black holes apply gravitational attraction to all meteors on screen and because they are intentionally much heavier than the meteors, most will be sucked into the black hole and destroyed. Meteors that are further away may be affected less.
+To add the force of gravitational attraction to the game, I added a special missile that player's can shoot which would create a black hole. The black holes apply gravitational attraction to all meteors on screen and because they are intentionally much heavier than the meteors, most will be sucked into the black hole and destroyed. Meteors that are further away may be affected less according to the equation.
 \begin{figure}[H]
 \centering
 \includegraphics[width=1\textwidth]{imgs/Blackhole.png}
 \end{figure}
-The black holes only last for a short while before disappearing. This means that if a meteor was being accelerated towards it but did not get sucked in, it will no longer have a force applied to it, but it will retain its fast velocity, only being slowed by drag. This makes the use of black holes more strategic and a double edged sword if used improperly as the disappearing of one at the wrong time could cause a meteor to crash down really fast onto a city. Because of this danger, the black hole missiles will not create a black hole on impact, only when they reach their destination. Use right click instead of left click to shoot out a missile that creates a black hole.
+\noindent
+The black holes only last for a short while before disappearing. This means that if a meteor was being accelerated towards it but did not get sucked in, it will no longer have a force applied to it, but it will retain its fast velocity, only being slowed by drag. This makes the use of black holes more strategic and a double edged sword if used improperly as the disappearance of one at the wrong time could cause a meteor to crash down really fast onto a city. Because of this danger, the black hole missiles will not create a black hole on impact, only when they reach their destination. Use right click instead of left click to shoot out a missile that creates a black hole.
  
 \subsubsection*{Forcefield}
 Unlike explosions, forcefield use a different kind of force to repel particles which makes them a more global and powerful tool to deflect meteors compared to missiles. Instead of applying an explosive force to knock the meteors away, forcefields use the opposite force of gravitational attraction. The meteors are repulsed away from the forcefield by multiplying the force of gravitational attraction by -1. 
@@ -140,17 +152,24 @@ To allow the player the ability to use more of these special particles, I have a
 
 \subsection{Scoring system}
 There are two components to the scoring system: during the wave and at the end of the wave. \n
-During the wave, if a meteor hits the ground and explodes, it adds a bit of score. If the meteor is instead knocked away outside of the screen, more score is added. By having meteors give score regardless, it allows players who are not very skilled to still get score that they can use in the shop. 
+During the wave, if a meteor hits the ground and explodes, it adds a bit of score. If the meteor is instead knocked away outside of the screen, more score is added. By having meteors give score regardless, it allows players who are not very skilled to still get score that they can use in the shop.
+\n
+At the end of every wave, the number of remaining cities and missiles are counted up and added to the player's score. This is the same as in the original \textit{Missile Command} game and rewards skilled players as they were able to keep more cities alive and also use their missiles strategically enough to still have some remaining at the end of the round. Remaining cities give a lot more score as it takes more skill to keep them alive and often I found to only have one city remaining for a long period of the game. This provides a trade off when deciding to spend score to rebuild cities as they can provide higher "income" of score at the end of every round, but the player must be able to keep them alive. A good strategy may be to only have one city because it is easy to defend, but this will take a long time to get a higher score. Also, any mistakes may lead to game over as there is only the one city remaining. 
 \subsection{Increasing difficulty}
 There are multiple things that I've done to increase the difficulty of the game. 
 \begin{itemize}
-\item Increase number of meteors every wave.
-\item Bombers start to appear on the fifth wave and every fifth wave adds another bomber.
+\item Increased number of meteors every wave. - the number of meteors is increased every level randomly so some levels may have more meteors than the next level. But in general the number of meteors slowly increases every level. 
+\item Bombers start to appear after a few waves and adds another bomber every few waves.
 \item Meteors have increased mass which causes them to have a higher chance of splitting into smaller meteors.
-\item Number of child meteors from a meteor splitting also increases 
+\item Number of child meteors from a meteor splitting also increases with the level
 \end{itemize}
+The configuration for different object speeds, spawn rates and scoring are kept as constants in \texttt{GameConfig} as a central place for most of these numbers. Some constants are kept in their own respective classes if they make more sense to stay there, for example parameters for which level to add bombers and increase the mass of a meteor are kept in the \texttt{Level} class as that is the only class that uses that constant.
+\n
+I have added an option for a player to "win" the game if they have all their cities alive and pay a large sum of score. The idea behind this is not to have an endless game, but rather have a final goal. For some players, it may be quite an achievement just to reach that goal, while others will try to maximise their score before deciding to end the game.  
 \subsection{City arrangement}
 The city arrangement is static and in evenly spread locations. This is so there aren't any balance issues with cities being too concentrated in certain locations. The number of cities can be changed and the game is able to place any number of them evenly. 
+\n
+Because the score given for remaining cities is high, I have chosen to have only five cities in the game by default. Having less cities also makes the game a little easier as there are less cities to defend and less to rebuild for the endgame. 
 \begin{figure}[H]
 \centering
 \includegraphics[width=1\textwidth, keepaspectratio]{imgs/FiveCities.png}
@@ -208,6 +227,7 @@ To complement the state machine, there are three classes that encapsulate many g
 
 
 \section{Conclusion}
+In conclusion, I've been able to implement many features into my game. Some features make the game more difficult, but others try to help the player be more successful. The different features allow me to show off a few different forces and how they all interact with each other. Having each force as a \texttt{ForceGenerator} and using the \texttt{ForceRegistry} to keep track of all the forces and particles make it easily extensible to add new types of forces. The state machine allows each state to define its own functionality and again makes it easy to extend and add new states for different phases or parts of the game. I have also added a final goal for players to try and reach rather than make the game endless so the objective it to survive to a certain point and not just survive forever. 
 
 \printbibliography
 
