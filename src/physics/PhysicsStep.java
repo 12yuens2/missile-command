@@ -3,7 +3,6 @@ package physics;
 import java.util.ArrayList;
 import java.util.function.Function;
 
-import objects.particles.Meteor;
 import objects.particles.Particle;
 
 public class PhysicsStep {

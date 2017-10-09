@@ -35,10 +35,10 @@ public class Collision {
         
         float impulse = deltaVel / ((1f/p1.mass) + (1f/p2.mass));        
         
-        PVector impulsePerInverseMass = contactNormal.get().mult(impulse);
+        PVector impulsePerInverseMass = contactNormal.copy().mult(impulse);
         
-        PVector p1Impulse = impulsePerInverseMass.get().mult((1f/p1.mass));
-        PVector p2Impulse = impulsePerInverseMass.get().mult(-(1f/p2.mass));
+        PVector p1Impulse = impulsePerInverseMass.copy().mult((1f/p1.mass));
+        PVector p2Impulse = impulsePerInverseMass.copy().mult(-(1f/p2.mass));
 
         p1.velocity.add(p1Impulse);
         p2.velocity.add(p2Impulse);

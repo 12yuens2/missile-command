@@ -1,17 +1,9 @@
 package physics;
 import java.util.ArrayList;
-import java.util.function.Function;
 
-import objects.buildings.City;
-import objects.particles.BlackHole;
-import objects.particles.BlackHoleMissile;
-import objects.particles.Explosion;
-import objects.particles.Meteor;
-import objects.particles.Missile;
 import objects.particles.Particle;
 import physics.forces.impl.Drag;
 import physics.forces.impl.Gravity;
-import processing.core.PVector;
 import physics.forces.ForceRegistry;
 
 public class PhysicsEngine {

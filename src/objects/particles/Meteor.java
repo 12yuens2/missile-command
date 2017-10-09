@@ -7,8 +7,6 @@ import game.GameConfig;
 import game.states.GameContext;
 import physics.Collision;
 import physics.PhysicsStep;
-import processing.core.PApplet;
-import processing.core.PConstants;
 
 public class Meteor extends Particle {
     

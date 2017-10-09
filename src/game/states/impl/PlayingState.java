@@ -4,7 +4,6 @@ import java.util.Random;
 
 import game.DrawEngine;
 import game.GameConfig;
-import game.Level;
 import game.states.GameContext;
 import game.states.GameInput;
 import game.states.GameState;
@@ -14,6 +13,7 @@ import objects.particles.Bomber;
 import objects.particles.ForceField;
 import objects.particles.Meteor;
 import objects.particles.Missile;
+
 import processing.core.PConstants;
 
 public class PlayingState extends GameState {

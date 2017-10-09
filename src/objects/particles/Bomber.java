@@ -10,8 +10,6 @@ import game.states.GameState;
 import game.states.impl.PlayingState;
 import physics.PhysicsEngine;
 import physics.PhysicsStep;
-import processing.core.PApplet;
-import processing.core.PConstants;
 
 public class Bomber extends Particle {
 

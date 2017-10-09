@@ -11,12 +11,13 @@ public class MissileCommand extends PApplet {
 	
 	
 	public void settings() {
-		size(800, 600);
+		size(GameConfig.SCREEN_X, GameConfig.SCREEN_Y);
 	}
 	
 	public void setup() {
 	    drawEngine = new DrawEngine(this);
 	    gameController = new GameController(this, drawEngine);
+	    
 //		frameRate(30);
 	}
 

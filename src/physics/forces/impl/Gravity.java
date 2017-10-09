@@ -6,7 +6,7 @@ import processing.core.PVector;
 
 public class Gravity extends ForceGenerator{
 
-	private static final PVector gravity = new PVector(0f, 0.01f);
+	private static final PVector gravity = new PVector(0f, 0.006f);
 	
 	public Gravity() {
 		this.lifespan = 1;

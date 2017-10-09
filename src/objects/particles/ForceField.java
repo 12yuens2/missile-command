@@ -2,8 +2,6 @@ package objects.particles;
 
 import game.DrawEngine;
 import physics.forces.impl.Repulsive;
-import processing.core.PApplet;
-import processing.core.PConstants;
 
 public class ForceField extends Particle {
 
