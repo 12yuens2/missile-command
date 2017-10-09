@@ -23,6 +23,7 @@ public class ForceRegistry {
 			ForceRegistration fr = it.next();
 			Particle p = fr.particle;
 			
+			/* Remove forces that have expired from the registry */
 			if (p.destroyed || fr.forceGenerator.lifespan <= 0) {
 				it.remove();
 			}

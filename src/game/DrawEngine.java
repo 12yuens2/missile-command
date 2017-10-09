@@ -15,7 +15,10 @@ public class DrawEngine {
     	this.parent = parent;
     }
     
-    
+    /**
+     * Draw the main game with the background, ground and all game objects.
+     * @param context - contextual information of the game to draw
+     */
     public void displayGame(GameContext context) {
         parent.background(255);
         drawGround();

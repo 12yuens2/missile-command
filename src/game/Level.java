@@ -2,6 +2,11 @@ package game;
 
 import java.util.Random;
 
+/**
+ * Represents every wave of the game, keeps track of the number of meteors to spawn and adjusts the difficulty every level.
+ * @author sy35
+ *
+ */
 public class Level {
 
 	public static final int STARTING_METEORS = 10;

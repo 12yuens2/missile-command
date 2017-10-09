@@ -22,6 +22,11 @@ public class Attractive extends ForceGenerator {
 		attractee.addForce(force);		
 	}
 	
+	/**
+	 * Calculates the force of gravitational attraction.
+	 * @param attractee - particle being attracted
+	 * @return - force of the attraction
+	 */
 	protected PVector getAttractionForce(Particle attractee) {
 		PVector force = PVector.sub(attractor.position, attractee.position);
 		float distance = force.mag();

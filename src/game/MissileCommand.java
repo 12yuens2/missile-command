@@ -17,8 +17,6 @@ public class MissileCommand extends PApplet {
 	public void setup() {
 	    drawEngine = new DrawEngine(this);
 	    gameController = new GameController(this, drawEngine);
-	    
-//		frameRate(30);
 	}
 
 	

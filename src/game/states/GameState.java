@@ -135,6 +135,7 @@ public abstract class GameState {
 		while (it.hasNext()) {
 			Meteor m = it.next();
 			
+			/* Only split if the meteor is at a certain y coordinate range and large enough */
 			if (m.radius >= GameConfig.METEOR_SPLIT_MIN_RADIUS && m.position.y < GameConfig.METEOR_SPLIT_MAX_HEIGHT && m.position.y > GameConfig.METEOR_SPLIT_MIN_HEIGHT) {
 				if (r.nextInt(GameConfig.METEOR_SPLIT_RATE) == 0) {
 					int numChildren = 2 + r.nextInt(1 + context.level.levelNumber/GameConfig.METEOR_SPLIT_LEVEL);
@@ -174,6 +175,12 @@ public abstract class GameState {
 	    remove(ff -> ff.lifespan <= 0, context.forcefields.iterator());
     }
 	
+	/**
+	 * Destroy all particles that pass the filter. These particles may add explosions to the game. 
+	 * @param filter - filter function for which particles should be destroyed
+	 * @param it - iterator of the list of particles
+	 * @param explode - whether or not there should be an explosion when the particle is destroyed
+	 */
     private <T extends Particle> void destroy(Function<T, Boolean> filter, Iterator<T> it, boolean explode) {
     	while (it.hasNext()) {
     		T object = it.next();
@@ -192,6 +199,11 @@ public abstract class GameState {
     	}
     }
     
+    /**
+     * Only remove from the iterator list and nothing else
+     * @param filter - filter function for which objects should be destroyed
+     * @param it - iterator for the list of objects
+     */
     private <T extends IDrawable> void remove(Function<T, Boolean> filter, Iterator<T> it) {
     	while (it.hasNext()) {
     		T object = it.next();

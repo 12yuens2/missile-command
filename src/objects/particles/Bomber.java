@@ -39,9 +39,9 @@ public class Bomber extends Particle {
 		float xVel = r.nextFloat()-1f;
 		float yVel = BOMB_SPEED_BASE + r.nextFloat() * BOMB_SPEED_MULTIPLIER;
 		
-		Meteor meteor = new Meteor(position.x, position.y, xVel, yVel, BOMB_RADIUS, BOMB_MASS, 0);
-		meteors.add(meteor);
-		physicsEngine.registerNewParticle(meteor);
+		Meteor bomb = new Meteor(position.x, position.y, xVel, yVel, BOMB_RADIUS, BOMB_MASS, 60);
+		meteors.add(bomb);
+		physicsEngine.registerNewParticle(bomb);
 	}
 
 	public static PhysicsStep getStep(Class<? extends GameState> stateClass, GameContext context) {

@@ -6,6 +6,11 @@ import physics.forces.impl.Drag;
 import physics.forces.impl.Gravity;
 import physics.forces.ForceRegistry;
 
+/**
+ * Class that deals with all the physics steps of the game.
+ * @author sy35
+ *
+ */
 public class PhysicsEngine {
 
 	public static final float dragk1 = 0.0003f;
@@ -43,7 +48,6 @@ public class PhysicsEngine {
 	public void registerNewParticle(Particle p) {
 		forceRegistry.register(p, gravity);
 		forceRegistry.register(p, drag);
-		
 	}
 	
 	

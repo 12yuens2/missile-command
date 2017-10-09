@@ -14,9 +14,9 @@ public class Missile extends Particle {
 
 	public static final int MISSILE_MASS = 2;
 	public static final int MISSILE_RADIUS = 10;
-	public static final float MISSILE_SPEED_MULT = 10f;
+	public static final float MISSILE_SPEED_MULT = 12f;
 	
-	private static final float DETECT_RANGE = 7f;
+	private static final float DETECT_RANGE = 8f;
 	
 	public boolean friendlyUpgrade;
 	

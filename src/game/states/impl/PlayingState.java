@@ -93,7 +93,7 @@ public class PlayingState extends GameState {
     }
 	
 	private void spawnBomber() {
-    	if ((int)parent.random(0, 10) == 1 && context.level.numBombers > 0) {
+    	if (random.nextInt(GameConfig.BOMBER_SPAWN_RATE_INV) == 0 && context.level.numBombers > 0) {
     		Bomber bomber = new Bomber(0, parent.random(50, 200), 1f, parent.random(-0.2f, 0.2f), 0f, 0);
     		context.level.spawnBomber();
     	    context.bombers.add(bomber);
